@@ -1743,6 +1743,63 @@ function AppendixAPanel(){
     React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Implementation Code"),
     React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(255,198,39,0.08)",border:"1px solid #FFC62733",borderRadius:5,padding:"12px 14px",fontSize:14,color:"#8C1D40",display:"block",whiteSpace:"pre-wrap",lineHeight:1.6}},
       "function project(scenario, year) {\n  const s = SCENARIOS[scenario];\n  const f = Math.max(0, (year - 2020) / 80);\n  return MONTHS.map((m, i) => ({\n    month: m,\n    high:  +(BASE.high[i] + s.tempD * f).toFixed(1),\n    low:   +(BASE.low[i] + s.tempD * f).toFixed(1),\n    precip:+(Math.max(0, BASE.precip[i] * (1 + s.precipD * f))).toFixed(2),\n    sun:   BASE.sun[i],\n    heat:  Math.min(31, Math.round(BASE.heat[i] * (1 + f * (s.tempD / 3.5)))),\n  }));\n}"
+    ),
+
+    // Section 6 — Mathematical Formulas
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:20}},"6. Mathematical Formulas"),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Scaling Factor"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(255,198,39,0.08)",border:"1px solid #FFC62733",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"f")," = max( 0, ",React.createElement('span',{style:{display:"inline-block",textAlign:"center",verticalAlign:"middle"}},React.createElement('span',{style:{display:"block",borderBottom:"1px solid #8C1D40",paddingBottom:2}},"year − 2020"),React.createElement('span',{style:{display:"block",paddingTop:2}},"80"))," )"
+    ),
+    React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Ranges from 0 (year 2020) to 1 (year 2100). Represents the fraction of each scenario's total change realized by the selected year."),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Projected Monthly High Temperature (°F)"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(255,198,39,0.08)",border:"1px solid #FFC62733",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"T"),React.createElement('sub',null,"high"),"(",React.createElement('i',null,"i"),") = ",React.createElement('i',null,"T"),React.createElement('sub',null,"high,base"),"(",React.createElement('i',null,"i"),") + Δ",React.createElement('i',null,"T")," × ",React.createElement('i',null,"f")
+    ),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Projected Monthly Low Temperature (°F)"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(255,198,39,0.08)",border:"1px solid #FFC62733",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"T"),React.createElement('sub',null,"low"),"(",React.createElement('i',null,"i"),") = ",React.createElement('i',null,"T"),React.createElement('sub',null,"low,base"),"(",React.createElement('i',null,"i"),") + Δ",React.createElement('i',null,"T")," × ",React.createElement('i',null,"f")
+    ),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Projected Monthly Precipitation (inches)"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(255,198,39,0.08)",border:"1px solid #FFC62733",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"P"),"(",React.createElement('i',null,"i"),") = max( 0, ",React.createElement('i',null,"P"),React.createElement('sub',null,"base"),"(",React.createElement('i',null,"i"),") × (1 + Δ",React.createElement('i',null,"P")," × ",React.createElement('i',null,"f"),") )"
+    ),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Projected Monthly Extreme Heat Days (days >110°F)"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(255,198,39,0.08)",border:"1px solid #FFC62733",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"H"),"(",React.createElement('i',null,"i"),") = min( 31, ⌊ ",React.createElement('i',null,"H"),React.createElement('sub',null,"base"),"(",React.createElement('i',null,"i"),") × (1 + ",React.createElement('i',null,"f")," × ",React.createElement('span',{style:{display:"inline-block",textAlign:"center",verticalAlign:"middle"}},React.createElement('span',{style:{display:"block",borderBottom:"1px solid #8C1D40",paddingBottom:2}},"Δ"+String.fromCharCode(8202)+"T"),React.createElement('span',{style:{display:"block",paddingTop:2}},"3.5")),") + 0.5 ⌋ )"
+    ),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Sunshine Hours (held constant)"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(255,198,39,0.08)",border:"1px solid #FFC62733",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:12,lineHeight:1.8}},
+      React.createElement('i',null,"S"),"(",React.createElement('i',null,"i"),") = ",React.createElement('i',null,"S"),React.createElement('sub',null,"base"),"(",React.createElement('i',null,"i"),")"
+    ),
+
+    // Variable Definitions
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:18}},"Variable Definitions"),
+    React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:12}},
+      ...[
+        ["i","Month index (1–12, January through December)"],
+        ["f","Scaling factor, unitless (0 to 1)"],
+        ["year","The selected projection year (2020–2100)"],
+        ["T_high,base(i)","NOAA 1991–2020 normal monthly average high temperature for Phoenix (KPHX), in °F: [65, 70, 75, 84, 93, 102, 105, 103, 98, 88, 74, 65]"],
+        ["T_low,base(i)","NOAA 1991–2020 normal monthly average low temperature, in °F: [44, 47, 52, 59, 68, 77, 84, 83, 76, 64, 51, 44]"],
+        ["P_base(i)","NOAA 1991–2020 normal monthly precipitation, in inches: [0.83, 0.77, 0.77, 0.25, 0.18, 0.09, 0.99, 0.94, 0.79, 0.79, 0.61, 0.92]"],
+        ["S_base(i)","Monthly sunshine hours: [277, 265, 310, 336, 372, 384, 338, 331, 306, 310, 279, 263]"],
+        ["H_base(i)","Baseline extreme heat days per month (>110°F): [0, 0, 0, 1, 7, 20, 28, 26, 18, 4, 0, 0]"],
+        ["ΔT (tempD)","Scenario total temperature delta in °F by 2100: Baseline = 0, Optimistic = 1.8, Moderate = 3.6, Severe = 7.2"],
+        ["ΔP (precipD)","Scenario fractional precipitation change by 2100: Baseline = 0, Optimistic = −0.03, Moderate = −0.08, Severe = −0.15"],
+        ["3.5","Calibration divisor for extreme heat days, tuned so the severe scenario (+7.2°F) produces approximately 50 extreme heat days per year by 2100"],
+        ["31","Maximum days-per-month cap for the heat day projection"],
+        ["80","The projection window in years (2100 − 2020), used to normalize the scaling factor"],
+      ].map(([sym,def],i)=>React.createElement('div',{key:i,style:{display:"flex",gap:10,padding:"8px 12px",background:"rgba(255,198,39,0.04)",border:"1px solid #FFC62722",borderRadius:6}},
+        React.createElement('span',{style:{color:"#8C1D40",fontFamily:"'Times New Roman',serif",fontWeight:700,fontStyle:"italic",fontSize:16,flexShrink:0,minWidth:100}},sym),
+        React.createElement('span',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},def)
+      ))
     )
 
   );
@@ -1904,6 +1961,99 @@ function AppendixBPanel(){
     React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Implementation Code"),
     React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"12px 14px",fontSize:14,color:"#8C1D40",display:"block",whiteSpace:"pre-wrap",lineHeight:1.6}},
       "// Climate model inputs\nconst data = project(scenario, year);\nconst totalHeatDays = data.reduce((a, d) => a + d.heat, 0);\nconst warming = tempD × Math.max(0, (year - 2020) / 80);\n\n// Base mortality model\nconst BASE_DEATHS_2020 = 425;\nconst BASE_HEAT_DAYS_2020 = 104;\nconst additionalHeatDays = Math.max(0, totalHeatDays - BASE_HEAT_DAYS_2020);\nconst warmingMultiplier = Math.pow(1.04, warming);\nconst rawDeaths = Math.round((BASE_DEATHS_2020 + additionalHeatDays * 3.2) * warmingMultiplier);\n\n// Policy reductions\nconst coolingReduction = coolingCenters * 0.08;\nconst hydrationReduction = hydrationStations * 0.04;\nconst outreachReduction = outreach * 0.06;\nconst totalReductionPct = Math.min(0.65, coolingReduction + hydrationReduction + outreachReduction);\nconst preventedDeaths = Math.round(rawDeaths * totalReductionPct);\nconst finalDeaths = rawDeaths - preventedDeaths;\n\n// Cost-effectiveness\nconst costPerLifeSaved = preventedDeaths > 0\n  ? ((totalCost * 1000000) / preventedDeaths / 1000).toFixed(0)\n  : \"—\";"
+    ),
+
+    // Section 6 — Mathematical Formulas
+    React.createElement('div',{style:{color:"#ef4444",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:20}},"6. Mathematical Formulas"),
+
+    React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Warming Delta (°F)"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"w")," = Δ",React.createElement('i',null,"T")," × max( 0, ",React.createElement('span',{style:{display:"inline-block",textAlign:"center",verticalAlign:"middle"}},React.createElement('span',{style:{display:"block",borderBottom:"1px solid #8C1D40",paddingBottom:2}},"year − 2020"),React.createElement('span',{style:{display:"block",paddingTop:2}},"80"))," )"
+    ),
+    React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Effective warming in °F at the selected year and scenario. Uses the same time factor f as the climate model."),
+
+    React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Warming Multiplier"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"M")," = 1.04",React.createElement('sup',null,React.createElement('i',null,"w"))
+    ),
+    React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Exponential dose-response: each additional °F of mean warming compounds the baseline death rate by 4%."),
+
+    React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Total Projected Heat Days"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"D"),React.createElement('sub',null,"total")," = ",React.createElement('span',{style:{fontSize:26,verticalAlign:"middle"}},"Σ"),React.createElement('sub',{style:{fontSize:13}},React.createElement('i',null,"i"),"=1"),React.createElement('sup',{style:{fontSize:13}},"12")," ",React.createElement('i',null,"H"),"(",React.createElement('i',null,"i"),")"
+    ),
+    React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Sum of projected extreme heat days across all 12 months, from the climate model output."),
+
+    React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Additional Heat Days"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"D"),React.createElement('sub',null,"add")," = max( 0, ",React.createElement('i',null,"D"),React.createElement('sub',null,"total")," − 104 )"
+    ),
+    React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Heat days in excess of the 2020 baseline (104 days/yr). Only positive exceedances contribute to mortality increase."),
+
+    React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Raw Deaths (pre-intervention)"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"R")," = ⌊ ( 425 + ",React.createElement('i',null,"D"),React.createElement('sub',null,"add")," × 3.2 ) × ",React.createElement('i',null,"M")," + 0.5 ⌋"
+    ),
+    React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Two additive heat stress pathways (extra extreme days + general warming) combined. The 425 base and 3.2 coefficient are multiplied by the warming multiplier M."),
+
+    React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Policy Reduction Percentages"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"left",marginBottom:8,lineHeight:2.2}},
+      React.createElement('i',null,"r"),React.createElement('sub',null,"cool")," = ",React.createElement('i',null,"c")," × 0.08",React.createElement('br'),
+      React.createElement('i',null,"r"),React.createElement('sub',null,"hydr")," = ",React.createElement('i',null,"h")," × 0.04",React.createElement('br'),
+      React.createElement('i',null,"r"),React.createElement('sub',null,"out")," = ",React.createElement('i',null,"o")," × 0.06"
+    ),
+    React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Each intervention tier multiplied by its per-tier reduction rate. c, h, o are tier levels (0–3)."),
+
+    React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Total Reduction (capped)"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"r"),React.createElement('sub',null,"total")," = min( 0.65, ",React.createElement('i',null,"r"),React.createElement('sub',null,"cool")," + ",React.createElement('i',null,"r"),React.createElement('sub',null,"hydr")," + ",React.createElement('i',null,"r"),React.createElement('sub',null,"out")," )"
+    ),
+    React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Combined policy reductions hard-capped at 65%, reflecting irreducible baseline mortality."),
+
+    React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Prevented Deaths"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"V")," = ⌊ ",React.createElement('i',null,"R")," × ",React.createElement('i',null,"r"),React.createElement('sub',null,"total")," + 0.5 ⌋"
+    ),
+
+    React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Final Deaths"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"F")," = ",React.createElement('i',null,"R")," − ",React.createElement('i',null,"V")
+    ),
+
+    React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Cost per Life Saved ($K)"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"C"),React.createElement('sub',null,"life")," = ",React.createElement('span',{style:{display:"inline-block",textAlign:"center",verticalAlign:"middle"}},React.createElement('span',{style:{display:"block",borderBottom:"1px solid #8C1D40",paddingBottom:2}},React.createElement('i',null,"C"),React.createElement('sub',null,"total")," × 1,000,000"),React.createElement('span',{style:{display:"block",paddingTop:2}},React.createElement('i',null,"V")," × 1,000"))
+    ),
+    React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Displayed in thousands of dollars. Compared against the regulatory Value of a Statistical Life (~$10M)."),
+
+    // Variable Definitions
+    React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:18}},"Variable Definitions"),
+    React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:12}},
+      ...[
+        ["w","Warming delta — effective warming in °F at the selected year and scenario"],
+        ["M","Warming multiplier — exponential scaling factor (1.04 raised to the power w)"],
+        ["ΔT","Scenario total temperature delta in °F by 2100 (same as climate model tempD): Baseline = 0, Optimistic = 1.8, Moderate = 3.6, Severe = 7.2"],
+        ["D_total","Total projected extreme heat days per year, summed from the climate model's 12 monthly H(i) values"],
+        ["D_add","Additional heat days above the 2020 baseline of 104 days/yr"],
+        ["104","Baseline extreme heat days per year (NOAA 1991–2020 normal, sum of BASE.heat array)"],
+        ["425","Baseline annual heat-related deaths for Maricopa County (2018–2022 average trend)"],
+        ["3.2","Deaths per additional extreme heat day beyond baseline, from Hondula et al. (2015) Maricopa County dose-response regression"],
+        ["1.04","Per-°F warming multiplier — each degree of mean warming increases the death rate by 4%, from Baccini et al. (2008)"],
+        ["R","Raw projected deaths before any policy intervention"],
+        ["c, h, o","Tier levels (0–3) for cooling centers, hydration stations, and outreach programs respectively"],
+        ["r_cool","Cooling center reduction: 8% per tier (each tier ≈ 50 centers with 24-hour access)"],
+        ["r_hydr","Hydration station reduction: 4% per tier (each tier ≈ 200 stations)"],
+        ["r_out","Outreach reduction: 6% per tier (targeted vulnerable population programs)"],
+        ["r_total","Combined policy reduction percentage, capped at 0.65 (65%)"],
+        ["0.65","Maximum combined reduction cap — reflects irreducible mortality from cardiovascular events, infrastructure failure, and unreachable populations"],
+        ["V","Prevented deaths — lives saved by active policy interventions"],
+        ["F","Final projected deaths after policy interventions (R − V)"],
+        ["C_total","Total annual program cost in $M: sum of cooling ($0/2.1/4.8/9.2M), hydration ($0/0.4/0.9/1.8M), and outreach ($0/1.2/2.6/4.5M)"],
+        ["C_life","Cost per life saved in $K — compared against the VSL threshold of ~$10M"],
+      ].map(([sym,def],i)=>React.createElement('div',{key:i,style:{display:"flex",gap:10,padding:"8px 12px",background:"rgba(239,68,68,0.04)",border:"1px solid #ef444422",borderRadius:6}},
+        React.createElement('span',{style:{color:"#8C1D40",fontFamily:"'Times New Roman',serif",fontWeight:700,fontStyle:"italic",fontSize:16,flexShrink:0,minWidth:100}},sym),
+        React.createElement('span',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},def)
+      ))
     )
 
   );
@@ -2100,6 +2250,112 @@ function AppendixCPanel(){
     React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Implementation Code"),
     React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"12px 14px",fontSize:14,color:"#8C1D40",display:"block",whiteSpace:"pre-wrap",lineHeight:1.6}},
       "// Daily temperature from climate model\nconst dailyTemp = dayToTemp(day, monthlyHighs);\n\n// District heat bias\nlet localHeat = dailyTemp;\nDISTRICTS.forEach(d => {\n  if (a.x > d.x && a.x < d.x + d.w && a.y > d.y && a.y < d.y + d.h)\n    localHeat *= d.heatBias;\n});\n\n// Protection factor\nconst protection = inCooling ? 0.05 : inHydration ? 0.4 : outreachHelped ? 0.3 : 1.0;\nconst vulnerabilityMult = a.vulnerable ? 1.6 : 1.0;\n\n// Heat accumulation\nif (inCooling) {\n  a.heat = Math.max(0, a.heat - 0.005);\n} else if (localHeat >= 85) {\n  const heatRate = ((localHeat - 85) / 50) * 0.008 * protection * vulnerabilityMult;\n  a.heat = Math.min(1, a.heat + heatRate);\n} else {\n  a.heat = Math.max(0, a.heat - 0.003);  // cool day recovery\n}\n\n// State machine\nif (a.heat < 0.3)       a.state = \"healthy\";\nelse if (a.heat < 0.65) a.state = \"stressed\";\nelse if (a.heat < 0.9)  a.state = \"critical\";\nelse {\n  const rescueChance = (outreachHelped || a.outreachVisited) ? 0.3 : 0;\n  if (Math.random() < rescueChance) { a.state = \"saved\"; a.heat = 0.2; }\n  else if (Math.random() < 0.002)    { a.state = \"dead\"; }\n  else                                { a.state = \"critical\"; }\n}"
+    ),
+
+    // Section 7 — Mathematical Formulas
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:20}},"7. Mathematical Formulas"),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Daily Temperature Interpolation"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:4,lineHeight:1.8}},
+      React.createElement('i',null,"T"),React.createElement('sub',null,"day")," = ",React.createElement('i',null,"T"),React.createElement('sub',null,"high"),"(",React.createElement('i',null,"m"),") + ( ",React.createElement('i',null,"T"),React.createElement('sub',null,"high"),"(",React.createElement('i',null,"m"),"+1) − ",React.createElement('i',null,"T"),React.createElement('sub',null,"high"),"(",React.createElement('i',null,"m"),") ) × ",React.createElement('i',null,"t")
+    ),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.05)",border:"1px solid #8C1D4022",borderRadius:5,padding:"10px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      "where  ",React.createElement('i',null,"t")," = ",React.createElement('span',{style:{display:"inline-block",textAlign:"center",verticalAlign:"middle"}},React.createElement('span',{style:{display:"block",borderBottom:"1px solid #8C1D40",paddingBottom:2}},"day − mid(",React.createElement('i',null,"m"),")"),React.createElement('span',{style:{display:"block",paddingTop:2}},"mid(",React.createElement('i',null,"m"),"+1) − mid(",React.createElement('i',null,"m"),")"))
+    ),
+    React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Linear interpolation between monthly midpoints with wrap-around for December–January. Produces a smooth seasonal temperature curve from 12 monthly climate projections."),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Local Heat Exposure"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"L"),React.createElement('sub',null,"agent")," = ",React.createElement('i',null,"T"),React.createElement('sub',null,"day")," × ",React.createElement('i',null,"β"),React.createElement('sub',null,"district")
+    ),
+    React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Agent's effective temperature is the daily ambient multiplied by the district's urban heat island bias (0.85–1.25)."),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Heat Accumulation Rate (when L ≥ 85°F)"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      "Δ",React.createElement('i',null,"Q")," = ",React.createElement('span',{style:{display:"inline-block",textAlign:"center",verticalAlign:"middle"}},React.createElement('span',{style:{display:"block",borderBottom:"1px solid #8C1D40",paddingBottom:2}},React.createElement('i',null,"L")," − 85"),React.createElement('span',{style:{display:"block",paddingTop:2}},"50"))," × 0.008 × ",React.createElement('i',null,"p")," × ",React.createElement('i',null,"v")
+    ),
+    React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Normalized heat stress increment per tick. Scales linearly with temperature above 85°F. Modified by protection factor and vulnerability multiplier."),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Heat Index Update"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"left",marginBottom:8,lineHeight:2.4}},
+      "If in cooling center:   ",React.createElement('i',null,"Q")," = max( 0, ",React.createElement('i',null,"Q")," − 0.005 )",React.createElement('br'),
+      "If ",React.createElement('i',null,"L")," ≥ 85:                    ",React.createElement('i',null,"Q")," = min( 1, ",React.createElement('i',null,"Q")," + Δ",React.createElement('i',null,"Q")," )",React.createElement('br'),
+      "If ",React.createElement('i',null,"L")," < 85:                    ",React.createElement('i',null,"Q")," = max( 0, ",React.createElement('i',null,"Q")," − 0.003 )"
+    ),
+    React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Three regimes: active cooling (recovery), hot day (accumulation), cool day (gradual recovery). Heat index is clamped to [0, 1]."),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Protection Factor"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"p")," = { 0.05 (cooling), 0.40 (hydration), 0.30 (outreach), 1.0 (none) }"
+    ),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Vulnerability Multiplier"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"v")," = { 1.6 (vulnerable), 1.0 (general population) }"
+    ),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"State Thresholds"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"left",marginBottom:8,lineHeight:2.2}},
+      React.createElement('i',null,"Q")," < 0.30             → Healthy",React.createElement('br'),
+      "0.30 ≤ ",React.createElement('i',null,"Q")," < 0.65  → Heat-Stressed",React.createElement('br'),
+      "0.65 ≤ ",React.createElement('i',null,"Q")," < 0.90  → Critical",React.createElement('br'),
+      React.createElement('i',null,"Q")," ≥ 0.90             → Death / Rescue zone"
+    ),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Death Probability (per tick, when Q ≥ 0.9)"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"P"),"(death) = 0.002"
+    ),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Rescue Probability (per tick, when Q ≥ 0.9 and outreach-visited)"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"P"),"(rescue) = 0.30"
+    ),
+    React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Rescue resets agent heat to 0.2 and permanently protects the agent from further death risk."),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Outreach Contact Probability (per tick)"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"P"),"(contact) = 0.002 × ",React.createElement('i',null,"o"),",   when  ",React.createElement('i',null,"d"),"(agent, center) < 80 × ",React.createElement('i',null,"o")
+    ),
+
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Euclidean Distance"),
+    React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+      React.createElement('i',null,"d")," = √( (",React.createElement('i',null,"x"),React.createElement('sub',null,"agent")," − ",React.createElement('i',null,"x"),React.createElement('sub',null,"center"),")",React.createElement('sup',null,"2")," + (",React.createElement('i',null,"y"),React.createElement('sub',null,"agent")," − ",React.createElement('i',null,"y"),React.createElement('sub',null,"center"),")",React.createElement('sup',null,"2")," )"
+    ),
+    React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Used for cooling center proximity, hydration station proximity, and outreach contact range calculations."),
+
+    // Variable Definitions
+    React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:18}},"Variable Definitions"),
+    React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:12}},
+      ...[
+        ["T_day","Daily ambient high temperature (°F), interpolated from the climate model's 12 monthly projections using linear interpolation between monthly midpoints"],
+        ["T_high(m)","Projected monthly high temperature for month m, from the climate model's project() function output"],
+        ["m","Month index bracketing the current simulation day; determined by midpoint positions within the year"],
+        ["t","Interpolation parameter (0 to 1) representing position between two monthly midpoints"],
+        ["mid(m)","The midpoint day of month m, computed as cumulative days to month m plus half the days in month m"],
+        ["L_agent","Local effective temperature experienced by an individual agent (°F), after applying district heat bias"],
+        ["β_district","District urban heat island bias multiplier: Downtown = 1.25, West Phoenix = 1.10, Tempe = 1.15, South Mountain = 0.90, Chandler = 1.00, North Phoenix = 0.85, Scottsdale = 0.95, Avondale = 1.05, Mesa = 1.08, Laveen = 0.88"],
+        ["ΔQ","Per-tick heat stress increment; only positive when local temperature ≥ 85°F"],
+        ["Q","Agent cumulative heat stress index, ranging from 0 (no stress) to 1 (maximum). Drives state machine transitions"],
+        ["p","Protection factor multiplier: 0.05 in cooling center (95% reduction), 0.40 at hydration station (60% reduction), 0.30 if outreach-visited (70% reduction), 1.0 with no protection. Mutually exclusive; cooling takes priority"],
+        ["v","Vulnerability multiplier: 1.6 for vulnerable agents (elderly, unhoused, medically compromised — 25% of population), 1.0 for general population"],
+        ["85","Temperature threshold (°F) below which heat does not accumulate and gradual recovery occurs"],
+        ["50","Normalization divisor for the heat rate formula, calibrating the accumulation speed"],
+        ["0.008","Base heat accumulation coefficient per tick at the reference temperature"],
+        ["0.005","Per-tick heat recovery rate inside a cooling center"],
+        ["0.003","Per-tick heat recovery rate on cool days (below 85°F)"],
+        ["0.002","Per-tick death probability in the critical zone (Q ≥ 0.9)"],
+        ["0.30","Rescue probability per tick for outreach-visited agents in the death zone; resets heat to 0.2"],
+        ["0.2","Heat index reset value upon rescue — agent transitions to 'saved' state permanently"],
+        ["o","Outreach level (0–3), controls both contact probability and geographic coverage radius"],
+        ["80","Base outreach radius in pixels per outreach level; at level 3 covers 240px from city center"],
+        ["d","Euclidean distance between agent position and an infrastructure point (cooling center, hydration station, or outreach center)"],
+        ["x_agent, y_agent","Agent's current position on the 640×440 pixel canvas, updated each tick with velocity plus random noise"],
+        ["x_center, y_center","Outreach center coordinates (fixed at 300, 220), representing approximate Phoenix city center on the canvas"],
+      ].map(([sym,def],i)=>React.createElement('div',{key:i,style:{display:"flex",gap:10,padding:"8px 12px",background:"rgba(140,29,64,0.04)",border:"1px solid #8C1D4022",borderRadius:6}},
+        React.createElement('span',{style:{color:"#8C1D40",fontFamily:"'Times New Roman',serif",fontWeight:700,fontStyle:"italic",fontSize:16,flexShrink:0,minWidth:110}},sym),
+        React.createElement('span',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},def)
+      ))
     )
 
   );
