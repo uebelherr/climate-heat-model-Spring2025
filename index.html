@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=5.0, user-scalable=yes"/>
 <title>Phoenix Climate & Heat Risk Policy Models</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
@@ -22,6 +22,17 @@
   canvas{background:transparent!important;}
   @keyframes slideIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
   @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  @keyframes sidebarSlide{from{transform:translateX(-100%);}to{transform:translateX(0);}}
+  @media(max-width:768px){
+    body{-webkit-text-size-adjust:100%;overflow-x:auto;}
+    .mobile-hamburger{display:flex!important;}
+    .desktop-nav-dots{display:none!important;}
+    .sidebar-overlay{display:block!important;}
+  }
+  @media(min-width:769px){
+    .mobile-hamburger{display:none!important;}
+    .sidebar-overlay{display:none!important;}
+  }
 </style>
 </head>
 <body>
@@ -2366,6 +2377,13 @@ function App(){
   const[scenario,setScenario]=useState("moderate");
   const[year,setYear]=useState(2026);
   const[mounted,setMounted]=useState(false);
+  const[sidebarOpen,setSidebarOpen]=useState(false);
+  const[isMobile,setIsMobile]=useState(window.innerWidth<=768);
+  useEffect(()=>{
+    const onResize=()=>setIsMobile(window.innerWidth<=768);
+    window.addEventListener('resize',onResize);
+    return()=>window.removeEventListener('resize',onResize);
+  },[]);
   useEffect(()=>{setMounted(false);const t=setTimeout(()=>setMounted(true),50);return()=>clearTimeout(t);},[lesson]);
   const s=SCENARIOS[scenario];
   const topLevelLessons=LESSONS.filter(l=>!l.parent);
@@ -2376,69 +2394,91 @@ function App(){
     ? (topLevelIdx+1)+"."+["a","b","c","d"][LESSONS.filter(l=>l.parent===current.parent).findIndex(l=>l.id===current.id)]
     : String(topLevelIdx+1);
 
-  return React.createElement('div',{style:{minHeight:"100vh",background:"#F0E8EB",color:"#1A0A10",fontFamily:"'Georgia','Times New Roman',serif",display:"grid",gridTemplateRows:"auto 1fr",height:"100vh",overflow:"hidden"}},
+  const navLesson=(id)=>{setLesson(id);if(isMobile)setSidebarOpen(false);};
+
+  // Sidebar content (shared between desktop and mobile)
+  const sidebarContent=React.createElement(React.Fragment,null,
+    React.createElement('div',{style:{padding:"0 20px 16px",fontSize:11,color:"#5C1130",letterSpacing:"3px",textTransform:"uppercase",fontWeight:800,display:"flex",alignItems:"center",justifyContent:"space-between"}},
+      "Lesson Plan",
+      isMobile&&React.createElement('button',{onClick:()=>setSidebarOpen(false),style:{background:"none",border:"none",fontSize:22,color:"#5C1130",cursor:"pointer",padding:"4px 8px",lineHeight:1}},"✕")
+    ),
+    ...LESSONS.map((l,i)=>{
+      const active=lesson===l.id;
+      const isSub=!!l.parent;
+      const parentActive=l.parent&&(lesson===l.parent||LESSONS.find(x=>x.id===lesson)&&LESSONS.find(x=>x.id===lesson).parent===l.parent);
+      const btn=React.createElement('button',{key:l.id,onClick:()=>navLesson(l.id),style:{background:active?"rgba(140,29,64,0.15)":"transparent",border:"none",borderLeft:`3px solid ${active?"#8C1D40":isSub?"rgba(140,29,64,0.3)":"transparent"}`,padding:isSub?"9px 20px 9px 36px":"14px 20px",cursor:"pointer",textAlign:"left",fontFamily:"inherit",transition:"all 0.2s",opacity:isSub&&!parentActive&&!active?0.6:1,width:"100%"}},
+        React.createElement('div',{style:{display:"flex",alignItems:"center",gap:8}},
+          isSub&&React.createElement('div',{style:{width:1,height:16,background:active?"#8C1D40":"rgba(140,29,64,0.4)",marginRight:2,flexShrink:0}}),
+          React.createElement('span',{style:{fontSize:isSub?14:18}},l.icon),
+          React.createElement('div',null,
+            React.createElement('div',{style:{fontSize:isSub?12:15,color:active?"#3D0A20":"#5C1130",fontWeight:active?800:700,marginBottom:1,display:"flex",alignItems:"baseline",gap:2}},
+              !isSub&&React.createElement('span',{style:{minWidth:22,flexShrink:0,display:"inline-block"}},
+                String(LESSONS.filter(x=>!x.parent).findIndex(x=>x.id===l.id)+1),". "
+              ),
+              isSub&&React.createElement('span',null,"↳ "),
+              l.title
+            ),
+            React.createElement('div',{style:{fontSize:10,color:"#5C1130",fontWeight:600,paddingLeft:isSub?0:24}},l.subtitle)
+          )
+        )
+      );
+      if(l.id==="abm"){
+        return[btn,React.createElement('div',{key:"year-widget",style:{margin:"8px 16px",padding:"12px 14px",background:"rgba(140,29,64,0.12)",border:"1px solid rgba(140,29,64,0.3)",borderRadius:10}},
+          React.createElement('div',{style:{fontSize:10,color:"#5C1130",letterSpacing:"2px",marginBottom:6,textTransform:"uppercase",fontWeight:700}},"Active Scenario"),
+          React.createElement('div',{style:{color:"#3D0A20",fontSize:12,marginBottom:5,fontWeight:600}},s.emoji," ",s.label),
+          React.createElement('div',{style:{fontSize:10,color:"#5C1130",marginBottom:3}},"Year: ",React.createElement('strong',null,year)),
+          React.createElement('input',{type:"range",min:"2020",max:"2100",value:year,onChange:e=>setYear(+e.target.value),style:{width:"100%",accentColor:"#8C1D40"}})
+        )];
+      }
+      return btn;
+    }),
+    React.createElement('div',{style:{margin:"auto 20px 0",padding:"14px",borderTop:"1px solid rgba(140,29,64,0.3)",marginTop:24}},
+      React.createElement('div',{style:{fontSize:10,color:"#5C1130",lineHeight:1.6}},"Data: NOAA Climate Normals 1991–2020",React.createElement('br'),"Projections: IPCC AR6 · SSP scenarios",React.createElement('br'),React.createElement('span',{style:{color:"#8C1D40"}},"For educational use"))
+    )
+  );
+
+  return React.createElement('div',{style:{minHeight:"100vh",background:"#F0E8EB",color:"#1A0A10",fontFamily:"'Georgia','Times New Roman',serif",display:"flex",flexDirection:"column",height:isMobile?"auto":"100vh",overflow:isMobile?"visible":"hidden"}},
     // Header
-    React.createElement('header',{style:{background:"linear-gradient(90deg,#8C1D40 0%,#A02050 50%,#8C1D40 100%)",borderBottom:"1px solid #6B1530",padding:"16px 32px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:20,flexShrink:0}},
-      React.createElement('div',null,
-        React.createElement('div',{style:{fontSize:10,letterSpacing:"4px",color:"#E8A800",textTransform:"uppercase",marginBottom:4}},"Educational Dashboard"),
-        React.createElement('h1',{style:{margin:0,fontSize:"clamp(16px,3vw,24px)",fontWeight:400,fontFamily:"'Playfair Display',serif",background:"linear-gradient(90deg,#FFD966,#FFC627)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}},"Phoenix Climate & Heat Risk Policy Models")
+    React.createElement('header',{style:{background:"linear-gradient(90deg,#8C1D40 0%,#A02050 50%,#8C1D40 100%)",borderBottom:"1px solid #6B1530",padding:isMobile?"12px 16px":"16px 32px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:isMobile?12:20,flexShrink:0}},
+      React.createElement('div',{style:{display:"flex",alignItems:"center",gap:12}},
+        // Hamburger button (mobile only)
+        React.createElement('button',{className:"mobile-hamburger",onClick:()=>setSidebarOpen(!sidebarOpen),style:{display:"none",alignItems:"center",justifyContent:"center",background:"rgba(255,198,39,0.15)",border:"1px solid #FFC62766",borderRadius:8,width:40,height:40,cursor:"pointer",flexShrink:0}},
+          React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:4}},
+            React.createElement('div',{style:{width:20,height:2,background:"#FFC627",borderRadius:1}}),
+            React.createElement('div',{style:{width:20,height:2,background:"#FFC627",borderRadius:1}}),
+            React.createElement('div',{style:{width:20,height:2,background:"#FFC627",borderRadius:1}})
+          )
+        ),
+        React.createElement('div',null,
+          React.createElement('div',{style:{fontSize:isMobile?8:10,letterSpacing:"4px",color:"#E8A800",textTransform:"uppercase",marginBottom:4}},"Educational Dashboard"),
+          React.createElement('h1',{style:{margin:0,fontSize:isMobile?"clamp(14px,4vw,18px)":"clamp(16px,3vw,24px)",fontWeight:400,fontFamily:"'Playfair Display',serif",background:"linear-gradient(90deg,#FFD966,#FFC627)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}},"Phoenix Climate & Heat Risk Policy Models")
+        )
       ),
-      React.createElement('div',{style:{display:"flex",gap:6}},
+      // Desktop nav dots
+      React.createElement('div',{className:"desktop-nav-dots",style:{display:"flex",gap:6,flexWrap:"wrap",justifyContent:"flex-end"}},
         ...LESSONS.filter(l=>!l.parent).map((l,i)=>React.createElement('button',{key:l.id,onClick:()=>setLesson(l.id),title:l.title,style:{width:36,height:36,borderRadius:"50%",background:(lesson===l.id||LESSONS.find(x=>x.id===lesson)&&LESSONS.find(x=>x.id===lesson).parent===l.id)?"#8C1D4020":"transparent",border:`2px solid ${(lesson===l.id||(LESSONS.find(x=>x.id===lesson)&&LESSONS.find(x=>x.id===lesson).parent===l.id))?"#FFC627":"#C4849A"}`,color:(lesson===l.id||(LESSONS.find(x=>x.id===lesson)&&LESSONS.find(x=>x.id===lesson).parent===l.id))?"#FFD966":"#5C1130",cursor:"pointer",fontSize:15,transition:"all 0.2s",display:"flex",alignItems:"center",justifyContent:"center"}},l.icon))
       )
     ),
     // Body
-    React.createElement('div',{style:{display:"grid",gridTemplateColumns:"260px 1fr",overflow:"hidden",flex:1}},
+    React.createElement('div',{style:{display:isMobile?"flex":"grid",gridTemplateColumns:isMobile?undefined:"260px 1fr",flexDirection:isMobile?"column":undefined,overflow:isMobile?"visible":"hidden",flex:1}},
+      // Mobile sidebar overlay
+      isMobile&&sidebarOpen&&React.createElement('div',{className:"sidebar-overlay",onClick:()=>setSidebarOpen(false),style:{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(26,10,16,0.5)",zIndex:998}}),
       // Sidebar
-      React.createElement('aside',{style:{background:"#FFC627",borderRight:"1px solid #E8A800",padding:"24px 0",display:"flex",flexDirection:"column",gap:2,overflowY:"auto"}},
-        React.createElement('div',{style:{padding:"0 20px 16px",fontSize:11,color:"#5C1130",letterSpacing:"3px",textTransform:"uppercase",fontWeight:800}},"Lesson Plan"),
-        ...LESSONS.map((l,i)=>{
-          const active=lesson===l.id;
-          const isSub=!!l.parent;
-          const parentActive=l.parent&&(lesson===l.parent||LESSONS.find(x=>x.id===lesson)&&LESSONS.find(x=>x.id===lesson).parent===l.parent);
-          const btn=React.createElement('button',{key:l.id,onClick:()=>setLesson(l.id),style:{background:active?"rgba(140,29,64,0.15)":"transparent",border:"none",borderLeft:`3px solid ${active?"#8C1D40":isSub?"rgba(140,29,64,0.3)":"transparent"}`,padding:isSub?"9px 20px 9px 36px":"14px 20px",cursor:"pointer",textAlign:"left",fontFamily:"inherit",transition:"all 0.2s",opacity:isSub&&!parentActive&&!active?0.6:1}},
-            React.createElement('div',{style:{display:"flex",alignItems:"center",gap:8}},
-              isSub&&React.createElement('div',{style:{width:1,height:16,background:active?"#8C1D40":"rgba(140,29,64,0.4)",marginRight:2,flexShrink:0}}),
-              React.createElement('span',{style:{fontSize:isSub?14:18}},l.icon),
-              React.createElement('div',null,
-                React.createElement('div',{style:{fontSize:isSub?12:15,color:active?"#3D0A20":"#5C1130",fontWeight:active?800:700,marginBottom:1,display:"flex",alignItems:"baseline",gap:2}},
-                  !isSub&&React.createElement('span',{style:{minWidth:22,flexShrink:0,display:"inline-block"}},
-                    String(LESSONS.filter(x=>!x.parent).findIndex(x=>x.id===l.id)+1),". "
-                  ),
-                  isSub&&React.createElement('span',null,"↳ "),
-                  l.title
-                ),
-                React.createElement('div',{style:{fontSize:10,color:"#5C1130",fontWeight:600,paddingLeft:isSub?0:24}},l.subtitle)
-              )
-            )
-          );
-          // Inject scenario/year widget between abm (slide 8) and bibliography (slide 9)
-          if(l.id==="abm"){
-            return[btn,React.createElement('div',{key:"year-widget",style:{margin:"8px 16px",padding:"12px 14px",background:"rgba(140,29,64,0.12)",border:"1px solid rgba(140,29,64,0.3)",borderRadius:10}},
-              React.createElement('div',{style:{fontSize:10,color:"#5C1130",letterSpacing:"2px",marginBottom:6,textTransform:"uppercase",fontWeight:700}},"Active Scenario"),
-              React.createElement('div',{style:{color:"#3D0A20",fontSize:12,marginBottom:5,fontWeight:600}},s.emoji," ",s.label),
-              React.createElement('div',{style:{fontSize:10,color:"#5C1130",marginBottom:3}},"Year: ",React.createElement('strong',null,year)),
-              React.createElement('input',{type:"range",min:"2020",max:"2100",value:year,onChange:e=>setYear(+e.target.value),style:{width:"100%",accentColor:"#8C1D40"}})
-            )];
-          }
-          return btn;
-        }),
-        React.createElement('div',{style:{margin:"auto 20px 0",padding:"14px",borderTop:"1px solid rgba(140,29,64,0.3)",marginTop:24}},
-          React.createElement('div',{style:{fontSize:10,color:"#5C1130",lineHeight:1.6}},"Data: NOAA Climate Normals 1991–2020",React.createElement('br'),"Projections: IPCC AR6 · SSP scenarios",React.createElement('br'),React.createElement('span',{style:{color:"#8C1D40"}},"For educational use"))
-        )
+      React.createElement('aside',{style:{background:"#FFC627",borderRight:isMobile?"none":"1px solid #E8A800",padding:"24px 0",display:isMobile?(sidebarOpen?"flex":"none"):"flex",flexDirection:"column",gap:2,overflowY:"auto",position:isMobile?"fixed":"static",top:0,left:0,bottom:0,width:isMobile?"min(300px,85vw)":"auto",zIndex:isMobile?999:undefined,boxShadow:isMobile?"4px 0 24px rgba(0,0,0,0.3)":"none",animation:isMobile&&sidebarOpen?"sidebarSlide 0.25s ease":"none"}},
+        sidebarContent
       ),
       // Main
-      React.createElement('main',{style:{overflowY:"auto",padding:"32px 40px",maxWidth:900,background:"#F5F2EF"}},
-        React.createElement('div',{style:{display:"flex",alignItems:"center",gap:16,marginBottom:28,paddingBottom:20,borderBottom:"1px solid #4A1428"}},
-          React.createElement('div',{style:{width:52,height:52,borderRadius:14,background:"linear-gradient(135deg,#FFC62720,#FFC62708)",border:"1px solid #FFC62744",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}},current.icon),
-          React.createElement('div',null,
-            React.createElement('div',{style:{fontSize:14,color:"#A05070",letterSpacing:"3px",textTransform:"uppercase",marginBottom:4}},"Slide ",displayNum," of ",topLevelLessons.length+(current.parent?" — Sub-topic":"")),
-            React.createElement('h2',{style:{margin:0,fontSize:"clamp(18px,3vw,26px)",fontWeight:400,fontFamily:"'Playfair Display',serif",color:"#1A0A10"}},current.title),
-            React.createElement('div',{style:{color:"#5C1130",fontSize:16,marginTop:2}},current.subtitle)
+      React.createElement('main',{style:{overflowY:isMobile?"visible":"auto",padding:isMobile?"20px 16px":"32px 40px",maxWidth:900,background:"#F5F2EF",minHeight:isMobile?"100vh":undefined,width:"100%"}},
+        React.createElement('div',{style:{display:"flex",alignItems:isMobile?"flex-start":"center",gap:isMobile?10:16,marginBottom:isMobile?20:28,paddingBottom:isMobile?14:20,borderBottom:"1px solid #4A1428",flexWrap:isMobile?"wrap":"nowrap"}},
+          React.createElement('div',{style:{width:isMobile?40:52,height:isMobile?40:52,borderRadius:14,background:"linear-gradient(135deg,#FFC62720,#FFC62708)",border:"1px solid #FFC62744",display:"flex",alignItems:"center",justifyContent:"center",fontSize:isMobile?18:24,flexShrink:0}},current.icon),
+          React.createElement('div',{style:{flex:1,minWidth:0}},
+            React.createElement('div',{style:{fontSize:isMobile?11:14,color:"#A05070",letterSpacing:"3px",textTransform:"uppercase",marginBottom:4}},"Slide ",displayNum," of ",topLevelLessons.length+(current.parent?" — Sub-topic":"")),
+            React.createElement('h2',{style:{margin:0,fontSize:isMobile?"clamp(16px,5vw,22px)":"clamp(18px,3vw,26px)",fontWeight:400,fontFamily:"'Playfair Display',serif",color:"#1A0A10"}},current.title),
+            React.createElement('div',{style:{color:"#5C1130",fontSize:isMobile?14:16,marginTop:2}},current.subtitle)
           ),
-          React.createElement('div',{style:{marginLeft:"auto",display:"flex",gap:8}},
-            lessonIdx>0&&React.createElement('button',{onClick:()=>setLesson(LESSONS[lessonIdx-1].id),style:{background:"transparent",border:"1px solid #6B1530",borderRadius:8,padding:"8px 16px",cursor:"pointer",color:"#7A3045",fontFamily:"inherit",fontSize:16}},"← Prev"),
-            lessonIdx<LESSONS.length-1&&React.createElement('button',{onClick:()=>setLesson(LESSONS[lessonIdx+1].id),style:{background:"linear-gradient(135deg,#FFC62720,#C4900020)",border:"1px solid #FFC62744",borderRadius:8,padding:"8px 16px",cursor:"pointer",color:"#8C1D40",fontFamily:"inherit",fontSize:16}},"Next →")
+          React.createElement('div',{style:{display:"flex",gap:8,width:isMobile?"100%":"auto",justifyContent:isMobile?"space-between":"flex-end"}},
+            lessonIdx>0&&React.createElement('button',{onClick:()=>setLesson(LESSONS[lessonIdx-1].id),style:{background:"transparent",border:"1px solid #6B1530",borderRadius:8,padding:isMobile?"10px 14px":"8px 16px",cursor:"pointer",color:"#7A3045",fontFamily:"inherit",fontSize:isMobile?14:16,flex:isMobile?1:undefined}},"← Prev"),
+            lessonIdx<LESSONS.length-1&&React.createElement('button',{onClick:()=>setLesson(LESSONS[lessonIdx+1].id),style:{background:"linear-gradient(135deg,#FFC62720,#C4900020)",border:"1px solid #FFC62744",borderRadius:8,padding:isMobile?"10px 14px":"8px 16px",cursor:"pointer",color:"#8C1D40",fontFamily:"inherit",fontSize:isMobile?14:16,flex:isMobile?1:undefined}},"Next →")
           )
         ),
         React.createElement('div',{style:{animation:mounted?"slideIn 0.35s ease":"none"}},
