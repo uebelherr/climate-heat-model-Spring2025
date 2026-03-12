@@ -56,8 +56,8 @@ const SCENARIOS={
   severe:{label:"+4°C Severe",emoji:"🔥",tempD:7.2,precipD:-0.15,color:"#ef4444",desc:"Business-as-usual by 2100. Phoenix summers become physiologically dangerous for outdoor activity."},
 };
 const LESSONS=[
-  {id:"title",icon:"🌵",title:"Lesson Overview",subtitle:"Phoenix Climate and Heat Risk Dashboard",parent:null},
   {id:"followalong",icon:"📱",title:"Follow Along",subtitle:"Now or Later",parent:null},
+  {id:"title",icon:"🌵",title:"Lesson Overview",subtitle:"Phoenix Climate and Heat Risk Dashboard",parent:null},
   {id:"intro",icon:"📖",title:"Introduction",subtitle:"Phoenix Climate Basics",parent:null},
   {id:"drivers",icon:"⚗",title:"Climate Drivers",subtitle:"What shapes desert heat?",parent:null},
   {id:"scenarios",icon:"📊",title:"Climate Modeling",subtitle:"IPCC Pathways Explained",parent:null},
@@ -2390,7 +2390,7 @@ function AppendixCPanel(){
 }
 
 function App(){
-  const[lesson,setLesson]=useState("title");
+  const[lesson,setLesson]=useState("followalong");
   const[scenario,setScenario]=useState("moderate");
   const[year,setYear]=useState(2026);
   const[mounted,setMounted]=useState(false);
@@ -2440,12 +2440,12 @@ function App(){
         )
       );
       if(l.id==="abm"){
-        return[btn,React.createElement('div',{key:"year-widget",style:{margin:"8px 16px",padding:"12px 14px",background:"rgba(140,29,64,0.12)",border:"1px solid rgba(140,29,64,0.3)",borderRadius:10}},
+        return[React.createElement('div',{key:"year-widget",style:{margin:"8px 16px",padding:"12px 14px",background:"rgba(140,29,64,0.12)",border:"1px solid rgba(140,29,64,0.3)",borderRadius:10}},
           React.createElement('div',{style:{fontSize:10,color:"#5C1130",letterSpacing:"2px",marginBottom:6,textTransform:"uppercase",fontWeight:700}},"Active Scenario"),
           React.createElement('div',{style:{color:"#3D0A20",fontSize:12,marginBottom:5,fontWeight:600}},s.emoji," ",s.label),
           React.createElement('div',{style:{fontSize:10,color:"#5C1130",marginBottom:3}},"Year: ",React.createElement('strong',null,year)),
           React.createElement('input',{type:"range",min:"2020",max:"2100",value:year,onChange:e=>setYear(+e.target.value),style:{width:"100%",accentColor:"#8C1D40"}})
-        )];
+        ),btn];
       }
       return btn;
     }),
