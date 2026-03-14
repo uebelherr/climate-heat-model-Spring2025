@@ -51,7 +51,7 @@ const BASE={
   heat:[0,0,0,1,7,20,28,26,18,4,0,0],
 };
 const SCENARIOS={
-  baseline:{label:"Baseline (2000s)",emoji:"🌡",tempD:0,precipD:0,color:"#FFC627",desc:"Historical average. Phoenix already averages 299 sunny days/year and 107 days above 100°F."},
+  baseline:{label:"Baseline (2000s)",emoji:"🌡",tempD:0,precipD:0,color:"#2E86C1",desc:"Historical average. Phoenix already averages 299 sunny days/year and 107 days above 100°F."},
   optimistic:{label:"+1°C Optimistic",emoji:"🌿",tempD:1.8,precipD:-0.03,color:"#10b981",desc:"Best-case scenario requiring immediate global action. Still adds ~12 extreme heat days annually."},
   moderate:{label:"+2°C Moderate",emoji:"⚡",tempD:3.6,precipD:-0.08,color:"#FFC627",desc:"Current trajectory if policies partially succeed. The IPCC Paris Agreement target."},
   severe:{label:"+4°C Severe",emoji:"🔥",tempD:7.2,precipD:-0.15,color:"#ef4444",desc:"Business-as-usual by 2100. Phoenix summers become physiologically dangerous for outdoor activity."},
@@ -387,7 +387,7 @@ function PolicyPanel({scenario,year}){
           const col=["#10b981","#FFC627","#FFC627","#ef4444","#dc2626"][i];
           return React.createElement('div',{key:i,style:{flex:1,display:"flex",flexDirection:"column",alignItems:"center"}},
             React.createElement('div',{style:{width:"100%",height:90,display:"flex",alignItems:"flex-end"}},
-              React.createElement('div',{style:{width:"100%",height:h+"px",background:col,borderRadius:"4px 4px 0 0",opacity:0.85,transition:"height 0.4s",display:"flex",alignItems:"flex-end",justifyContent:"center",paddingBottom:2}},
+              React.createElement('div',{style:{width:"100%",height:h+"px",background:col,borderRadius:"4px 4px 0 0",opacity:0.85,transition:"height 0.4s",display:"flex",alignItems:"flex-end",justifyContent:"center",paddingBottom:8}},
                 React.createElement('div',{style:{fontSize:14,color:"#1A0A10",fontWeight:700,lineHeight:1}},p.deaths)
               )
             ),
@@ -428,9 +428,9 @@ function PolicyPanel({scenario,year}){
       React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}},
         ...[
           {stat:"Up to 65%",desc:"mortality reduction achievable with full deployment of all three interventions",col:"#10b981"},
-          {stat:"$15–20M/yr",desc:"total cost for comprehensive city-wide coverage across all three programs",col:"#FFD966"},
-          {stat:"$23K–$46K",desc:"estimated cost per life saved — far below the $10M+ regulatory value of a statistical life",col:"#FFC627"},
-          {stat:"Vulnerable-first",desc:"targeting elderly, unhoused & outdoor workers maximizes lives saved per dollar spent",col:"#FFC627"},
+          {stat:"$15–20M/yr",desc:"total cost for comprehensive city-wide coverage across all three programs",col:"#8C1D40"},
+          {stat:"$23K–$46K",desc:"estimated cost per life saved — far below the $10M+ regulatory value of a statistical life",col:"#8C1D40"},
+          {stat:"Vulnerable-first",desc:"targeting elderly, unhoused & outdoor workers maximizes lives saved per dollar spent",col:"#8C1D40"},
         ].map((item,i)=>React.createElement('div',{key:i,style:{display:"flex",gap:10,alignItems:"flex-start"}},
           React.createElement('div',{style:{color:item.col,fontWeight:700,fontSize:16,fontFamily:"'Playfair Display',serif",minWidth:90,flexShrink:0}},item.stat),
           React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},item.desc)
@@ -708,11 +708,11 @@ function ABMPanel({scenario:globalScenario,year:globalYear}){
   const[stats,setStats]=useState({healthy:0,stressed:0,critical:0,dead:0,saved:0});
   const[coolingCenters,setCoolingCenters]=useState(1);
   const[hydrationStations,setHydrationStations]=useState(1);
-  const[outreach,setOutreach]=useState(0);
+  const[outreach,setOutreach]=useState(1);
   const[localScenario,setLocalScenario]=useState(globalScenario||"moderate");
   const[simYear,setSimYear]=useState(typeof globalYear==="number"?globalYear:2026);
   const[speed,setSpeed]=useState(1);
-  const[numAgents,setNumAgents]=useState(100);
+  const[numAgents,setNumAgents]=useState(500);
 
   // Sync scenario from sidebar; year is independent on this slide
   React.useEffect(()=>{setLocalScenario(globalScenario);},[globalScenario]);
@@ -855,7 +855,7 @@ function ABMPanel({scenario:globalScenario,year:globalYear}){
       });
     }
 
-    return{agents,coolingLocs,hydLocs,baseTemp:startTemp,monthlyHighs,tick:0,deaths:0,saved:0};
+    return{agents,coolingLocs,hydLocs,baseTemp:startTemp,monthlyHighs,tick:0,deaths:0,saved:0,stats:{healthy:agents.length,stressed:0,critical:0,dead:0,saved:0}};
   }
 
   function stepSim(sim){
@@ -867,10 +867,8 @@ function ABMPanel({scenario:globalScenario,year:globalYear}){
     const outreachRange=outreach>0?80*outreach:0;
     const outreachCenter={x:300,y:220};
 
-    let healthy=0,stressed=0,critical=0,dead=0,saved=0;
-
     agents.forEach(a=>{
-      if(a.state==="dead") return;
+      if(a.state==="dead"||a.state==="saved") return;
 
       // Movement
       a.x+=a.vx+(Math.random()-0.5)*0.3;
@@ -922,21 +920,25 @@ function ABMPanel({scenario:globalScenario,year:globalYear}){
       }
 
       // State machine
-      if(a.state==="saved"){saved++;return;}
       if(a.heat<0.3){a.state="healthy";}
       else if(a.heat<0.65){a.state="stressed";}
       else if(a.heat<0.9){a.state="critical";}
       else{
         const rescueChance=(outreachHelped||a.outreachVisited)?0.3:0;
-        if(Math.random()<rescueChance){a.state="saved";a.heat=0.2;saved++;}
+        if(Math.random()<rescueChance){a.state="saved";a.heat=0.2;}
         else if(Math.random()<0.002){a.state="dead";} // lower daily death probability
         else{a.state="critical";}
       }
+    });
 
+    // Count all agent states cumulatively after processing
+    let healthy=0,stressed=0,critical=0,dead=0,saved=0;
+    agents.forEach(a=>{
       if(a.state==="healthy") healthy++;
       else if(a.state==="stressed") stressed++;
       else if(a.state==="critical") critical++;
       else if(a.state==="dead") dead++;
+      else if(a.state==="saved") saved++;
     });
 
     return{...sim,baseTemp:dailyTemp,tick:sim.tick+1,stats:{healthy,stressed,critical,dead,saved}};
@@ -1000,7 +1002,7 @@ function ABMPanel({scenario:globalScenario,year:globalYear}){
     }
 
     // Agents
-    const COLORS={healthy:"#10b981",stressed:"#FFC627",critical:"#ef4444",dead:"#7A3045",saved:"#FFD966"};
+    const COLORS={healthy:"#10b981",stressed:"#B8960B",critical:"#ef4444",dead:"#7A3045",saved:"#3B82F6"};
     sim.agents&&sim.agents.forEach(a=>{
       const col=COLORS[a.state]||"#10b981";
       const r=a.vulnerable?4:3;
@@ -1037,7 +1039,7 @@ function ABMPanel({scenario:globalScenario,year:globalYear}){
     if(canvas){
       const ctx=canvas.getContext("2d");
       drawFrame(ctx,simRef.current);
-      setStats(simRef.current.stats||{healthy:120,stressed:0,critical:0,dead:0,saved:0});
+      setStats(simRef.current.stats||{healthy:numAgents,stressed:0,critical:0,dead:0,saved:0});
     }
   },[scenario,simYear,coolingCenters,hydrationStations,outreach,numAgents]);
 
@@ -1155,15 +1157,15 @@ function ABMPanel({scenario:globalScenario,year:globalYear}){
         // Agents slider
         React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marginBottom:8}},
           React.createElement('span',{style:{color:"#7A3045",fontSize:15,whiteSpace:"nowrap"}},"Agents:"),
-          React.createElement('input',{type:"range",min:"0",max:"250",step:"1",value:numAgents,onChange:e=>{setNumAgents(+e.target.value);setRunning(false);},style:{flex:1,accentColor:"#8C1D40"}}),
+          React.createElement('input',{type:"range",min:"0",max:"1000",step:"1",value:numAgents,onChange:e=>{setNumAgents(+e.target.value);setRunning(false);},style:{flex:1,accentColor:"#8C1D40"}}),
           React.createElement('span',{style:{color:"#8C1D40",fontWeight:700,minWidth:40,fontSize:17}},numAgents)
         ),
 
         // Legend
         React.createElement('div',{style:{display:"flex",gap:14,flexWrap:"wrap",fontSize:15,color:"#7A3045",marginTop:6}},
           ...Object.entries({
-            "🟢 Healthy":"#10b981","🟡 Heat-Stressed":"#FFC627",
-            "🔴 Critical":"#ef4444","✕ Death":"#7A3045","💙 Rescued":"#FFD966"
+            "🟢 Healthy":"#10b981","🟡 Heat-Stressed":"#B8960B",
+            "🔴 Critical":"#ef4444","✕ Death":"#7A3045","💙 Rescued":"#3B82F6"
           }).map(([k,c])=>React.createElement('span',{key:k,style:{color:c}},k))
         ),
         React.createElement('div',{style:{fontSize:14,color:"#A05070",marginTop:4}},"⬤ = vulnerable (elderly/at-risk)  ·  ○ = general population  ·  🏢 = cooling center  ·  💧 = hydration station")
@@ -1181,9 +1183,9 @@ function ABMPanel({scenario:globalScenario,year:globalYear}){
           ),
           ...[
             {l:"Healthy",v:stats.healthy,c:"#10b981"},
-            {l:"Stressed",v:stats.stressed,c:"#FFC627"},
+            {l:"Stressed",v:stats.stressed,c:"#B8960B"},
             {l:"Critical",v:stats.critical,c:"#ef4444"},
-            {l:"Rescued",v:stats.saved,c:"#FFD966"},
+            {l:"Rescued",v:stats.saved,c:"#3B82F6"},
             {l:"Deaths",v:stats.dead,c:"#7A3045"},
           ].map(x=>React.createElement('div',{key:x.l,style:{marginBottom:6}},
             React.createElement('div',{style:{display:"flex",justifyContent:"space-between",marginBottom:2}},
