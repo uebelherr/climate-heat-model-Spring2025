@@ -119,7 +119,7 @@ function KeyConcept({term,color="#8C1D40",children}){
   );
 }
 function FactBox({icon,stat,unit,note,color}){
-  return React.createElement('div',{style:{background:"rgba(140,29,64,0.04)",border:`1px solid ${color}33`,borderRadius:10,padding:"16px",textAlign:"center"}},
+  return React.createElement('div',{style:{background:"rgba(140,29,64,0.04)",border:`3px solid ${color}BB`,borderRadius:10,padding:"16px",textAlign:"center"}},
     React.createElement('div',{style:{fontSize:24,marginBottom:8}},icon),
     React.createElement('div',{style:{color,fontSize:28,fontWeight:300,fontFamily:"'Playfair Display',serif",lineHeight:1}},stat),
     React.createElement('div',{style:{color:"#7A3045",fontSize:15,marginTop:2}},unit),
@@ -203,7 +203,7 @@ function IntroPanel(){
     React.createElement('p',{style:prose},"Phoenix, Arizona is one of the fastest-warming major cities on Earth. Sitting in the Sonoran Desert at 1,086 ft elevation, it already experiences conditions that challenge the limits of human habitability — and climate projections suggest it will continue to push those limits."),
     React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:16,margin:"24px 0"}},
       React.createElement(FactBox,{icon:"☀",stat:"299",unit:"sunny days/yr",note:"One of the sunniest cities on Earth",color:"#FFC627"}),
-      React.createElement(FactBox,{icon:"🌡",stat:"107",unit:"days >100°F",note:"Average days exceeding 100°F per year",color:"#ef4444"}),
+      React.createElement(FactBox,{icon:"🌡",stat:"107",unit:"days >100°F",note:"Average days exceeding 100°F per year",color:"#8C1D40"}),
       React.createElement(FactBox,{icon:"💧",stat:'8"',unit:"rain/yr",note:"Annual precipitation — drier than the Sahara",color:"#2E86C1"})
     ),
     React.createElement(SectionHead,null,"The Urban Heat Island"),
@@ -244,7 +244,7 @@ function ScenariosPanel({scenario,setScenario,year,setYear}){
     React.createElement('p',{style:prose},"Scientists use Representative Concentration Pathways (RCPs) and Shared Socioeconomic Pathways (SSPs) to model how different emission futures will affect global temperature. Each scenario below reflects a distinct societal choice."),
     React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}},
       ...Object.entries(SCENARIOS).map(([key,val])=>
-        React.createElement('button',{key,onClick:()=>setScenario(key),style:{background:scenario===key?`${val.color}22`:"rgba(140,29,64,0.04)",border:`2px solid ${scenario===key?val.color:"#A05070"}`,borderRadius:10,padding:"14px 16px",cursor:"pointer",color:scenario===key?val.color:"#7A3045",textAlign:"left",fontFamily:"inherit",transition:"all 0.2s"}},
+        React.createElement('button',{key,onClick:()=>setScenario(key),style:{background:scenario===key?`${val.color}22`:"rgba(140,29,64,0.04)",border:`2px solid ${scenario===key?val.color:val.color+"44"}`,borderRadius:10,padding:"14px 16px",cursor:"pointer",color:scenario===key?val.color:"#7A3045",textAlign:"left",fontFamily:"inherit",transition:"all 0.2s"}},
           React.createElement('div',{style:{fontSize:16,marginBottom:4}},val.emoji," ",React.createElement('strong',null,val.label)),
           React.createElement('div',{style:{fontSize:15,lineHeight:1.5,color:scenario===key?val.color+"cc":"#5C1130"}},val.desc)
         )
