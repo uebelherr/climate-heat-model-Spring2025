@@ -67,7 +67,7 @@ const LESSONS=[
   {id:"mortality",icon:"📉",title:"Heat Risk Policy Model",subtitle:"Heat deaths & policy intervention",parent:null},
   {id:"policy",icon:"🏛",title:"Policy Summary",subtitle:"Temperature, Mortality & Intervention",parent:null},
   {id:"abm",icon:"🗺",title:"Agent-Based Model",subtitle:"For Next Week's Lesson ...",parent:null},
-  {id:"questions",icon:"❓",title:"Questions?",subtitle:"Discussion & QR Code",parent:null},
+  {id:"questions",icon:"❓",title:"Questions?",subtitle:"Discussion",parent:null},
   {id:"bibliography",icon:"📚",title:"Bibliography",subtitle:"References & Data Sources",parent:null},
   {id:"appendix",icon:"📐",title:"Appendices",subtitle:"Model Variables & Assumptions",parent:null},
   {id:"appendix-a",icon:"🌡",title:"Appendix A",subtitle:"Climate Model",parent:"appendix"},
@@ -388,7 +388,7 @@ function PolicyPanel({scenario,year}){
           return React.createElement('div',{key:i,style:{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:4}},
             React.createElement('div',{style:{fontSize:14,color:col,fontWeight:700}},p.deaths),
             React.createElement('div',{style:{width:"100%",height:h+"px",background:col,borderRadius:"4px 4px 0 0",opacity:0.85,transition:"height 0.4s"}}),
-            React.createElement('div',{style:{fontSize:13,color:"#7A3045",textAlign:"center",lineHeight:1.3}},p.temp)
+            React.createElement('div',{style:{fontSize:13,color:"#7A3045",textAlign:"center",lineHeight:1.3,minHeight:34,display:"flex",alignItems:"flex-start",justifyContent:"center"}},p.temp)
           );
         })
       ),
