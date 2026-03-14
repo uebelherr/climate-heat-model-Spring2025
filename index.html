@@ -386,9 +386,10 @@ function PolicyPanel({scenario,year}){
           const h=Math.round((p.deaths/maxD)*90);
           const col=["#10b981","#FFC627","#FFC627","#ef4444","#dc2626"][i];
           return React.createElement('div',{key:i,style:{flex:1,display:"flex",flexDirection:"column",alignItems:"center"}},
-            React.createElement('div',{style:{fontSize:14,color:col,fontWeight:700,marginBottom:4}},p.deaths),
             React.createElement('div',{style:{width:"100%",height:90,display:"flex",alignItems:"flex-end"}},
-              React.createElement('div',{style:{width:"100%",height:h+"px",background:col,borderRadius:"4px 4px 0 0",opacity:0.85,transition:"height 0.4s"}})
+              React.createElement('div',{style:{width:"100%",height:h+"px",background:col,borderRadius:"4px 4px 0 0",opacity:0.85,transition:"height 0.4s",display:"flex",alignItems:"flex-end",justifyContent:"center",paddingBottom:2}},
+                React.createElement('div',{style:{fontSize:14,color:"#1A0A10",fontWeight:700,lineHeight:1}},p.deaths)
+              )
             ),
             React.createElement('div',{style:{fontSize:13,color:"#7A3045",textAlign:"center",lineHeight:1.3,marginTop:4}},p.temp)
           );
@@ -1631,7 +1632,7 @@ function AppendixAPanel(){
   const labelStyle={color:"#8C1D40",fontWeight:700,fontSize:16,fontFamily:"'Playfair Display',serif",minWidth:160,flexShrink:0};
   const valStyle={color:"#5C1130",fontSize:15,lineHeight:1.6};
   const noteStyle={color:"#7A3045",fontSize:14,lineHeight:1.5,marginTop:3};
-  const formulaStyle={fontFamily:"monospace",background:"rgba(255,198,39,0.08)",border:"1px solid #FFC62733",borderRadius:5,padding:"8px 12px",fontSize:16,color:"#FFD966",marginTop:6,display:"block"};
+  const formulaStyle={fontFamily:"monospace",background:"rgba(255,198,39,0.08)",border:"1px solid #FFC62733",borderRadius:5,padding:"8px 12px",fontSize:16,color:"#8C1D40",marginTop:6,display:"block"};
 
   return React.createElement('div',null,
     React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marginBottom:14,padding:"10px 14px",background:"rgba(255,198,39,0.08)",border:"1px solid #FFC62733",borderRadius:8}},
@@ -1722,34 +1723,34 @@ function AppendixAPanel(){
 
     React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:12}},
       "The Simple Climate Projection Model projects monthly climate variables forward from a 2020 baseline using linear scaling over an 80-year window (2020–2100). The core function, ",
-      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(255,198,39,0.08)",padding:"2px 6px",borderRadius:4,color:"#FFD966"}},"project(scenario, year)"),
+      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(255,198,39,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"project(scenario, year)"),
       ", takes a scenario key and a target year, then returns an array of 12 monthly objects containing projected high temperature, low temperature, precipitation, sunshine hours, and extreme heat days."
     ),
 
     React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Scaling Factor"),
     React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
-      "The scaling factor ",React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(255,198,39,0.08)",padding:"2px 6px",borderRadius:4,color:"#FFD966"}},"f = max(0, (year − 2020) / 80)"),
+      "The scaling factor ",React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(255,198,39,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"f = max(0, (year − 2020) / 80)"),
       " ranges from 0 at the year 2020 to 1.0 at 2100. It controls how much of each scenario's total temperature delta (tempD) and precipitation change (precipD) has been realized by the selected year. For years before 2020, f clamps to 0, returning the unmodified baseline."
     ),
 
     React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Temperature Projections"),
     React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
       "Monthly high and low temperatures are computed by adding the scenario's temperature delta, scaled by f, to the NOAA baseline values: ",
-      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(255,198,39,0.08)",padding:"2px 6px",borderRadius:4,color:"#FFD966"}},"T_high = BASE.high[i] + tempD × f"),
+      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(255,198,39,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"T_high = BASE.high[i] + tempD × f"),
       ". The same delta is applied symmetrically to overnight lows. This is a simplification — in reality, nighttime temperatures tend to warm faster than daytime — but it is appropriate for an educational model."
     ),
 
     React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Precipitation Projections"),
     React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
       "Precipitation is scaled multiplicatively rather than additively: ",
-      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(255,198,39,0.08)",padding:"2px 6px",borderRadius:4,color:"#FFD966"}},"precip = max(0, BASE.precip[i] × (1 + precipD × f))"),
+      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(255,198,39,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"precip = max(0, BASE.precip[i] × (1 + precipD × f))"),
       ". Since precipD is negative for all warming scenarios (representing aridification), this progressively reduces monthly rainfall while preserving the seasonal distribution shape — wet monsoon summers and dry springs. The max(0, ...) clamp prevents mathematically negative precipitation values."
     ),
 
     React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Extreme Heat Days"),
     React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
       "Days exceeding 110°F per month are projected using: ",
-      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(255,198,39,0.08)",padding:"2px 6px",borderRadius:4,color:"#FFD966"}},"heat = min(31, round(BASE.heat[i] × (1 + f × tempD / 3.5)))"),
+      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(255,198,39,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"heat = min(31, round(BASE.heat[i] × (1 + f × tempD / 3.5)))"),
       ". The divisor 3.5 was calibrated so that the severe scenario (+7.2°F) yields approximately 50 extreme heat days per year by 2100, consistent with published downscaled projections for the Phoenix metro area. The min(31, ...) cap ensures no month exceeds its total number of days."
     ),
 
@@ -1838,7 +1839,7 @@ function AppendixAPanel(){
 function AppendixBPanel(){
   const varStyle={padding:"10px 14px",background:"rgba(140,29,64,0.04)",border:"1px solid #4A1428",borderRadius:8,marginBottom:8};
   const noteStyle={color:"#7A3045",fontSize:14,lineHeight:1.5,marginTop:3};
-  const formulaStyle={fontFamily:"monospace",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"8px 12px",fontSize:16,color:"#fca5a5",marginTop:6,display:"block"};
+  const formulaStyle={fontFamily:"monospace",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"8px 12px",fontSize:16,color:"#8C1D40",marginTop:6,display:"block"};
 
   return React.createElement('div',null,
     React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marginBottom:14,padding:"10px 14px",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:8}},
@@ -1936,34 +1937,34 @@ function AppendixBPanel(){
     React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Core Mortality Equation"),
     React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
       "The model computes raw (pre-intervention) deaths using two additive heat stress pathways combined with an exponential warming multiplier: ",
-      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#fca5a5"}},"rawDeaths = round((425 + additionalHeatDays × 3.2) × warmingMultiplier)"),
+      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"rawDeaths = round((425 + additionalHeatDays × 3.2) × warmingMultiplier)"),
       ". The constant 425 represents the 2020 baseline annual heat deaths for Maricopa County, calibrated to the 2018–2022 average trend. The coefficient 3.2 means each additional extreme heat day (above 110°F) beyond the baseline of 104 days per year adds approximately 3.2 deaths, derived from dose-response regressions in the Hondula et al. (2015) study of Maricopa County heat mortality."
     ),
 
     React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Warming Multiplier"),
     React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
       "The warming multiplier applies an exponential dose-response to the combined base: ",
-      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#fca5a5"}},"warmingMultiplier = 1.04 ^ warming"),
+      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"warmingMultiplier = 1.04 ^ warming"),
       ", where ",
-      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#fca5a5"}},"warming = tempD × max(0, (year − 2020) / 80)"),
+      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"warming = tempD × max(0, (year − 2020) / 80)"),
       ". Each degree Fahrenheit of mean warming compounds the death rate by 4%. This is adapted from Baccini et al. (2008) and reflects the non-linear biological reality that heat stress mortality accelerates at higher baseline temperatures."
     ),
 
     React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Policy Intervention Reductions"),
     React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
       "Three intervention types reduce projected mortality by fixed percentages per tier of investment, based on estimates from public health literature. Cooling centers provide 8% reduction per tier (each tier adds ~50 centers with 24-hour access). Hydration stations provide 4% per tier (each tier adds ~200 stations). Community outreach provides 6% per tier (targeted vulnerable population programs). These are summed additively: ",
-      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#fca5a5"}},"totalReductionPct = min(0.65, cooling + hydration + outreach)"),
+      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"totalReductionPct = min(0.65, cooling + hydration + outreach)"),
       ". The 65% hard cap reflects the real-world limits of even the most comprehensive programs — irreducible mortality from cardiovascular events, infrastructure failure, and unreachable populations means no combination of interventions can eliminate all heat deaths."
     ),
 
     React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Final Deaths & Cost-Effectiveness"),
     React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
       "Prevented deaths are computed as ",
-      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#fca5a5"}},"preventedDeaths = round(rawDeaths × totalReductionPct)"),
+      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"preventedDeaths = round(rawDeaths × totalReductionPct)"),
       ", and final projected deaths as ",
-      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#fca5a5"}},"finalDeaths = rawDeaths − preventedDeaths"),
+      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"finalDeaths = rawDeaths − preventedDeaths"),
       ". Cost-effectiveness is expressed as cost per life saved: ",
-      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#fca5a5"}},"costPerLife = (totalCost × $1M) / preventedDeaths"),
+      React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"costPerLife = (totalCost × $1M) / preventedDeaths"),
       ", which is compared against the regulatory Value of a Statistical Life (~$10M) to assess whether interventions are economically justified."
     ),
 
@@ -1983,7 +1984,7 @@ function AppendixBPanel(){
       ].map(([title,note],i)=>React.createElement('div',{key:i,style:{display:"flex",gap:10,padding:"8px 12px",background:"rgba(239,68,68,0.04)",border:"1px solid #ef444422",borderRadius:6}},
         React.createElement('span',{style:{color:"#ef4444",flexShrink:0,marginTop:1}},"▸"),
         React.createElement('div',null,
-          React.createElement('span',{style:{color:"#fca5a5",fontWeight:600,fontSize:16}},title,": "),
+          React.createElement('span',{style:{color:"#8C1D40",fontWeight:600,fontSize:16}},title,": "),
           React.createElement('span',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},note)
         )
       ))
@@ -2094,7 +2095,7 @@ function AppendixBPanel(){
 function AppendixCPanel(){
   const varStyle={padding:"10px 14px",background:"rgba(140,29,64,0.04)",border:"1px solid #4A1428",borderRadius:8,marginBottom:8};
   const noteStyle={color:"#7A3045",fontSize:14,lineHeight:1.5,marginTop:3};
-  const formulaStyle={fontFamily:"monospace",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"8px 12px",fontSize:16,color:"#D4607A",marginTop:6,display:"block"};
+  const formulaStyle={fontFamily:"monospace",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"8px 12px",fontSize:16,color:"#8C1D40",marginTop:6,display:"block"};
 
   const districts=[
     ["Downtown","1.25","Urban core, concrete heat sink, minimal green space"],
