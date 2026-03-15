@@ -33,6 +33,11 @@ to{transform:translate3d(0,0,0);opacity:1;}
     .mobile-hamburger{display:none!important;}
     .sidebar-overlay{display:none!important;}
   }
+  @media(max-height:500px) and (orientation:landscape){
+    .mobile-hamburger{display:flex!important;}
+    .desktop-nav-dots{display:none!important;}
+    .sidebar-overlay{display:block!important;}
+  }
 </style></head><body><div id="root"></div><script>
 const{useState,useEffect,useRef}=React;
 const{AreaChart,Area,BarChart,Bar,LineChart,Line,XAxis,YAxis,CartesianGrid,Tooltip:RechartTooltip,ResponsiveContainer,ReferenceLine}=Recharts;
@@ -2396,9 +2401,10 @@ function App(){
   const[year,setYear]=useState(2026);
   const[mounted,setMounted]=useState(false);
   const[sidebarOpen,setSidebarOpen]=useState(false);
-  const[isMobile,setIsMobile]=useState(window.innerWidth<=768);
+  const checkMobile=()=>window.innerWidth<=768||(window.innerHeight<=500&&'ontouchstart' in window);
+  const[isMobile,setIsMobile]=useState(checkMobile());
   useEffect(()=>{
-    const onResize=()=>setIsMobile(window.innerWidth<=768);
+    const onResize=()=>{const m=checkMobile();setIsMobile(m);if(!m)setSidebarOpen(false);};
     window.addEventListener('resize',onResize);
     return()=>window.removeEventListener('resize',onResize);
   },[]);
@@ -2418,7 +2424,7 @@ function App(){
   const sidebarContent=React.createElement(React.Fragment,null,
     React.createElement('div',{style:{padding:"0 20px 16px",fontSize:11,color:"#5C1130",letterSpacing:"3px",textTransform:"uppercase",fontWeight:800,display:"flex",alignItems:"center",justifyContent:"space-between"}},
       "Lesson Plan",
-      isMobile&&React.createElement('button',{onClick:()=>setSidebarOpen(false),style:{background:"none",border:"none",fontSize:22,color:"#5C1130",cursor:"pointer",padding:"4px 8px",lineHeight:1}},"✕")
+      isMobile&&React.createElement('button',{onClick:()=>setSidebarOpen(false),style:{background:"none",border:"none",fontSize:24,color:"#000000",cursor:"pointer",padding:"4px 8px",lineHeight:1,fontWeight:700}},"✕")
     ),
     ...LESSONS.map((l,i)=>{
       const active=lesson===l.id;
