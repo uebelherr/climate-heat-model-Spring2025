@@ -356,7 +356,7 @@ function PolicyPanel({scenario,year}){
         {level:"Expanded (6 stations)",reduction:"8–10%",note:"Parks, transit stops, markets"},
         {level:"Full (10 stations)",reduction:"12–15%",note:"City-wide saturation"},
       ],
-      evidence:"WHO guidelines cite consistent hydration as one of the most cost-effective heat mortality interventions — $0.9–1.8M/yr for city-wide coverage. [18, 20]",
+      evidence:"Structured review evidence suggests layered public health interventions including hydration access reduce heat morbidity/mortality — $0.9–1.8M/yr estimated for city-wide coverage. [18, 20]",
       costRange:"$0.4M – $1.8M/yr",
     },
     {
@@ -489,7 +489,7 @@ function MortalityPanel({scenario:globalScenario,year:globalYear}){
 
   // Policy reductions (evidence-based estimates from public health literature)
   // Cooling centers: ~8% reduction per tier [17]
-  // Hydration stations: ~4% reduction per tier [18]
+  // Hydration stations: ~4% reduction per tier, educational approximation [18]
   // Outreach programs: ~6% reduction per tier [16,21]
   // Combined cap at 65% [19]
   // Cost estimates: educational approximations for Maricopa County scale [20,17,21]
@@ -1504,12 +1504,12 @@ function BibliographyPanel(){
           note:"Cooling center effectiveness tiers (8–35% mortality reduction); cost-per-center estimates for Maricopa County."
         },
         {
-          authors:"Hondula, D.M., et al.",
-          year:"2018",
-          title:"Protective factors against heat-related illness during extreme heat events",
-          source:"American Journal of Public Health, 108(S2), S116–S122",
-          url:"https://doi.org/10.2105/AJPH.2018.304594",
-          note:"Hydration station effectiveness (4–15% mortality reduction) and WHO cost-effectiveness estimates."
+          authors:"Bassil, K.L. & Cole, D.C.",
+          year:"2010",
+          title:"Effectiveness of public health interventions in reducing morbidity and mortality during heat episodes: a structured review",
+          source:"International Journal of Environmental Research and Public Health, 7(3), 991–1001",
+          url:"https://doi.org/10.3390/ijerph7030991",
+          note:"Structured review finding suggestive evidence that layered public health interventions (hydration access, cooling, outreach) reduce heat morbidity/mortality. Hydration station reduction (~4%/tier) is an educational approximation informed by this review and WHO guidance."
         },
         {
           authors:"Weisskopf, M.G., et al.",
