@@ -2417,8 +2417,11 @@ function AppendixCPanel(){
 }
 
 function App(){
-  const[lesson,setLesson]=useState("followalong");
-  window._setLesson=setLesson;
+  const[lesson,setLesson]=useState(function(){try{var s=history.state;if(s&&s.lesson)return s.lesson;}catch(e){}return"followalong";}());
+  const navigateLesson=React.useCallback(function(id){setLesson(id);try{history.pushState({lesson:id},"","#"+id);}catch(e){}},[]);
+  window._setLesson=navigateLesson;
+  React.useEffect(function(){try{history.replaceState({lesson:lesson},"","#"+lesson);}catch(e){}},[]);
+  React.useEffect(function(){var handler=function(e){if(e.state&&e.state.lesson){setLesson(e.state.lesson);}};window.addEventListener("popstate",handler);return function(){window.removeEventListener("popstate",handler);};},[]);
   const[scenario,setScenario]=useState("moderate");
   const[year,setYear]=useState(2026);
   const[mounted,setMounted]=useState(false);
@@ -2440,7 +2443,7 @@ function App(){
     ? (topLevelIdx+1)+"."+["a","b","c","d"][LESSONS.filter(l=>l.parent===current.parent).findIndex(l=>l.id===current.id)]
     : String(topLevelIdx+1);
 
-  const navLesson=(id)=>{setLesson(id);if(isMobile)setSidebarOpen(false);};
+  const navLesson=(id)=>{navigateLesson(id);if(isMobile)setSidebarOpen(false);};
 
   // Sidebar content (shared between desktop and mobile)
   const sidebarContent=React.createElement(React.Fragment,null,
@@ -2502,7 +2505,7 @@ function App(){
       ),
       // Desktop nav dots
       React.createElement('div',{className:"desktop-nav-dots",style:{display:"flex",gap:6,flexWrap:"wrap",justifyContent:"flex-end",alignItems:"center"}},
-        ...LESSONS.filter(l=>!l.parent).map((l,i)=>React.createElement('button',{key:l.id,onClick:()=>setLesson(l.id),title:l.title,style:{width:36,height:36,borderRadius:"50%",background:(lesson===l.id||LESSONS.find(x=>x.id===lesson)&&LESSONS.find(x=>x.id===lesson).parent===l.id)?"#8C1D4020":"transparent",border:`2px solid ${(lesson===l.id||(LESSONS.find(x=>x.id===lesson)&&LESSONS.find(x=>x.id===lesson).parent===l.id))?"#FFC627":"#C4849A"}`,color:(lesson===l.id||(LESSONS.find(x=>x.id===lesson)&&LESSONS.find(x=>x.id===lesson).parent===l.id))?"#FFD966":"#5C1130",cursor:"pointer",fontSize:15,transition:"all 0.2s",display:"flex",alignItems:"center",justifyContent:"center"}},l.icon)),
+        ...LESSONS.filter(l=>!l.parent).map((l,i)=>React.createElement('button',{key:l.id,onClick:()=>navigateLesson(l.id),title:l.title,style:{width:36,height:36,borderRadius:"50%",background:(lesson===l.id||LESSONS.find(x=>x.id===lesson)&&LESSONS.find(x=>x.id===lesson).parent===l.id)?"#8C1D4020":"transparent",border:`2px solid ${(lesson===l.id||(LESSONS.find(x=>x.id===lesson)&&LESSONS.find(x=>x.id===lesson).parent===l.id))?"#FFC627":"#C4849A"}`,color:(lesson===l.id||(LESSONS.find(x=>x.id===lesson)&&LESSONS.find(x=>x.id===lesson).parent===l.id))?"#FFD966":"#5C1130",cursor:"pointer",fontSize:15,transition:"all 0.2s",display:"flex",alignItems:"center",justifyContent:"center"}},l.icon)),
         React.createElement('a',{href:"https://uebelherr.net",style:{display:"inline-flex",alignItems:"center",gap:6,padding:"7px 14px",background:"rgba(255,198,39,0.15)",border:"2px solid #FFC627",borderRadius:8,color:"#FFC627",textDecoration:"none",fontSize:13,fontWeight:700,fontFamily:"'Georgia','Times New Roman',serif",letterSpacing:"0.5px",whiteSpace:"nowrap",cursor:"pointer",transition:"all 0.2s",flexShrink:0}},"🏠 Return to Home Page")
       ),
       // Mobile home button (right side of header)
@@ -2526,8 +2529,8 @@ function App(){
             React.createElement('div',{style:{color:"#5C1130",fontSize:isMobile?14:16,marginTop:2}},current.subtitle)
           ),
           React.createElement('div',{style:{display:"flex",gap:8,width:isMobile?"100%":"auto",justifyContent:isMobile?"space-between":"flex-end"}},
-            lessonIdx>0&&React.createElement('button',{onClick:()=>setLesson(LESSONS[lessonIdx-1].id),style:{background:"transparent",border:"1px solid #6B1530",borderRadius:8,padding:isMobile?"10px 14px":"8px 16px",cursor:"pointer",color:"#7A3045",fontFamily:"inherit",fontSize:isMobile?14:16,flex:isMobile?1:undefined}},"← Prev"),
-            lessonIdx<LESSONS.length-1&&React.createElement('button',{onClick:()=>setLesson(LESSONS[lessonIdx+1].id),style:{background:"linear-gradient(135deg,#FFC62720,#C4900020)",border:"1px solid #FFC62744",borderRadius:8,padding:isMobile?"10px 14px":"8px 16px",cursor:"pointer",color:"#8C1D40",fontFamily:"inherit",fontSize:isMobile?14:16,flex:isMobile?1:undefined}},"Next →")
+            lessonIdx>0&&React.createElement('button',{onClick:()=>navigateLesson(LESSONS[lessonIdx-1].id),style:{background:"transparent",border:"1px solid #6B1530",borderRadius:8,padding:isMobile?"10px 14px":"8px 16px",cursor:"pointer",color:"#7A3045",fontFamily:"inherit",fontSize:isMobile?14:16,flex:isMobile?1:undefined}},"← Prev"),
+            lessonIdx<LESSONS.length-1&&React.createElement('button',{onClick:()=>navigateLesson(LESSONS[lessonIdx+1].id),style:{background:"linear-gradient(135deg,#FFC62720,#C4900020)",border:"1px solid #FFC62744",borderRadius:8,padding:isMobile?"10px 14px":"8px 16px",cursor:"pointer",color:"#8C1D40",fontFamily:"inherit",fontSize:isMobile?14:16,flex:isMobile?1:undefined}},"Next →")
           )
         ),
         React.createElement('div',{style:{animation:mounted?"slideIn 0.35s ease":"none"}},
@@ -2543,7 +2546,7 @@ function App(){
           lesson==="abm"&&React.createElement(ABMPanel,{scenario,year}),
           lesson==="questions"&&React.createElement(QuestionsPanel),
           lesson==="bibliography"&&React.createElement(BibliographyPanel),
-          lesson==="appendix"&&React.createElement(AppendixPanel,{setLesson}),
+          lesson==="appendix"&&React.createElement(AppendixPanel,{setLesson:navigateLesson}),
           lesson==="appendix-a"&&React.createElement(AppendixAPanel),
           lesson==="appendix-b"&&React.createElement(AppendixBPanel),
           lesson==="appendix-c"&&React.createElement(AppendixCPanel)
