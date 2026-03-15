@@ -1882,7 +1882,7 @@ function AppendixBPanel(){
         {name:"MAX_POLICY_REDUCTION",val:"65% cap",note:"Combined interventions cannot reduce mortality below 35% of projected deaths. Reflects irreducible baseline mortality from cardiovascular events, infrastructure failure, and unreachable populations."},
         {name:"VULNERABLE_FRACTION",val:"25% of population",note:"Consistent with Maricopa County demographic data: elderly (65+), unhoused, and medically compromised residents. Used in ABM agent initialization."},
       ].map((v,i)=>React.createElement('div',{key:i,style:varStyle},
-        React.createElement('div',{style:{color:"#fca5a5",fontFamily:"monospace",fontSize:16,fontWeight:700,marginBottom:3}},v.name),
+        React.createElement('div',{style:{color:"#8C1D40",fontFamily:"monospace",fontSize:16,fontWeight:700,marginBottom:3}},v.name),
         React.createElement('div',{style:{color:"#1A0A10",fontSize:16,marginBottom:3}},v.val),
         React.createElement('div',{style:noteStyle},v.note)
       ))
@@ -1901,7 +1901,7 @@ function AppendixBPanel(){
         {label:"Final Deaths",formula:"finalDeaths = rawDeaths − preventedDeaths",note:"Projected heat deaths after policy interventions. Used for risk level classification and monthly distribution chart."},
         {label:"Cost per Life Saved",formula:"costPerLife = (totalCost_$M × 1,000,000) / preventedDeaths",note:"Displayed in $thousands. Compared against the regulatory VSL (Value of a Statistical Life) threshold of ~$10M."},
       ].map((eq,i)=>React.createElement('div',{key:i,style:varStyle},
-        React.createElement('div',{style:{color:"#fca5a5",fontWeight:700,fontSize:16}},eq.label),
+        React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16}},eq.label),
         React.createElement('code',{style:formulaStyle},eq.formula),
         React.createElement('div',{style:noteStyle},eq.note)
       ))
@@ -1944,7 +1944,7 @@ function AppendixBPanel(){
       ].map(([title,note],i)=>React.createElement('div',{key:i,style:{display:"flex",gap:10,padding:"8px 12px",background:"rgba(239,68,68,0.04)",border:"1px solid #ef444422",borderRadius:6}},
         React.createElement('span',{style:{color:"#ef4444",flexShrink:0,marginTop:1}},"▸"),
         React.createElement('div',null,
-          React.createElement('span',{style:{color:"#fca5a5",fontWeight:600,fontSize:16}},title,": "),
+          React.createElement('span',{style:{color:"#8C1D40",fontWeight:600,fontSize:16}},title,": "),
           React.createElement('span',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},note)
         )
       ))
