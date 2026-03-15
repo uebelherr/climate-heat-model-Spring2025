@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=5.0, user-scalable=yes"/>
-<title>Phoenix Climate & Heat Risk Policy Models</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.8.1/prop-types.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.1.9/Recharts.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<style>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=5.0, user-scalable=yes"/><title>Phoenix Climate & Heat Risk Policy Models</title><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet"/><script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.8.1/prop-types.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.1.9/Recharts.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script><style>
   *{box-sizing:border-box;margin:0;padding:0;}
   body{background:#1A0A10;color:#e2e8f0;font-family:'Georgia','Times New Roman',serif;}
   ::-webkit-scrollbar{width:4px;}
@@ -20,9 +7,21 @@
   input[type=range]{cursor:pointer;}
   .leaflet-attribution-flag{display:none!important;}
   canvas{background:transparent!important;}
-  @keyframes slideIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-  @keyframes sidebarSlide{from{transform:translateX(-100%);}to{transform:translateX(0);}}
+.slide-transition{animation:slideIn .45s cubic-bezier(.22,.61,.36,1);will-change:transform,opacity;}
+.sidebar-overlay{transition:opacity .35s ease;}
+
+  @keyframes slideIn{
+from{opacity:0;transform:translate3d(0,24px,0);}
+to{opacity:1;transform:translate3d(0,0,0);}
+}
+  @keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+  @keyframes sidebarSlide{
+from{transform:translate3d(-100%,0,0);opacity:.85;}
+to{transform:translate3d(0,0,0);opacity:1;}
+}
   @media(max-width:768px){
     body{-webkit-text-size-adjust:100%;overflow-x:auto;}
     .mobile-hamburger{display:flex!important;}
@@ -34,11 +33,7 @@
     .mobile-hamburger{display:none!important;}
     .sidebar-overlay{display:none!important;}
   }
-</style>
-</head>
-<body>
-<div id="root"></div>
-<script>
+</style></head><body><div id="root"></div><script>
 const{useState,useEffect,useRef}=React;
 const{AreaChart,Area,BarChart,Bar,LineChart,Line,XAxis,YAxis,CartesianGrid,Tooltip:RechartTooltip,ResponsiveContainer,ReferenceLine}=Recharts;
 
@@ -2531,6 +2526,4 @@ function App(){
 }
 
 ReactDOM.render(React.createElement(App),document.getElementById('root'));
-</script>
-</body>
-</html>
+</script></body></html>
