@@ -1596,7 +1596,7 @@ function BibliographyPanel(){
             React.createElement('span',{style:{color:sec.color,fontSize:16}},ref.source,".")
           ),
           ref.url&&React.createElement('div',{style:{fontSize:15,color:"#5C1130",marginBottom:3,paddingLeft:36}},
-            React.createElement('span',{style:{color:"#A05070"}},"URL: "),ref.url
+            React.createElement('span',{style:{color:"#A05070"}},"URL: "),React.createElement('a',{href:ref.url,target:"_blank",rel:"noopener noreferrer",style:{color:"#2E86C1",textDecoration:"underline",wordBreak:"break-all"}},ref.url)
           ),
           React.createElement('div',{style:{fontSize:15,color:"#7A3045",lineHeight:1.5,paddingLeft:36}},
             React.createElement('span',{style:{color:"#5C1130",fontWeight:600}},"Used for: "),ref.note
