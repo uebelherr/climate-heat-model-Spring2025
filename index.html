@@ -271,19 +271,48 @@ React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"r
 )
 );
 }
-function ImpactsPanel({scenario,year}){
+function ImpactsPanel({scenario:globalScenario,year:globalYear}){
+const[localScenario,setLocalScenario]=useState(globalScenario||"moderate");
+React.useEffect(()=>{setLocalScenario(globalScenario);},[globalScenario]);
+const scenario=localScenario;
+const year=2100;
 const data=project(scenario,year);
 const s=SCENARIOS[scenario];
 const totalHeat=data.reduce((a,d)=>a+d.heat,0);
 const annualPrecip=data.reduce((a,d)=>a+d.precip,0).toFixed(2);
 const warming=(SCENARIOS[scenario].tempD*Math.max(0,(year-2020)/80)).toFixed(1);
 const totalSun=data.reduce((a,d)=>a+d.sun,0);
+const summerHighAvg=(data[5].high+data[6].high+data[7].high+data[8].high)/4;
 const impacts=[
 {cat:"🏥 Public Health",color:"#ef4444",refs:[4,5,9],items:[`${totalHeat} days/year above 110°F — physiological limit for outdoor safety`,"Heat stroke risk rises exponentially above 105°F wet-bulb temperature","Elderly, children & outdoor workers face greatest mortality risk","Phoenix heat deaths have doubled since 2010"]},
 {cat:"💧 Water Security",color:"#8C1D40",refs:[22,23],items:[`Annual precip projects to ${annualPrecip}" — below already-critical baseline`,"Colorado River supplies 36% of Phoenix's water; Lake Mead at historic lows","Groundwater overdraft accelerating as surface water declines","Agricultural irrigation (70% of water use) under severe pressure"]},
 {cat:"⚡ Energy Demand",color:"#8C1D40",refs:[24,25],items:["A/C accounts for ~70% of summer electricity use in Phoenix homes","Each 1°F rise increases peak demand by ~2% — grid strain compounds","Power outages during heat waves become life-threatening events",`Solar opportunity: ${totalSun.toLocaleString()} sunshine hrs/yr`]},
 ];
 return React.createElement('div',null,
+React.createElement('div',{style:{marginBottom:22,padding:"16px 18px",background:"rgba(140,29,64,0.06)",border:"1px solid #8C1D4033",borderRadius:12}},
+React.createElement('div',{style:{fontSize:13,color:"#7A3045",letterSpacing:"3px",textTransform:"uppercase",fontWeight:700,marginBottom:10}},"Climate Scenario — projected impacts at 2100"),
+React.createElement('div',{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:14}},
+...Object.entries(SCENARIOS).map(([key,sc])=>
+React.createElement('button',{key,onClick:()=>setLocalScenario(key),style:{
+padding:"10px 8px",borderRadius:8,cursor:"pointer",fontFamily:"inherit",transition:"all 0.18s",textAlign:"center",
+border:`2px solid ${localScenario===key?sc.color:sc.color+"44"}`,
+background:localScenario===key?`${sc.color}22`:"rgba(255,255,255,0.03)",
+boxShadow:localScenario===key?`0 0 0 2px ${sc.color}55`:"none"
+}},
+React.createElement('div',{style:{fontSize:17,marginBottom:3}},sc.emoji),
+React.createElement('div',{style:{fontSize:12,fontWeight:700,color:localScenario===key?sc.color:"#7A3045",lineHeight:1.2}},sc.label),
+React.createElement('div',{style:{fontSize:11,color:"#A07080",marginTop:3}},key==="baseline"?"Historical avg":sc.tempD>0?`+${sc.tempD}°F mean`:"")
+)
+)
+),
+React.createElement('div',{style:{display:"flex",gap:16,fontSize:13,color:"#7A3045",whiteSpace:"nowrap"}},
+React.createElement('span',null,"☀️ ",React.createElement('strong',{style:{color:s.color}},totalHeat)," heat days/yr"),
+React.createElement('span',null,"🌡 ",React.createElement('strong',{style:{color:s.color}},summerHighAvg.toFixed(1),"°F")," avg summer high")
+),
+React.createElement('div',{style:{marginTop:8,fontSize:14,color:"#5C1130",lineHeight:1.5,fontStyle:"italic"}},
+s.emoji," ",React.createElement('strong',null,s.label),": ",s.desc
+)
+),
 React.createElement(SectionHead,null,"Real-World Consequences"),
 React.createElement('p',{style:prose},"Climate projections aren't abstract numbers — they translate directly into human, ecological, and infrastructural impacts. Here's what the ",React.createElement('strong',{style:{color:s.color}},s.label)," scenario means for Phoenix in ",year,":"),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginBottom:24}},
@@ -417,10 +446,7 @@ React.createElement('div',{style:{marginTop:12,paddingTop:10,borderTop:"1px soli
 )
 );
 }
-function MortalityPanel({scenario:globalScenario,year:globalYear}){
-const[coolingCenters,setCoolingCenters]=useState(0);
-const[hydrationStations,setHydrationStations]=useState(0);
-const[outreach,setOutreach]=useState(0);
+function MortalityPanel({scenario:globalScenario,year:globalYear,coolingCenters,setCoolingCenters,hydrationStations,setHydrationStations,outreach,setOutreach}){
 const[localScenario,setLocalScenario]=useState(globalScenario||"moderate");
 const[localYear,setLocalYear]=useState(globalYear||2026);
 React.useEffect(()=>{setLocalScenario(globalScenario);},[globalScenario]);
@@ -623,7 +649,7 @@ React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"r
 )
 );
 }
-function ABMPanel({scenario:globalScenario,year:globalYear}){
+function ABMPanel({scenario,setScenario,year,setYear,coolingCenters,setCoolingCenters,hydrationStations,setHydrationStations,outreach,setOutreach}){
 const canvasRef=React.useRef(null);
 const mapDivRef=React.useRef(null);
 const leafletMapRef=React.useRef(null);
@@ -632,15 +658,8 @@ const animRef=React.useRef(null);
 const[running,setRunning]=useState(false);
 const[tick,setTick]=useState(0);
 const[stats,setStats]=useState({healthy:0,stressed:0,critical:0,dead:0,saved:0});
-const[coolingCenters,setCoolingCenters]=useState(1);
-const[hydrationStations,setHydrationStations]=useState(1);
-const[outreach,setOutreach]=useState(1);
-const[localScenario,setLocalScenario]=useState(globalScenario||"moderate");
-const[simYear,setSimYear]=useState(typeof globalYear==="number"?globalYear:2026);
 const[speed,setSpeed]=useState(1);
 const[numAgents,setNumAgents]=useState(500);
-React.useEffect(()=>{setLocalScenario(globalScenario);},[globalScenario]);
-const scenario=localScenario;
 const W=640, H=440;
 const DISTRICTS=[
 {x:250,y:160,w:90,h:70,name:"Downtown",heatBias:1.25,color:"rgba(239,68,68,0.18)"},
@@ -691,11 +710,11 @@ function getDaysPerMonth(y){
 return[31,isLeapYear(y)?29:28,31,30,31,30,31,31,30,31,30,31];
 }
 function dayToTemp(day,climateMonthlyHighs){
-const dpm=getDaysPerMonth(simYear);
+const dpm=getDaysPerMonth(year);
 let cumulative=0;
 const midpoints=dpm.map((d,i)=>{const mid=cumulative+d/2;cumulative+=d;return mid;});
 const highs=[...climateMonthlyHighs,climateMonthlyHighs[0]];
-const mids=[midpoints[11]-daysInYear(simYear),...midpoints,midpoints[0]+daysInYear(simYear)];
+const mids=[midpoints[11]-daysInYear(year),...midpoints,midpoints[0]+daysInYear(year)];
 for(let i=0;i<mids.length-1;i++){
 if(day>=mids[i]&&day<mids[i+1]){
 const t=(day-mids[i])/(mids[i+1]-mids[i]);
@@ -707,14 +726,14 @@ return h0+(h1-h0)*t;
 return climateMonthlyHighs[0];
 }
 function dayToDateLabel(day){
-const dpm=getDaysPerMonth(simYear);
+const dpm=getDaysPerMonth(year);
 const mnames=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 let cum=0;
 for(let m=0;m<12;m++){if(day<cum+dpm[m])return mnames[m]+" "+(day-cum+1);cum+=dpm[m];}
 return "Dec 31";
 }
 function buildSim(){
-const climateData=project(scenario,simYear);
+const climateData=project(scenario,year);
 const monthlyHighs=climateData.map(d=>d.high);
 const startTemp=dayToTemp(0,monthlyHighs); // Jan 1 temperature
 const coolingLocs=[];
@@ -747,7 +766,7 @@ return{agents,coolingLocs,hydLocs,baseTemp:startTemp,monthlyHighs,tick:0,deaths:
 }
 function stepSim(sim){
 const day=sim.tick; // 0-indexed day of year
-const monthlyHighs=sim.monthlyHighs||project(scenario,simYear).map(d=>d.high);
+const monthlyHighs=sim.monthlyHighs||project(scenario,year).map(d=>d.high);
 const dailyTemp=dayToTemp(day,monthlyHighs); // seasonal interpolation
 const{agents,coolingLocs,hydLocs}=sim;
 const outreachRange=outreach>0?80*outreach:0;
@@ -876,7 +895,7 @@ ctx.fillRect(85,55,110,20);
 ctx.fillStyle=temp>115?"#ef4444":temp>110?"#FFC627":"#10b981";
 ctx.font="bold 11px Georgia";
 const dayLabel=dayToDateLabel(Math.max(0,(sim.tick||1)-1));
-ctx.fillText(`${simYear} · ${dayLabel} · ${temp.toFixed(1)}°F`,90,68);
+ctx.fillText(`${year} · ${dayLabel} · ${temp.toFixed(1)}°F`,90,68);
 }
 useEffect(()=>{
 simRef.current=buildSim();
@@ -886,11 +905,11 @@ const ctx=canvas.getContext("2d");
 drawFrame(ctx,simRef.current);
 setStats(simRef.current.stats||{healthy:numAgents,stressed:0,critical:0,dead:0,saved:0});
 }
-},[scenario,simYear,coolingCenters,hydrationStations,outreach,numAgents]);
+},[scenario,year,coolingCenters,hydrationStations,outreach,numAgents]);
 useEffect(()=>{
 if(running){
 const delay=50;const stepsPerTick=speed;
-const totalDays=daysInYear(simYear);
+const totalDays=daysInYear(year);
 const id=setInterval(()=>{
 for(let i=0;i<stepsPerTick;i++){if(simRef.current.tick<totalDays)simRef.current=stepSim(simRef.current);}
 const canvas=canvasRef.current;
@@ -904,9 +923,9 @@ return()=>clearInterval(id);
 },[running,speed,coolingCenters,hydrationStations,outreach]);
 const s=SCENARIOS[scenario];
 const total=stats.healthy+stats.stressed+stats.critical+stats.dead+stats.saved||120;
-const totalDays=daysInYear(simYear);
-const leapLabel=isLeapYear(simYear)?" (leap)":"";
-const climateNow=project(scenario,simYear);
+const totalDays=daysInYear(year);
+const leapLabel=isLeapYear(year)?" (leap)":"";
+const climateNow=project(scenario,year);
 const julyHigh=climateNow[6].high;
 const annualHeatDays=climateNow.reduce((a,d)=>a+d.heat,0);
 const currentDayLabel=tick>0?dayToDateLabel(Math.min(tick-1,totalDays-1)):"Jan 1";
@@ -920,24 +939,24 @@ React.createElement('div',{style:{marginBottom:16,padding:"16px 18px",background
 React.createElement('div',{style:{fontSize:13,color:"#7A3045",letterSpacing:"3px",textTransform:"uppercase",fontWeight:700,marginBottom:10}},"Climate Scenario — sets seasonal daily temperature from climate model"),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:12}},
 ...Object.entries(SCENARIOS).map(([key,sc])=>
-React.createElement('button',{key,onClick:()=>{setLocalScenario(key);setRunning(false);},style:{
+React.createElement('button',{key,onClick:()=>{setScenario(key);setRunning(false);},style:{
 padding:"10px 8px",borderRadius:8,cursor:"pointer",fontFamily:"inherit",transition:"all 0.18s",textAlign:"center",
-border:`2px solid ${localScenario===key?sc.color:sc.color+"44"}`,
-background:localScenario===key?`${sc.color}22`:"rgba(255,255,255,0.03)",
-boxShadow:localScenario===key?`0 0 0 2px ${sc.color}55`:"none"
+border:`2px solid ${scenario===key?sc.color:sc.color+"44"}`,
+background:scenario===key?`${sc.color}22`:"rgba(255,255,255,0.03)",
+boxShadow:scenario===key?`0 0 0 2px ${sc.color}55`:"none"
 }},
 React.createElement('div',{style:{fontSize:17,marginBottom:3}},sc.emoji),
-React.createElement('div',{style:{fontSize:12,fontWeight:700,color:localScenario===key?sc.color:"#7A3045",lineHeight:1.2}},sc.label),
+React.createElement('div',{style:{fontSize:12,fontWeight:700,color:scenario===key?sc.color:"#7A3045",lineHeight:1.2}},sc.label),
 React.createElement('div',{style:{fontSize:11,color:"#A07080",marginTop:3}},key==="baseline"?"Historical avg":sc.tempD>0?`+${sc.tempD}°F mean`:"")
 )
 )
 ),
 React.createElement('div',{style:{display:"flex",alignItems:"center",gap:12,marginBottom:6}},
 React.createElement('span',{style:{fontSize:13,color:"#7A3045",whiteSpace:"nowrap"}},React.createElement('strong',null,"Year:")),
-React.createElement('input',{type:"range",min:"2020",max:"2100",step:"1",value:simYear,
-onChange:e=>{setSimYear(+e.target.value);setRunning(false);},
+React.createElement('input',{type:"range",min:"2020",max:"2100",step:"1",value:year,
+onChange:e=>{setYear(+e.target.value);setRunning(false);},
 style:{flex:1,accentColor:s.color}}),
-React.createElement('strong',{style:{color:s.color,minWidth:44,textAlign:"right",fontSize:15}},simYear)
+React.createElement('strong',{style:{color:s.color,minWidth:44,textAlign:"right",fontSize:15}},year)
 ),
 React.createElement('div',{style:{display:"flex",alignItems:"center",gap:12,marginBottom:8}},
 React.createElement('span',{style:{fontSize:13,color:"#7A3045",whiteSpace:"nowrap"}},"Day:"),
@@ -997,7 +1016,7 @@ React.createElement('div',null,
 React.createElement('div',{style:{marginBottom:16,padding:"14px",background:"rgba(140,29,64,0.04)",border:"1px solid #4A1428",borderRadius:10}},
 React.createElement('div',{style:{fontSize:14,color:"#7A3045",letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"Live Agent Stats"),
 React.createElement('div',{style:{fontSize:14,color:"#5C1130",marginBottom:8}},
-React.createElement('strong',{style:{color:s.color}},simYear)," · ",currentDayLabel,
+React.createElement('strong',{style:{color:s.color}},year)," · ",currentDayLabel,
 " · Day ",Math.min(tick,totalDays)," / ",totalDays,leapLabel,"  · N=",numAgents
 ),
 ...[
@@ -2113,6 +2132,9 @@ React.useEffect(function(){try{history.replaceState({lesson:lesson},"","#"+lesso
 React.useEffect(function(){var handler=function(e){if(e.state&&e.state.lesson){setLesson(e.state.lesson);}};window.addEventListener("popstate",handler);return function(){window.removeEventListener("popstate",handler);};},[]);
 const[scenario,setScenario]=useState("moderate");
 const[year,setYear]=useState(2026);
+const[coolingCenters,setCoolingCenters]=useState(1);
+const[hydrationStations,setHydrationStations]=useState(1);
+const[outreach,setOutreach]=useState(1);
 const[mounted,setMounted]=useState(false);
 const[sidebarOpen,setSidebarOpen]=useState(false);
 const checkMobile=()=>window.innerWidth<=768||(window.innerHeight<=500&&'ontouchstart' in window);
@@ -2218,9 +2240,9 @@ lesson==="drivers"&&React.createElement(DriversPanel),
 lesson==="scenarios"&&React.createElement(ScenariosPanel,{scenario,setScenario,year,setYear}),
 lesson==="impacts"&&React.createElement(ImpactsPanel,{scenario,year}),
 lesson==="policy"&&React.createElement(PolicyPanel,{scenario,year}),
-lesson==="mortality"&&React.createElement(MortalityPanel,{scenario,year}),
+lesson==="mortality"&&React.createElement(MortalityPanel,{scenario,year,coolingCenters,setCoolingCenters,hydrationStations,setHydrationStations,outreach,setOutreach}),
 lesson==="explore"&&React.createElement(ExplorePanel,{scenario,setScenario,year,setYear}),
-lesson==="abm"&&React.createElement(ABMPanel,{scenario,year}),
+lesson==="abm"&&React.createElement(ABMPanel,{scenario,setScenario,year,setYear,coolingCenters,setCoolingCenters,hydrationStations,setHydrationStations,outreach,setOutreach}),
 lesson==="questions"&&React.createElement(QuestionsPanel),
 lesson==="bibliography"&&React.createElement(BibliographyPanel),
 lesson==="appendix"&&React.createElement(AppendixPanel,{setLesson:navigateLesson}),
