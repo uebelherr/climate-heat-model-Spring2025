@@ -543,7 +543,7 @@ React.createElement('span',{style:{color:riskColor,fontWeight:700,fontSize:16}},
 React.createElement('span',{style:{color:"#7A3045",fontSize:16,marginLeft:4}},
 "— Without intervention, ",rawDeaths.toLocaleString()," projected deaths/yr under this scenario."
 ),
-totalReductionPct>0&&React.createElement('span',{style:{color:"#2E86C1",fontSize:16,marginLeft:"auto",flexShrink:0}},
+totalReductionPct>0&&React.createElement('span',{style:{color:"#2E86C1",fontSize:16,fontWeight:700,marginLeft:"auto",flexShrink:0}},
 "↓ ",(totalReductionPct*100).toFixed(0),"% reduction with current policies"
 )
 ),
@@ -564,7 +564,7 @@ React.createElement('div',{style:{display:"flex",gap:6}},
 ["None","Basic","Expanded","Full"][v]
 ))
 ),
-coolingCenters>0&&React.createElement('div',{style:{marginTop:8,fontSize:15,color:"#2E86C1"}},"↓ Estimated ",(coolingReduction*100).toFixed(0),"% mortality reduction · ",["","50","150","300"][coolingCenters]," centers")
+coolingCenters>0&&React.createElement('div',{style:{marginTop:8,fontSize:15,fontWeight:700,color:"#2E86C1"}},"↓ Estimated ",(coolingReduction*100).toFixed(0),"% mortality reduction · ",["","50","150","300"][coolingCenters]," centers")
 ),
 React.createElement('div',{style:{padding:"16px 18px",background:"rgba(255,198,39,0.05)",border:"1px solid #FFC62722",borderRadius:10}},
 React.createElement('div',{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}},
@@ -580,7 +580,7 @@ React.createElement('div',{style:{display:"flex",gap:6}},
 ["None","Basic","Expanded","Full"][v]
 ))
 ),
-hydrationStations>0&&React.createElement('div',{style:{marginTop:8,fontSize:15,color:"#2E86C1"}},"↓ Estimated ",(hydrationReduction*100).toFixed(0),"% mortality reduction · ",["","200","500","1,000"][hydrationStations]," stations")
+hydrationStations>0&&React.createElement('div',{style:{marginTop:8,fontSize:15,fontWeight:700,color:"#2E86C1"}},"↓ Estimated ",(hydrationReduction*100).toFixed(0),"% mortality reduction · ",["","200","500","1,000"][hydrationStations]," stations")
 ),
 React.createElement('div',{style:{padding:"16px 18px",background:"rgba(140,29,64,0.05)",border:"1px solid #8C1D4022",borderRadius:10}},
 React.createElement('div',{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}},
@@ -596,7 +596,7 @@ React.createElement('div',{style:{display:"flex",gap:6}},
 ["None","Basic","Expanded","Full"][v]
 ))
 ),
-outreach>0&&React.createElement('div',{style:{marginTop:8,fontSize:15,color:"#2E86C1"}},"↓ Estimated ",(outreachReduction*100).toFixed(0),"% mortality reduction")
+outreach>0&&React.createElement('div',{style:{marginTop:8,fontSize:15,fontWeight:700,color:"#2E86C1"}},"↓ Estimated ",(outreachReduction*100).toFixed(0),"% mortality reduction")
 )
 )
 ),
