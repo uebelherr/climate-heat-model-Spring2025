@@ -63,8 +63,8 @@ const LESSONS=[
 {id:"impacts",icon:"⚠",title:"Real-World Impacts",subtitle:"Health, Water & Energy",parent:null},
 {id:"explore",icon:"🔬",title:"Explore the Model",subtitle:"Interactive Data Lab",parent:null},
 {id:"mortality",icon:"📉",title:"Heat Risk Policy Model",subtitle:"Heat deaths & policy intervention",parent:null},
+{id:"abm",icon:"🗺",title:"Agent-Based Model",subtitle:"Heat deaths, policy intervention, & grid failure",parent:null},
 {id:"policy",icon:"🏛",title:"Policy Summary",subtitle:"Temperature, Mortality & Intervention",parent:null},
-{id:"abm",icon:"🗺",title:"Agent-Based Model",subtitle:"For Next Week's Lesson ...",parent:null},
 {id:"questions",icon:"❓",title:"Questions?",subtitle:"Discussion",parent:null},
 {id:"bibliography",icon:"📚",title:"Bibliography",subtitle:"References & Data Sources",parent:null},
 {id:"appendix",icon:"📐",title:"Appendices",subtitle:"Model Variables & Assumptions",parent:null},
@@ -228,7 +228,7 @@ React.createElement('div',{style:{background:`linear-gradient(90deg,${d.color},$
 ),
 React.createElement('p',{style:{...prose,fontSize:18,margin:0,color:"#7A3045"}},d.desc)
 )),
-React.createElement(KeyConcept,{term:"Feedback Loops",color:"#ef4444"},"As Phoenix warms, more A/C is used → more electricity is burned → more heat & CO₂ is released → further warming. This is a positive feedback loop.",React.createElement(Ref,{n:[2,26]}))
+React.createElement(KeyConcept,{term:"Feedback Loops",color:"#ef4444"},"As Phoenix warms, more A/C is used → more electricity is burned → more heat & CO₂ is released → further warming. This is a positive feedback loop.",React.createElement(Ref,{n:[2,34]}))
 );
 }
 function ScenariosPanel({scenario,setScenario,year,setYear}){
@@ -284,8 +284,8 @@ const totalSun=data.reduce((a,d)=>a+d.sun,0);
 const summerHighAvg=(data[5].high+data[6].high+data[7].high+data[8].high)/4;
 const impacts=[
 {cat:"🏥 Public Health",color:"#ef4444",refs:[4,5,9],items:[`${totalHeat} days/year above 110°F — physiological limit for outdoor safety`,"Heat stroke risk rises exponentially above 105°F wet-bulb temperature","Elderly, children & outdoor workers face greatest mortality risk","Phoenix heat deaths have doubled since 2010"]},
-{cat:"💧 Water Security",color:"#8C1D40",refs:[23,24],items:[`Annual precip projects to ${annualPrecip}" — below already-critical baseline`,"Colorado River supplies 36% of Phoenix's water; Lake Mead at historic lows","Groundwater overdraft accelerating as surface water declines","Agricultural irrigation (70% of water use) under severe pressure"]},
-{cat:"⚡ Energy Demand",color:"#8C1D40",refs:[25,26],items:["A/C accounts for ~70% of summer electricity use in Phoenix homes","Each 1°F rise increases peak demand by ~2% — grid strain compounds","Power outages during heat waves become life-threatening events",`Solar opportunity: ${totalSun.toLocaleString()} sunshine hrs/yr`]},
+{cat:"💧 Water Security",color:"#8C1D40",refs:[32,33],items:[`Annual precip projects to ${annualPrecip}" — below already-critical baseline`,"Colorado River supplies 36% of Phoenix's water; Lake Mead at historic lows","Groundwater overdraft accelerating as surface water declines","Agricultural irrigation (70% of water use) under severe pressure"]},
+{cat:"⚡ Energy Demand",color:"#8C1D40",refs:[34,35],items:["A/C accounts for ~70% of summer electricity use in Phoenix homes","Each 1°F rise increases peak demand by ~2% — grid strain compounds","Power outages during heat waves become life-threatening events",`Solar opportunity: ${totalSun.toLocaleString()} sunshine hrs/yr`]},
 ];
 return React.createElement('div',null,
 React.createElement('div',{style:{marginBottom:22,padding:"16px 18px",background:"rgba(140,29,64,0.06)",border:"1px solid #8C1D4033",borderRadius:12}},
@@ -343,38 +343,38 @@ const curvePoints=[
 const interventions=[
 {
 icon:"🏢",name:"Cooling Centers",color:"#8C1D40",
-mechanism:"Climate-controlled refuges reduce core body temperature by removing agents from ambient heat exposure entirely.",
+mechanism:"Climate-controlled refuges reduce core body temperature by removing agents from ambient heat exposure entirely. The Maricopa County Heat Relief Network operates ~50 cooling/respite centers county-wide during the May–September heat season.",
 effectiveness:[
-{level:"None (0 centers)",reduction:"0%",note:"Baseline — no infrastructure"},
-{level:"Basic (2 centers)",reduction:"8–12%",note:"Downtown + 1 district site"},
-{level:"Expanded (4 centers)",reduction:"16–22%",note:"Major districts covered"},
-{level:"Full (6+ centers)",reduction:"24–35%",note:"Neighborhood-level access"},
+{level:"None (0 centers)",reduction:"0%",note:"No infrastructure — counterfactual"},
+{level:"Current (~50 centers)",reduction:"8%",note:"2023–2025 HRN deployment level"},
+{level:"Extended (~80 centers)",reduction:"16%",note:"Expanded hours + weekend access"},
+{level:"Extensive (~120 centers)",reduction:"24%",note:"Neighborhood-level saturation"},
 ],
-evidence:"Maricopa County data shows cooling center visits correlate directly with avoided heat deaths; each center prevents an estimated 12–18 deaths per extreme heat event. [17, 20]",
+evidence:"Maricopa County data shows cooling center visits correlate directly with avoided heat deaths; the HRN supported 41,024 visitors across 17,254 service hours in 2023. [19, 20, 24]",
 costRange:"$2.1M – $9.2M/yr",
 },
 {
 icon:"💧",name:"Hydration Stations",color:"#8C1D40",
-mechanism:"Public water access slows heat illness progression. Dehydration amplifies heat stroke risk by 3–4×; rehydration restores thermoregulation.",
+mechanism:"Public water access slows heat illness progression. Dehydration amplifies heat stroke risk by 3–4×; rehydration restores thermoregulation. The HRN operates ~70 hydration distribution sites across the Valley.",
 effectiveness:[
-{level:"None (0 stations)",reduction:"0%",note:"Baseline"},
-{level:"Basic (3 stations)",reduction:"4–6%",note:"High-traffic intersections"},
-{level:"Expanded (6 stations)",reduction:"8–10%",note:"Parks, transit stops, markets"},
-{level:"Full (10 stations)",reduction:"12–15%",note:"City-wide saturation"},
+{level:"None (0 stations)",reduction:"0%",note:"No infrastructure — counterfactual"},
+{level:"Current (~70 stations)",reduction:"4%",note:"2023–2025 HRN deployment level"},
+{level:"Extended (~110 stations)",reduction:"8%",note:"Transit stops, parks, markets"},
+{level:"Extensive (~160 stations)",reduction:"12%",note:"City-wide saturation"},
 ],
-evidence:"Structured review evidence suggests layered public health interventions including hydration access reduce heat morbidity/mortality — $0.9–1.8M/yr estimated for city-wide coverage. [18, 20]",
+evidence:"Structured review evidence suggests layered public health interventions including hydration access reduce heat morbidity/mortality. In 2024, APS-partnered programs distributed 188,000+ water bottles to 128,000+ individuals. [19, 20, 25]",
 costRange:"$0.4M – $1.8M/yr",
 },
 {
 icon:"🤝",name:"Community Outreach",color:"#10b981",
-mechanism:"Proactive wellness checks on vulnerable populations (elderly, isolated, unhoused) intercept heat illness before it becomes critical.",
+mechanism:"Proactive wellness checks on vulnerable populations (elderly, isolated, unhoused) intercept heat illness before it becomes critical. The HRN outreach network includes 211 call center, street teams, MRC volunteers, Lyft rides to cooling centers, and emergency A/C repair programs.",
 effectiveness:[
-{level:"None",reduction:"0%",note:"No active outreach"},
-{level:"Small radius",reduction:"6–8%",note:"Downtown core only"},
-{level:"Medium radius",reduction:"12–15%",note:"Inner-city neighborhoods"},
-{level:"Large radius",reduction:"18–25%",note:"City-wide vulnerable pop."},
+{level:"None (0 programs)",reduction:"0%",note:"No active outreach — counterfactual"},
+{level:"Current (~60 programs)",reduction:"6%",note:"2023–2025 HRN outreach level"},
+{level:"Extended (~120 programs)",reduction:"12%",note:"Expanded street teams + transit"},
+{level:"Extensive (~200 programs)",reduction:"18%",note:"City-wide vulnerable pop. coverage"},
 ],
-evidence:"France's 2003 heat wave post-mortem established outreach to isolated elderly as the single highest-impact preventable mortality intervention. [16, 21]",
+evidence:"France's 2003 heat wave post-mortem established outreach to isolated elderly as the single highest-impact preventable mortality intervention. In 2025, coordinated HRN efforts contributed to a significant decline in heat deaths (156 confirmed vs 265 at same period in 2024). [19, 21, 23]",
 costRange:"$1.2M – $4.5M/yr",
 },
 ];
@@ -426,13 +426,33 @@ React.createElement('div',{style:{fontSize:14,color:"#5C1130",lineHeight:1.5,mar
 React.createElement('div',{style:{fontSize:14,color:iv.color,fontWeight:600}},"Cost: ",iv.costRange)
 ))
 ),
+React.createElement('div',{style:{padding:"14px 18px",background:"rgba(239,68,68,0.05)",border:"1px solid #ef444433",borderRadius:10,marginBottom:16}},
+React.createElement('div',{style:{color:"#ef4444",fontWeight:700,fontSize:16,marginBottom:10}},"⚡ Electric Grid Failure — ABM Findings",React.createElement(Ref,{n:[15,16]})),
+React.createElement('p',{style:{...prose,marginBottom:12}},"The Agent-Based Model (slide 9) reveals that electric grid failure during heat waves is a catastrophic risk multiplier. When the grid fails on days ≥100°F, air conditioning — the primary defense against heat mortality — is disabled across affected areas."),
+React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:12}},
+...[
+{stat:"×2.5",desc:"heat accumulation rate during blackout — indoor temperatures rapidly approach outdoor ambient",col:"#ef4444"},
+{stat:"×2+",desc:"mortality risk multiplier when blackout coincides with extreme heat, per Stone et al. (2023)",col:"#ef4444"},
+{stat:"0.025%",desc:"daily grid failure probability at current NERC LOLE planning standard (~1 day per 10 years)",col:"#B8960B"},
+{stat:"Cooling disabled",desc:"all cooling centers become inoperable during blackout — the highest-impact intervention is eliminated",col:"#7A3045"},
+].map((item,i)=>React.createElement('div',{key:i,style:{display:"flex",gap:10,alignItems:"flex-start"}},
+React.createElement('div',{style:{color:item.col,fontWeight:700,fontSize:16,fontFamily:"'Playfair Display',serif",minWidth:90,flexShrink:0}},item.stat),
+React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},item.desc)
+))
+),
+React.createElement('div',{style:{fontSize:15,color:"#5C1130",lineHeight:1.6}},
+"⚠ ",React.createElement('strong',{style:{color:"#ef4444"}},"Critical finding: "),"Grid resilience is not just an energy policy issue — it is a public health imperative. As data center demand strains the Maricopa County grid (19 GW of pending interconnection requests to APS alone), the probability of summer blackouts during heat waves may increase. Even a short blackout during a multi-day heat dome event could produce mass casualty outcomes exceeding 12,000 deaths, as modeled by ASU/Georgia Tech researchers.",React.createElement(Ref,{n:[15,16]})
+)
+),
 React.createElement('div',{style:{padding:"14px 18px",background:"rgba(255,217,102,0.05)",border:"1px solid #FFD96633",borderRadius:10}},
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,marginBottom:10}},"⚡ Combined Policy Effect — Key Findings"),
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,marginBottom:10}},"🏛 Combined Policy Effect — Key Findings"),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}},
 ...[
-{stat:"Up to 65%",desc:"mortality reduction achievable with full deployment of all three interventions",col:"#2E86C1"},
+{stat:"Up to 65%",desc:"mortality reduction achievable with extensive deployment of all three interventions (cooling, hydration, outreach)",col:"#2E86C1"},
+{stat:"~18%",desc:"current mortality reduction from existing HRN at Current deployment (~50 cooling centers, ~70 hydration stations, ~60 outreach programs)",col:"#10b981"},
 {stat:"$15–20M/yr",desc:"total cost for comprehensive city-wide coverage across all three programs",col:"#10b981"},
 {stat:"$23K–$46K",desc:"estimated cost per life saved — far below the $10M+ regulatory value of a statistical life",col:"#10b981"},
+{stat:"Grid = ×2+",desc:"electric grid failure during heat waves more than doubles mortality — grid resilience is the highest-leverage infrastructure investment",col:"#ef4444"},
 {stat:"Vulnerable-first",desc:"targeting elderly, unhoused & outdoor workers maximizes lives saved per dollar spent",col:"#8C1D40"},
 ].map((item,i)=>React.createElement('div',{key:i,style:{display:"flex",gap:10,alignItems:"flex-start"}},
 React.createElement('div',{style:{color:item.col,fontWeight:700,fontSize:16,fontFamily:"'Playfair Display',serif",minWidth:90,flexShrink:0}},item.stat),
@@ -440,7 +460,7 @@ React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},i
 ))
 ),
 React.createElement('div',{style:{marginTop:12,paddingTop:10,borderTop:"1px solid #6B1530",fontSize:15,color:"#5C1130",lineHeight:1.6}},
-"💡 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Policy takeaway: "),"No single intervention is sufficient. Cooling centers protect the most critical cases; hydration stations provide broad passive protection; outreach reaches those who cannot self-rescue. A layered approach — deployed ",React.createElement('em',null,"before")," heat events — is 3–4× more effective than reactive response.",React.createElement(Ref,{n:[17,18,19,21,23]})
+"💡 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Policy takeaway: "),"No single intervention is sufficient. Cooling centers protect the most critical cases; hydration stations provide broad passive protection; outreach reaches those who cannot self-rescue. A layered approach — deployed ",React.createElement('em',null,"before")," heat events — is 3–4× more effective than reactive response. However, all three interventions depend on a functioning electric grid. Grid resilience planning must be integrated into heat mortality prevention strategy.",React.createElement(Ref,{n:[15,16,25,26,27,29,31]})
 )
 )
 );
@@ -451,7 +471,7 @@ const s=SCENARIOS[scenario];
 const totalHeatDays=data.reduce((a,d)=>a+d.heat,0);
 const summerHighAvg=(data[5].high+data[6].high+data[7].high+data[8].high)/4;
 const warming=(s.tempD*Math.max(0,(year-2020)/80));
-const BASE_DEATHS_2020=425;
+const BASE_DEATHS_2020=663;
 const BASE_HEAT_DAYS_2020=104;
 const additionalHeatDays=Math.max(0,totalHeatDays-BASE_HEAT_DAYS_2020);
 const warmingMultiplier=Math.pow(1.04,warming);
@@ -476,9 +496,9 @@ baseline:Math.round((d.heat/totalHeatForDist)*rawDeaths),
 withPolicy:Math.round((d.heat/totalHeatForDist)*finalDeaths),
 }));
 const POLICY_LABELS={
-coolingCenters:["None","50 centers (+$2.1M/yr)","150 centers (+$4.8M/yr)","300 centers (+$9.2M/yr)"],
-hydrationStations:["None","200 stations (+$0.4M/yr)","500 stations (+$0.9M/yr)","1,000 stations (+$1.8M/yr)"],
-outreach:["None","Basic outreach (+$1.2M/yr)","Expanded program (+$2.6M/yr)","Comprehensive (+$4.5M/yr)"],
+coolingCenters:["None (0)","Current (~50 centers, +$2.1M/yr)","Extended (~80 centers, +$4.8M/yr)","Extensive (~120 centers, +$9.2M/yr)"],
+hydrationStations:["None (0)","Current (~70 stations, +$0.4M/yr)","Extended (~110 stations, +$0.9M/yr)","Extensive (~160 stations, +$1.8M/yr)"],
+outreach:["None (0)","Current (~60 programs, +$1.2M/yr)","Extended (~120 programs, +$2.6M/yr)","Extensive (~200 programs, +$4.5M/yr)"],
 };
 return React.createElement('div',null,
 React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marginBottom:16,padding:"10px 14px",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:8}},
@@ -554,49 +574,49 @@ React.createElement('div',{style:{padding:"16px 18px",background:"rgba(239,68,68
 React.createElement('div',{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}},
 React.createElement('div',null,
 React.createElement('span',{style:{fontSize:16,marginRight:8}},"🏢"),
-React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Cooling Centers"),React.createElement(Ref,{n:[19,22]}),
+React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Cooling Centers"),React.createElement(Ref,{n:[27,30]}),
 React.createElement('div',{style:{fontSize:15,color:"#7A3045",marginTop:2}},"24-hr air-conditioned public facilities for vulnerable residents")
 ),
 React.createElement('span',{style:{color:"#ef4444",fontSize:16,fontWeight:700}},POLICY_LABELS.coolingCenters[coolingCenters])
 ),
 React.createElement('div',{style:{display:"flex",gap:6}},
 ...[0,1,2,3].map(v=>React.createElement('button',{key:v,onClick:()=>setCoolingCenters(v),style:{flex:1,padding:"8px 4px",borderRadius:6,border:`1px solid ${coolingCenters===v?"#ef4444":"#A05070"}`,background:coolingCenters===v?"rgba(239,68,68,0.2)":"transparent",color:coolingCenters===v?"#ef4444":"#7A3045",cursor:"pointer",fontFamily:"inherit",fontSize:15,transition:"all 0.15s"}},
-["None","Basic","Expanded","Full"][v]
+["None","Current","Extended","Extensive"][v]
 ))
 ),
-coolingCenters>0&&React.createElement('div',{style:{marginTop:8,fontSize:15,fontWeight:700,color:"#2E86C1"}},"↓ Estimated ",(coolingReduction*100).toFixed(0),"% mortality reduction · ",["","50","150","300"][coolingCenters]," centers")
+coolingCenters>0&&React.createElement('div',{style:{marginTop:8,fontSize:15,fontWeight:700,color:"#2E86C1"}},"↓ Estimated ",(coolingReduction*100).toFixed(0),"% mortality reduction · ",["","~50","~80","~120"][coolingCenters]," centers")
 ),
 React.createElement('div',{style:{padding:"16px 18px",background:"rgba(255,198,39,0.05)",border:"1px solid #FFC62722",borderRadius:10}},
 React.createElement('div',{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}},
 React.createElement('div',null,
 React.createElement('span',{style:{fontSize:16,marginRight:8}},"💧"),
-React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Hydration Stations"),React.createElement(Ref,{n:[20,22]}),
+React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Hydration Stations"),React.createElement(Ref,{n:[28,30]}),
 React.createElement('div',{style:{fontSize:15,color:"#7A3045",marginTop:2}},"Free water & electrolyte access at bus stops, parks, and public spaces")
 ),
 React.createElement('span',{style:{color:"#8C1D40",fontSize:16,fontWeight:700}},POLICY_LABELS.hydrationStations[hydrationStations])
 ),
 React.createElement('div',{style:{display:"flex",gap:6}},
 ...[0,1,2,3].map(v=>React.createElement('button',{key:v,onClick:()=>setHydrationStations(v),style:{flex:1,padding:"8px 4px",borderRadius:6,border:`1px solid ${hydrationStations===v?"#B8960B":"#A05070"}`,background:hydrationStations===v?"rgba(184,150,11,0.25)":"transparent",color:hydrationStations===v?"#B8960B":"#7A3045",cursor:"pointer",fontFamily:"inherit",fontSize:15,transition:"all 0.15s"}},
-["None","Basic","Expanded","Full"][v]
+["None","Current","Extended","Extensive"][v]
 ))
 ),
-hydrationStations>0&&React.createElement('div',{style:{marginTop:8,fontSize:15,fontWeight:700,color:"#2E86C1"}},"↓ Estimated ",(hydrationReduction*100).toFixed(0),"% mortality reduction · ",["","200","500","1,000"][hydrationStations]," stations")
+hydrationStations>0&&React.createElement('div',{style:{marginTop:8,fontSize:15,fontWeight:700,color:"#2E86C1"}},"↓ Estimated ",(hydrationReduction*100).toFixed(0),"% mortality reduction · ",["","~70","~110","~160"][hydrationStations]," stations")
 ),
 React.createElement('div',{style:{padding:"16px 18px",background:"rgba(140,29,64,0.05)",border:"1px solid #8C1D4022",borderRadius:10}},
 React.createElement('div',{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}},
 React.createElement('div',null,
 React.createElement('span',{style:{fontSize:16,marginRight:8}},"🤝"),
-React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Community Outreach Programs"),React.createElement(Ref,{n:[18,23]}),
+React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Community Outreach Programs"),React.createElement(Ref,{n:[26,31]}),
 React.createElement('div',{style:{fontSize:15,color:"#7A3045",marginTop:2}},"Targeted wellness checks, early warnings, and support for elderly & unhoused residents")
 ),
 React.createElement('span',{style:{color:"#8C1D40",fontSize:16,fontWeight:700}},POLICY_LABELS.outreach[outreach])
 ),
 React.createElement('div',{style:{display:"flex",gap:6}},
 ...[0,1,2,3].map(v=>React.createElement('button',{key:v,onClick:()=>setOutreach(v),style:{flex:1,padding:"8px 4px",borderRadius:6,border:`1px solid ${outreach===v?"#8C1D40":"#A05070"}`,background:outreach===v?"rgba(140,29,64,0.2)":"transparent",color:outreach===v?"#8C1D40":"#7A3045",cursor:"pointer",fontFamily:"inherit",fontSize:15,transition:"all 0.15s"}},
-["None","Basic","Expanded","Full"][v]
+["None","Current","Extended","Extensive"][v]
 ))
 ),
-outreach>0&&React.createElement('div',{style:{marginTop:8,fontSize:15,fontWeight:700,color:"#2E86C1"}},"↓ Estimated ",(outreachReduction*100).toFixed(0),"% mortality reduction")
+outreach>0&&React.createElement('div',{style:{marginTop:8,fontSize:15,fontWeight:700,color:"#2E86C1"}},"↓ Estimated ",(outreachReduction*100).toFixed(0),"% mortality reduction · ",["","~60","~120","~200"][outreach]," programs")
 )
 )
 ),
@@ -622,7 +642,7 @@ React.createElement('div',{style:{padding:"16px 20px",background:"rgba(140,29,64
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:17,marginBottom:12,fontFamily:"'Playfair Display',serif"}},"Heat Mortality Model — How It Works"),
 React.createElement('p',{style:{margin:"0 0 10px"}},"This model estimates annual heat-related deaths in Phoenix under different climate scenarios and policy interventions. It is designed for educational exploration, not clinical forecasting."),
 React.createElement('p',{style:{margin:"0 0 6px"}},React.createElement('span',{style:{fontWeight:700,color:"#5C1130"}},"Starting Point  "),
-"The model is anchored to Maricopa County's historical record — approximately 425 heat deaths per year at 2020 conditions, when Phoenix averaged around 104 days above 100°F annually. The 2023 recorded count of ~645 deaths provides a real-world upper reference."),
+"The model is anchored to Maricopa County's 2022–2024 observed heat mortality average (~557 deaths/yr with current HRN policies active). The raw baseline (663 deaths/yr) represents the estimated counterfactual without policy interventions. At the moderate scenario with Current policies, the model tracks observed data: 425 (2022), 645 (2023), 602 (2024)."),
 React.createElement('p',{style:{margin:"0 0 6px"}},React.createElement('span',{style:{fontWeight:700,color:"#5C1130"}},"Projecting Future Deaths  "),
 "Two forces drive projected deaths upward as the climate warms. First, a dose-response relationship: every additional day above 100°F beyond the 2020 baseline contributes an estimated 3.2 deaths. Second, a warming multiplier: each degree Fahrenheit of mean temperature increase amplifies the base death toll by 4%, compounding exponentially. Together, these capture both the increasing frequency of dangerous heat days and the broader physiological stress of a hotter baseline climate."),
 React.createElement('p',{style:{margin:"0 0 6px"}},React.createElement('span',{style:{fontWeight:700,color:"#5C1130"}},"Policy Interventions  "),
@@ -634,11 +654,11 @@ React.createElement('p',{style:{margin:0}},React.createElement('span',{style:{fo
 ),
 React.createElement('div',{style:{padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 React.createElement('span',{style:{color:"#7A3045",fontWeight:700}},"Model notes: "),
-"The model was coded using Claude.ai with a baseline calibrated to Maricopa County 2023 heat mortality data (~645 deaths).",React.createElement(Ref,{n:5})," Projections use a dose-response function scaling deaths to heat-day exposure and mean warming.",React.createElement(Ref,{n:[6,7]})," Policy reduction estimates are based on published public health intervention studies (95% CI ±15%).",React.createElement(Ref,{n:[18,19,20,21,22,23]})
+"The model was coded using Claude.ai with a baseline calibrated to Maricopa County 2022–2024 observed heat mortality (avg ~557 deaths/yr with Current HRN policies).",React.createElement(Ref,{n:5})," Projections use a dose-response function scaling deaths to heat-day exposure and mean warming.",React.createElement(Ref,{n:[6,7]})," Policy reduction estimates are based on published public health intervention studies (95% CI ±15%).",React.createElement(Ref,{n:[26,27,28,29,30,31]})
 ),
 React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 "📌 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Model disclaimer: "),
-"This is an educational simulation built for classroom use. Climate and mortality projections",React.createElement(Ref,{n:[5,6,7]}),", policy effectiveness estimates",React.createElement(Ref,{n:[18,19,20,21]}),", and scenario outcomes",React.createElement(Ref,{n:[2,3]})," are simplified models intended to illustrate relationships between climate variables and public health outcomes — not clinical forecasts. For official public health planning, consult Maricopa County Department of Public Health and the Arizona Department of Health Services."
+"This is an educational simulation built for classroom use. Climate and mortality projections",React.createElement(Ref,{n:[5,6,7]}),", policy effectiveness estimates",React.createElement(Ref,{n:[26,27,28,29]}),", and scenario outcomes",React.createElement(Ref,{n:[2,3]})," are simplified models intended to illustrate relationships between climate variables and public health outcomes — not clinical forecasts. For official public health planning, consult Maricopa County Department of Public Health and the Arizona Department of Health Services."
 )
 );
 }
@@ -674,6 +694,74 @@ const STREET_EDGES=[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[7,8],[9,10],[10,11],[11
 const STREET_ADJ=(()=>{const adj=Array.from({length:STREET_NODES.length},()=>[]);STREET_EDGES.forEach(([a,b])=>{adj[a].push(b);adj[b].push(a);});return adj;})();
 // Precompute edge lengths for movement speed
 const STREET_EDGE_LEN=(()=>{const m={};STREET_EDGES.forEach(([a,b])=>{const dx=STREET_NODES[b][0]-STREET_NODES[a][0],dy=STREET_NODES[b][1]-STREET_NODES[a][1];const len=Math.sqrt(dx*dx+dy*dy);const k1=a+','+b,k2=b+','+a;m[k1]=len;m[k2]=len;});return m;})();
+// BFS: find next node on shortest path from 'start' toward 'goal'
+function bfsNextNode(start,goal){
+if(start===goal) return start;
+const visited=new Set([start]);
+const parent=new Map();
+const queue=[start];
+while(queue.length>0){
+const cur=queue.shift();
+const neighbors=STREET_ADJ[cur];
+for(let i=0;i<neighbors.length;i++){
+const nb=neighbors[i];
+if(!visited.has(nb)){
+visited.add(nb);parent.set(nb,cur);
+if(nb===goal){let n=goal;while(parent.get(n)!==start)n=parent.get(n);return n;}
+queue.push(nb);
+}
+}
+}
+// No path found — pick random neighbor
+const fallback=STREET_ADJ[start];
+return fallback.length>0?fallback[Math.floor(Math.random()*fallback.length)]:start;
+}
+// Find nearest node to a pixel coordinate
+function nearestNode(px,py){
+let best=0,bestD=1e9;
+for(let i=0;i<STREET_NODES.length;i++){
+const dx=STREET_NODES[i][0]-px,dy=STREET_NODES[i][1]-py;
+const d=dx*dx+dy*dy;
+if(d<bestD){bestD=d;best=i;}
+}
+return best;
+}
+// District population density weights for spawn weighting
+const DISTRICT_DENSITY=[3.0,1.5,2.5,0.8,1.8,1.5,1.2,0.8,2.0,0.6];
+// Assign each node a density weight based on nearest district
+const NODE_WEIGHTS=(()=>{const w=new Float32Array(STREET_NODES.length);
+for(let i=0;i<STREET_NODES.length;i++){
+const nx=STREET_NODES[i][0],ny=STREET_NODES[i][1];
+let bestDist=1e9,bestIdx=0;
+for(let d=0;d<DISTRICTS.length;d++){
+const cx=DISTRICTS[d].x+DISTRICTS[d].w/2,cy=DISTRICTS[d].y+DISTRICTS[d].h/2;
+const dd=(nx-cx)*(nx-cx)+(ny-cy)*(ny-cy);
+if(dd<bestDist){bestDist=dd;bestIdx=d;}
+}
+w[i]=DISTRICT_DENSITY[bestIdx];
+}
+return w;})();
+// Cumulative weights for weighted random node selection
+const NODE_CUM_WEIGHTS=(()=>{const c=[];let sum=0;
+for(let i=0;i<NODE_WEIGHTS.length;i++){sum+=NODE_WEIGHTS[i];c.push(sum);}
+return{cdf:c,total:sum};})();
+function weightedRandomNode(){
+const r=Math.random()*NODE_CUM_WEIGHTS.total;
+const cdf=NODE_CUM_WEIGHTS.cdf;
+let lo=0,hi=cdf.length-1;
+while(lo<hi){const mid=(lo+hi)>>1;if(cdf[mid]<r)lo=mid+1;else hi=mid;}
+return lo;
+}
+// Find nearest infrastructure node for stressed agents seeking help
+function nearestInfraNode(px,py,locs){
+let best=-1,bestD=1e9;
+for(let i=0;i<locs.length;i++){
+const dx=px-locs[i].x,dy=py-locs[i].y;
+const d=dx*dx+dy*dy;
+if(d<bestD){bestD=d;best=i;}
+}
+return best>=0?nearestNode(locs[best].x,locs[best].y):-1;
+}
 useEffect(()=>{
 if(!mapDivRef.current||leafletMapRef.current) return;
 const L=window.L;
@@ -730,74 +818,107 @@ const climateData=project(scenario,year);
 const monthlyHighs=climateData.map(d=>d.high);
 const startTemp=dayToTemp(0,monthlyHighs); // Jan 1 temperature
 const coolingLocs=[];
-const ccPositions=[[300,160],[230,230],[370,230],[300,100],[440,160]];
-for(let i=0;i<coolingCenters*2&&i<ccPositions.length;i++) coolingLocs.push({x:ccPositions[i][0],y:ccPositions[i][1],r:30});
+// Cooling centers snapped to major street intersections [nodeIdx, x, y]
+const ccPositions=[[309,234],[171,216],[414,234],[330,120],[483,303]];
+for(let i=0;i<coolingCenters*2&&i<ccPositions.length;i++) coolingLocs.push({x:ccPositions[i][0],y:ccPositions[i][1],r:35});
 const hydLocs=[];
-const hPositions=[[230,160],[370,160],[160,230],[440,230],[300,290],[230,100],[440,100],[160,160],[510,200],[300,340]];
-for(let i=0;i<hydrationStations*3&&i<hPositions.length;i++) hydLocs.push({x:hPositions[i][0],y:hPositions[i][1],r:20});
+// Hydration stations snapped to street network nodes across metro
+const hPositions=[[309,216],[276,216],[414,216],[207,156],[309,303],[447,180],[447,234],[207,258],[483,258],[414,345]];
+for(let i=0;i<hydrationStations*3&&i<hPositions.length;i++) hydLocs.push({x:hPositions[i][0],y:hPositions[i][1],r:25});
+// Outreach nodes: distributed along street network from downtown core
+const outreachNodes=[[309,234],[330,258],[309,258],[276,234],[330,234],[309,276],[297,216],[318,216],[345,258],[288,234],[309,303],[276,180],[330,180],[414,234],[207,216],[345,216],[297,258],[288,267],[309,180],[330,285]];
+const activeOutreachNodes=outreach>0?outreachNodes.slice(0,Math.min(outreachNodes.length,outreach*6)):[];
 const agents=[];
 const N=numAgents;
-// Helper: pick a random edge and position along it
-function spawnOnStreet(){
-const ei=Math.floor(Math.random()*STREET_EDGES.length);
-const[nA,nB]=STREET_EDGES[ei];
-const t=Math.random();
-const x=STREET_NODES[nA][0]+(STREET_NODES[nB][0]-STREET_NODES[nA][0])*t;
-const y=STREET_NODES[nA][1]+(STREET_NODES[nB][1]-STREET_NODES[nA][1])*t;
-// Agent walks toward nB; when it arrives, picks a new neighbor
-return{x,y,fromNode:nA,toNode:nB,edgeT:t};
-}
 for(let i=0;i<N;i++){
-const sp=spawnOnStreet();
+// Density-weighted spawn: more agents in denser districts
+const homeNode=weightedRandomNode();
+// Work node: pick a different density-weighted node (biased toward Downtown/Tempe/Mesa)
+let workNode=weightedRandomNode();
+let tries=0;
+while(workNode===homeNode&&tries<10){workNode=weightedRandomNode();tries++;}
+const hx=STREET_NODES[homeNode][0],hy=STREET_NODES[homeNode][1];
 const vulnerable=Math.random()<0.25;
-// Find nearest district for heat bias
 let district=DISTRICTS[0];
 DISTRICTS.forEach(d=>{
-if(sp.x>d.x&&sp.x<d.x+d.w&&sp.y>d.y&&sp.y<d.y+d.h) district=d;
+if(hx>d.x&&hx<d.x+d.w&&hy>d.y&&hy<d.y+d.h) district=d;
 });
+// Start at home
+const nb=STREET_ADJ[homeNode];
+const initTo=nb.length>0?nb[Math.floor(Math.random()*nb.length)]:homeNode;
 agents.push({
 id:i,
-x:sp.x,y:sp.y,
-fromNode:sp.fromNode,toNode:sp.toNode,edgeT:sp.edgeT,
-speed:0.6+Math.random()*0.8, // pixels per tick base speed
+x:STREET_NODES[homeNode][0],y:STREET_NODES[homeNode][1],
+fromNode:homeNode,toNode:initTo,edgeT:0,
+speed:0.6+Math.random()*0.8,
 state:"healthy",
 heat:0,
 vulnerable,
-homeX:sp.x,homeY:sp.y,
+homeNode,workNode,
+// Movement phase: 0=at home, 1=commuting to work, 2=at work, 3=commuting home
+// seekTarget: -1=normal, else=node index of infrastructure being sought
+phase:0,seekTarget:-1,
 district,
 outreachVisited:false,
 });
 }
-return{agents,coolingLocs,hydLocs,baseTemp:startTemp,monthlyHighs,tick:0,deaths:0,saved:0,stats:{healthy:agents.length,stressed:0,critical:0,dead:0,saved:0}};
+return{agents,coolingLocs,hydLocs,activeOutreachNodes,baseTemp:startTemp,monthlyHighs,tick:0,deaths:0,saved:0,fractionalDeaths:0,fractionalSaved:0,stats:{healthy:agents.length,stressed:0,critical:0,dead:0,saved:0}};
 }
 function stepSim(sim){
 const day=sim.tick; // 0-indexed day of year
 const monthlyHighs=sim.monthlyHighs||project(scenario,year).map(d=>d.high);
 const dailyTemp=dayToTemp(day,monthlyHighs); // seasonal interpolation
-const{agents,coolingLocs,hydLocs}=sim;
+const{agents,coolingLocs,hydLocs,activeOutreachNodes}=sim;
 const isBlackout=dailyTemp>=100&&gridFailure>0&&Math.random()<(gridFailure/100);
-const outreachRange=outreach>0?80*outreach:0;
-const outreachCenter={x:300,y:220};
+// Population-wide policy reduction factor — consistent with slide 8 analytical model
+// Cooling: 8% per tier, Hydration: 4% per tier, Outreach: 6% per tier, cap 65%
+const policyReductionPct=Math.min(0.65,coolingCenters*0.08+hydrationStations*0.04+outreach*0.06);
+const policyMortMult=1-policyReductionPct;
+const outreachR=outreach>0?40:0;
 agents.forEach(a=>{
 if(a.state==="dead"||a.state==="saved") return;
+// Determine movement target based on phase and health state
+// Solution #3: Critical agents seek nearest infrastructure (not stressed — 
+// people don't leave work when warm, but do when near heat stroke)
+if(a.state==="critical"&&a.seekTarget<0){
+// Look for cooling center first, then hydration station
+const allInfra=[...coolingLocs,...hydLocs];
+if(allInfra.length>0){
+a.seekTarget=nearestInfraNode(a.x,a.y,allInfra);
+}
+}
+if(a.state!=="critical"&&a.seekTarget>=0) a.seekTarget=-1; // recovered, resume commute
+// Solution #1: Home-work commute pattern
+// Each day-tick: phase cycles 0→1→2→3→0 (home→commute→work→commute home)
+// Simplified: odd ticks=commuting to work, even ticks=commuting home
+const goingToWork=(sim.tick%2===0);
+let targetNode;
+if(a.seekTarget>=0){
+targetNode=a.seekTarget; // seeking infrastructure overrides commute
+} else if(goingToWork){
+targetNode=a.workNode;
+} else {
+targetNode=a.homeNode;
+}
 // Street-constrained movement: walk along current edge toward toNode
-const n0=STREET_NODES[a.fromNode],n1=STREET_NODES[a.toNode];
 const edgeKey=a.fromNode+','+a.toNode;
 const edgeLen=STREET_EDGE_LEN[edgeKey]||70;
-const stepSize=a.speed/edgeLen; // normalized step per tick
+const stepSize=a.speed/edgeLen;
 a.edgeT+=stepSize;
 if(a.edgeT>=1.0){
-// Arrived at toNode — pick next edge
 a.edgeT=0;
 const arrived=a.toNode;
-const neighbors=STREET_ADJ[arrived];
-if(neighbors&&neighbors.length>0){
-// Prefer not to reverse, but allow it if dead end
-let choices=neighbors.filter(n=>n!==a.fromNode);
-if(choices.length===0) choices=neighbors;
-const next=choices[Math.floor(Math.random()*choices.length)];
+if(arrived===targetNode){
+// Arrived at destination — stay put (small jitter)
 a.fromNode=arrived;
-a.toNode=next;
+const nb=STREET_ADJ[arrived];
+a.toNode=nb.length>0?nb[Math.floor(Math.random()*nb.length)]:arrived;
+a.edgeT=0;
+} else {
+// Navigate toward target using BFS shortest path
+const nextStep=bfsNextNode(arrived,targetNode);
+a.fromNode=arrived;
+a.toNode=nextStep;
 }
 }
 // Interpolate position along edge
@@ -819,10 +940,16 @@ hydLocs.forEach(h=>{
 const dx=a.x-h.x,dy=a.y-h.y;
 if(Math.sqrt(dx*dx+dy*dy)<h.r) inHydration=true;
 });
+// Distributed outreach: check proximity to any active outreach node
 let outreachHelped=false;
-if(outreach>0&&a.vulnerable&&!a.outreachVisited){
-const dx=a.x-outreachCenter.x,dy=a.y-outreachCenter.y;
-if(Math.sqrt(dx*dx+dy*dy)<outreachRange&&Math.random()<0.002*outreach) outreachHelped=true;
+if(outreach>0&&a.vulnerable&&!a.outreachVisited&&activeOutreachNodes){
+for(let oi=0;oi<activeOutreachNodes.length;oi++){
+const on=activeOutreachNodes[oi];
+const dx=a.x-on[0],dy=a.y-on[1];
+if(Math.sqrt(dx*dx+dy*dy)<outreachR){
+if(Math.random()<0.003*outreach){outreachHelped=true;break;}
+}
+}
 if(outreachHelped) a.outreachVisited=true;
 }
 const protection=inCooling?0.05:inHydration?0.4:outreachHelped?0.3:1.0;
@@ -841,8 +968,21 @@ else if(a.heat<0.65){a.state="stressed";}
 else if(a.heat<0.9){a.state="critical";}
 else{
 const rescueChance=(outreachHelped||a.outreachVisited)?0.3:0;
+// Calibrated mortality rate: tuned to 2022-2024 avg ~557 deaths/yr at moderate + Current policies
+// Accounts for density-weighted spawning concentrating agents in high-heatBias districts
+// Sources: MCDPH 2023 heat mortality report [5]; dose-response calibration [6,7]
+// policyMortMult scales fractional deaths to match slide 8 analytical reductions:
+// cooling 8%/tier + hydration 4%/tier + outreach 6%/tier, capped at 65%
+const baseFracDeathRate=isBlackout?0.0000867:0.0000347;
+const fracDeathRate=baseFracDeathRate*policyMortMult;
+const fracRescueRate=rescueChance*0.008;
+// Accumulate fractional mortality/rescue probability for population-scaled output
+sim.fractionalDeaths+=(1-rescueChance)*fracDeathRate;
+sim.fractionalSaved+=fracRescueRate;
+// Visual agent state: use a higher threshold so a few dots visually die in severe scenarios
+const visualDeathProb=(isBlackout?0.0004:0.00015)*policyMortMult;
 if(Math.random()<rescueChance){a.state="saved";a.heat=0.2;}
-else if(Math.random()<(isBlackout?0.005:0.002)){a.state="dead";}
+else if(Math.random()<visualDeathProb){a.state="dead";}
 else{a.state="critical";}
 }
 });
@@ -854,7 +994,7 @@ else if(a.state==="critical") critical++;
 else if(a.state==="dead") dead++;
 else if(a.state==="saved") saved++;
 });
-return{...sim,baseTemp:dailyTemp,tick:sim.tick+1,stats:{healthy,stressed,critical,dead,saved}};
+return{...sim,baseTemp:dailyTemp,tick:sim.tick+1,fractionalDeaths:sim.fractionalDeaths,fractionalSaved:sim.fractionalSaved,stats:{healthy,stressed,critical,dead,saved}};
 }
 function drawFrame(ctx,sim){
 ctx.clearRect(0,0,W,H);
@@ -900,11 +1040,18 @@ ctx.fillStyle="rgba(140,29,64,0.1)";ctx.fill();
 ctx.fillStyle="#8C1D40";ctx.font="bold 11px Georgia";
 ctx.fillText("🏢",c.x-7,c.y+4);
 });
-if(outreach>0){
-ctx.beginPath();ctx.arc(300,220,80*outreach,0,Math.PI*2);
-ctx.strokeStyle="rgba(16,185,129,0.25)";ctx.lineWidth=1;ctx.setLineDash([4,4]);ctx.stroke();
+if(outreach>0&&sim.activeOutreachNodes){
+sim.activeOutreachNodes.forEach(on=>{
+ctx.beginPath();ctx.arc(on[0],on[1],40,0,Math.PI*2);
+ctx.strokeStyle="rgba(16,185,129,0.2)";ctx.lineWidth=1;ctx.setLineDash([3,3]);ctx.stroke();
 ctx.setLineDash([]);
-ctx.fillStyle="rgba(16,185,129,0.05)";ctx.fill();
+ctx.fillStyle="rgba(16,185,129,0.04)";ctx.fill();
+});
+// Draw outreach icon at first few nodes
+sim.activeOutreachNodes.slice(0,Math.min(6,sim.activeOutreachNodes.length)).forEach(on=>{
+ctx.fillStyle="#10b981";ctx.font="bold 9px Georgia";
+ctx.fillText("🤝",on[0]-6,on[1]+3);
+});
 }
 const COLORS={healthy:"#10b981",stressed:"#B8960B",critical:"#ef4444",dead:"#7A3045",saved:"#3B82F6"};
 sim.agents&&sim.agents.forEach(a=>{
@@ -964,10 +1111,26 @@ const julyHigh=climateNow[6].high;
 const annualHeatDays=climateNow.reduce((a,d)=>a+d.heat,0);
 const currentDayLabel=tick>0?dayToDateLabel(Math.min(tick-1,totalDays-1)):"Jan 1";
 const currentDailyTemp=simRef.current&&simRef.current.baseTemp?simRef.current.baseTemp:dayToTemp(0,climateNow.map(d=>d.high));
+// Maricopa County population projection (piecewise linear)
+// Sources: U.S. Census Bureau 2020 Decennial Census; AZ OEO 2025-2060 Medium Series
+function maricopaPop(yr){
+const pts=[[2020,4420568],[2025,4787790],[2030,5200391],[2060,6529107],[2100,8300728]];
+if(yr<=pts[0][0]) return pts[0][1];
+if(yr>=pts[pts.length-1][0]) return pts[pts.length-1][1];
+for(let i=0;i<pts.length-1;i++){
+if(yr>=pts[i][0]&&yr<=pts[i+1][0]){
+const t=(yr-pts[i][0])/(pts[i+1][0]-pts[i][0]);
+return Math.round(pts[i][1]+(pts[i+1][1]-pts[i][1])*t);
+}
+}
+return pts[pts.length-1][1];
+}
+const countyPop=maricopaPop(year);
+const popScale=numAgents>0?countyPop/numAgents:0;
 return React.createElement('div',null,
 React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marginBottom:14,padding:"10px 14px",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:8}},
 React.createElement('span',{style:{fontSize:20}},"🗺"),
-React.createElement('span',{style:{color:"#8C1D40",fontSize:16,letterSpacing:"2px",textTransform:"uppercase",fontWeight:600}},"Agent-Based Model · Phoenix GIS Heat Mortality Simulation")
+React.createElement('span',{style:{color:"#8C1D40",fontSize:16,letterSpacing:"2px",textTransform:"uppercase",fontWeight:600}},"Agent-Based Model · Heat Deaths, Policy Intervention & Grid Failure")
 ),
 React.createElement('div',{style:{marginBottom:16,padding:"16px 18px",background:"rgba(140,29,64,0.06)",border:"1px solid #8C1D4033",borderRadius:12}},
 React.createElement('div',{style:{fontSize:13,color:"#7A3045",letterSpacing:"3px",textTransform:"uppercase",fontWeight:700,marginBottom:10}},"Climate Scenario — sets seasonal daily temperature from climate model"),
@@ -1038,6 +1201,11 @@ React.createElement('span',{style:{color:"#7A3045",fontSize:15,whiteSpace:"nowra
 React.createElement('input',{type:"range",min:"0",max:"1000",step:"1",value:numAgents,onChange:e=>{setNumAgents(+e.target.value);setRunning(false);},style:{flex:1,accentColor:"#8C1D40"}}),
 React.createElement('span',{style:{color:"#8C1D40",fontWeight:700,minWidth:40,fontSize:17}},numAgents)
 ),
+React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marginBottom:8,padding:"6px 10px",background:"rgba(140,29,64,0.04)",border:"1px solid #8C1D4033",borderRadius:6}},
+React.createElement('span',{style:{color:"#7A3045",fontSize:14,whiteSpace:"nowrap"}},"📊 Maricopa Co. Pop (",year,"):"),
+React.createElement('span',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,marginLeft:"auto"}},countyPop.toLocaleString()),
+React.createElement('span',{style:{color:"#7A3045",fontSize:13,marginLeft:6}},"(1 agent ≈ ",Math.round(popScale).toLocaleString()," people)")
+),
 React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marginBottom:8}},
 React.createElement('span',{style:{color:gridFailure>0?"#ef4444":"#7A3045",fontSize:15,whiteSpace:"nowrap"}},"⚡ Electric Grid Failure:"),
 React.createElement('input',{type:"range",min:"0",max:String(GRID_STEPS.length-1),step:"1",value:GRID_STEPS.indexOf(gridFailure)>=0?GRID_STEPS.indexOf(gridFailure):1,onChange:e=>{setGridFailure(GRID_STEPS[+e.target.value]);setRunning(false);},style:{flex:1,accentColor:"#ef4444"}}),
@@ -1050,69 +1218,78 @@ React.createElement('div',{style:{display:"flex",gap:14,flexWrap:"wrap",fontSize
 "🔴 Critical":"#ef4444","✕ Death":"#7A3045","💙 Rescued":"#3B82F6"
 }).map(([k,c])=>React.createElement('span',{key:k,style:{color:c}},k))
 ),
-React.createElement('div',{style:{fontSize:14,color:"#A05070",marginTop:4}},"⬤ = vulnerable (elderly/at-risk)  ·  ○ = general population  ·  🏢 = cooling center  ·  💧 = hydration station")
+React.createElement('div',{style:{fontSize:14,color:"#A05070",marginTop:4}},"⬤ = vulnerable (elderly/at-risk)  ·  ○ = general population  ·  🏢 = cooling center cluster  ·  💧 = hydration station cluster  ·  🤝 = outreach zone")
 ),
 React.createElement('div',null,
 React.createElement('div',{style:{marginBottom:16,padding:"14px",background:"rgba(140,29,64,0.04)",border:"1px solid #4A1428",borderRadius:10}},
-React.createElement('div',{style:{fontSize:14,color:"#7A3045",letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"Live Agent Stats"),
-React.createElement('div',{style:{fontSize:14,color:"#5C1130",marginBottom:8}},
+React.createElement('div',{style:{fontSize:14,color:"#7A3045",letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"Population-Scaled Outcomes"),
+React.createElement('div',{style:{fontSize:13,color:"#5C1130",marginBottom:4}},
 React.createElement('strong',{style:{color:s.color}},year)," · ",currentDayLabel,
-" · Day ",Math.min(tick,totalDays)," / ",totalDays,leapLabel,"  · N=",numAgents
+" · Day ",Math.min(tick,totalDays)," / ",totalDays,leapLabel
 ),
+React.createElement('div',{style:{fontSize:13,color:"#7A3045",marginBottom:4}},"Maricopa Co. pop: ",React.createElement('strong',null,countyPop.toLocaleString())," · N=",numAgents," agents · 1 agent ≈ ",Math.round(popScale).toLocaleString()," people"),
+React.createElement('div',{style:{fontSize:12,color:"#A05070",marginBottom:8,fontStyle:"italic"}},"Deaths & rescued use fractional probability accumulation for finer resolution"),
+React.createElement('div',null,
 ...[
-{l:"Healthy",v:stats.healthy,c:"#10b981"},
-{l:"Stressed",v:stats.stressed,c:"#B8960B"},
-{l:"Critical",v:stats.critical,c:"#ef4444"},
-{l:"Rescued",v:stats.saved,c:"#3B82F6"},
-{l:"Deaths",v:stats.dead,c:"#7A3045"},
-].map(x=>React.createElement('div',{key:x.l,style:{marginBottom:6}},
+{l:"Healthy",v:stats.healthy,scaled:Math.round(stats.healthy*popScale),c:"#10b981",isFrac:false},
+{l:"Stressed",v:stats.stressed,scaled:Math.round(stats.stressed*popScale),c:"#B8960B",isFrac:false},
+{l:"Critical",v:stats.critical,scaled:Math.round(stats.critical*popScale),c:"#ef4444",isFrac:false},
+{l:"Rescued",v:stats.saved,scaled:Math.round((simRef.current?simRef.current.fractionalSaved:0)*popScale),c:"#3B82F6",isFrac:true},
+{l:"Deaths",v:stats.dead,scaled:Math.round((simRef.current?simRef.current.fractionalDeaths:0)*popScale),c:"#7A3045",isFrac:true},
+].map(x=>{
+const fracVal=x.isFrac?(simRef.current?(x.l==="Deaths"?simRef.current.fractionalDeaths:simRef.current.fractionalSaved):0):x.v;
+return React.createElement('div',{key:x.l,style:{marginBottom:6}},
 React.createElement('div',{style:{display:"flex",justifyContent:"space-between",marginBottom:2}},
 React.createElement('span',{style:{color:"#5C1130",fontSize:15}},x.l),
-React.createElement('span',{style:{color:x.c,fontWeight:700,fontSize:16}},x.v)
+React.createElement('span',{style:{display:"flex",gap:8,alignItems:"baseline"}},
+React.createElement('span',{style:{color:x.c,fontWeight:700,fontSize:16}},x.scaled.toLocaleString()),
+React.createElement('span',{style:{color:"#A05070",fontSize:12}},x.isFrac?"("+fracVal.toFixed(2)+" frac · "+x.v+" agents)":"("+x.v+" agents)")
+)
 ),
 React.createElement('div',{style:{background:"#F0E8EB",borderRadius:3,height:4}},
 React.createElement('div',{style:{background:x.c,width:((x.v/total)*100)+"%",height:"100%",borderRadius:3,transition:"width 0.3s"}})
 )
-))
+);})
+)
 ),
 React.createElement('div',{style:{padding:"14px",background:"rgba(140,29,64,0.04)",border:"1px solid #4A1428",borderRadius:10}},
 React.createElement('div',{style:{fontSize:14,color:"#7A3045",letterSpacing:"2px",textTransform:"uppercase",marginBottom:12}},"Policy Interventions"),
 React.createElement('div',{style:{marginBottom:12}},
-React.createElement('div',{style:{fontSize:15,color:"#8C1D40",marginBottom:5}},"🏢 Cooling Centers"),
+React.createElement('div',{style:{fontSize:15,color:"#8C1D40",marginBottom:5}},"🏢 Cooling Centers (Maricopa HRN)"),
 React.createElement('div',{style:{display:"flex",gap:4}},
-...[0,1,2,3].map(v=>React.createElement('button',{key:v,onClick:()=>{setCoolingCenters(v);setRunning(false);},style:{flex:1,padding:"5px 2px",borderRadius:5,border:`1px solid ${coolingCenters===v?"#8C1D40":"#A05070"}`,background:coolingCenters===v?"rgba(140,29,64,0.2)":"transparent",color:coolingCenters===v?"#8C1D40":"#7A3045",cursor:"pointer",fontFamily:"inherit",fontSize:14}},["0","20","40","80"][v]))
+...[0,1,2,3].map(v=>React.createElement('button',{key:v,onClick:()=>{setCoolingCenters(v);setRunning(false);},style:{flex:1,padding:"5px 2px",borderRadius:5,border:`1px solid ${coolingCenters===v?"#8C1D40":"#A05070"}`,background:coolingCenters===v?"rgba(140,29,64,0.2)":"transparent",color:coolingCenters===v?"#8C1D40":"#7A3045",cursor:"pointer",fontFamily:"inherit",fontSize:13}},["0","~50","~80","~120"][v]))
 )
 ),
 React.createElement('div',{style:{marginBottom:12}},
-React.createElement('div',{style:{fontSize:15,color:"#8C1D40",marginBottom:5}},"💧 Hydration Stations"),
+React.createElement('div',{style:{fontSize:15,color:"#8C1D40",marginBottom:5}},"💧 Hydration Stations (Maricopa HRN)"),
 React.createElement('div',{style:{display:"flex",gap:4}},
-...[0,1,2,3].map(v=>React.createElement('button',{key:v,onClick:()=>{setHydrationStations(v);setRunning(false);},style:{flex:1,padding:"5px 2px",borderRadius:5,border:`1px solid ${hydrationStations===v?"#FFC627":"#A05070"}`,background:hydrationStations===v?"rgba(255,198,39,0.2)":"transparent",color:hydrationStations===v?"#FFC627":"#7A3045",cursor:"pointer",fontFamily:"inherit",fontSize:14}},["0","20","40","80"][v]))
+...[0,1,2,3].map(v=>React.createElement('button',{key:v,onClick:()=>{setHydrationStations(v);setRunning(false);},style:{flex:1,padding:"5px 2px",borderRadius:5,border:`1px solid ${hydrationStations===v?"#FFC627":"#A05070"}`,background:hydrationStations===v?"rgba(255,198,39,0.2)":"transparent",color:hydrationStations===v?"#FFC627":"#7A3045",cursor:"pointer",fontFamily:"inherit",fontSize:13}},["0","~70","~110","~160"][v]))
 )
 ),
 React.createElement('div',{style:{marginBottom:12}},
-React.createElement('div',{style:{fontSize:15,color:"#10b981",marginBottom:5}},"🤝 Outreach Radius"),
+React.createElement('div',{style:{fontSize:15,color:"#10b981",marginBottom:5}},"🤝 Outreach Programs (211, street teams, MRC)"),
 React.createElement('div',{style:{display:"flex",gap:4}},
-...[0,1,2,3].map(v=>React.createElement('button',{key:v,onClick:()=>{setOutreach(v);setRunning(false);},style:{flex:1,padding:"5px 2px",borderRadius:5,border:`1px solid ${outreach===v?"#10b981":"#A05070"}`,background:outreach===v?"rgba(16,185,129,0.2)":"transparent",color:outreach===v?"#10b981":"#7A3045",cursor:"pointer",fontFamily:"inherit",fontSize:14}},["Off","Sm","Md","Lg"][v]))
+...[0,1,2,3].map(v=>React.createElement('button',{key:v,onClick:()=>{setOutreach(v);setRunning(false);},style:{flex:1,padding:"5px 2px",borderRadius:5,border:`1px solid ${outreach===v?"#10b981":"#A05070"}`,background:outreach===v?"rgba(16,185,129,0.2)":"transparent",color:outreach===v?"#10b981":"#7A3045",cursor:"pointer",fontFamily:"inherit",fontSize:13}},["0","~60","~120","~200"][v]))
 )
 ),
 React.createElement('div',{style:{fontSize:14,color:"#A05070",lineHeight:1.6,marginTop:8,paddingTop:8,borderTop:"1px solid #4A1428"}},
-"Change policies then hit ↺ Reset to restart with new infrastructure layout."
+"Button values represent real-world Maricopa County Heat Relief Network counts (2023–2025 data). The map shows representative spatial clusters at major intersections — each map icon models the aggregate coverage of multiple real-world sites in that area. Hit ↺ Reset to restart with new infrastructure."
 )
 )
 )
 ),
 React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 React.createElement('span',{style:{color:"#7A3045",fontWeight:700}},"ABM Rules: "),
-"Each dot = 1 agent moving along a street network graph (~190 intersections, ~170 road segments) mapped to Phoenix's major arterial grid. Agents walk from intersection to intersection, choosing random directions at each node — constraining all movement to streets rather than open desert or mountain areas. Each tick = 1 day (365 or 366/yr). Temperature follows the climate model seasonal curve — cool in winter, peaking in July. Heat accumulates on hot days (≥85°F), dissipates slowly on cool days. Cooling centers actively reduce heat 95%. Hydration slows accumulation 60%. Outreach rescues critical vulnerable agents. Vulnerable agents (ringed) have 1.6× heat sensitivity. Electric grid failure: on days ≥100°F, blackout probability triggers per slider — cooling centers are disabled, heat accumulation rate ×2.5, and death probability ×2.5, per Stone et al. (2023) finding that concurrent blackouts more than double Phoenix heat mortality.",React.createElement(Ref,{n:[9,12,14,15]}),
+"Each dot = 1 agent moving along a street network graph (~190 intersections, ~170 road segments) mapped to Phoenix's major arterial grid. Agents are spawned with population-density weighting (more agents in Downtown, Tempe, Mesa; fewer in outlying areas) and assigned a home node and work node. Each tick (= 1 day), agents commute between home and work via BFS shortest-path routing — producing realistic movement corridors rather than random wandering. When agents reach critical heat stress (heat index ≥ 0.9), they override their commute and navigate toward the nearest cooling center or hydration station, modeling real-world help-seeking behavior. Temperature follows the climate model seasonal curve — cool in winter, peaking in July. Heat accumulates on hot days (≥85°F), dissipates slowly on cool days. Policy interventions operate on two layers: (1) spatially — agents near cooling centers get 95% heat reduction, hydration stations slow accumulation 60%, and outreach nodes rescue critical vulnerable agents; (2) population-wide — aggregate mortality is scaled by the same reduction formula as the Heat Mortality Model (cooling 8%/tier + hydration 4%/tier + outreach 6%/tier, capped at 65%). Vulnerable agents (ringed) have 1.6× heat sensitivity. Electric grid failure: on days ≥100°F, blackout probability triggers per slider — cooling centers are disabled, heat accumulation rate ×2.5, and death probability ×2.5, per Stone et al. (2023) finding that concurrent blackouts more than double Phoenix heat mortality.",React.createElement(Ref,{n:[9,12,14,15]}),
 " The default electric grid failure probability of 0.025% is a conservative estimate derived from the NERC industry-standard Loss of Load Expectation (LOLE) planning criterion of 1 day in 10 years. Over a ~120-day summer season, this criterion translates to approximately 0.027% daily probability of generation capacity shortfall in the WECC/Desert Southwest planning region. The 0.025% default rounds conservatively below this threshold, reflecting that Arizona's grid has historically performed at or above the LOLE standard.",React.createElement(Ref,{n:[15,16]})
 ),
 React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 React.createElement('span',{style:{color:"#7A3045",fontWeight:700}},"Model notes: "),
-"This is a policy-intervention ABM designed to show how infrastructure choices and electric grid failure events affect heat mortality outcomes under different climate scenarios.",React.createElement(Ref,{n:[10,11,12,13,14,15,16]})
+"This is a policy-intervention ABM designed to show how infrastructure choices and electric grid failure events affect heat mortality outcomes under different climate scenarios. Mortality rates are calibrated to Maricopa County's observed 2022–2024 heat death average (~557 deaths/yr with current HRN policies: 425 in 2022, 645 in 2023, 602 in 2024)",React.createElement(Ref,{n:5}),", using fractional probability accumulation across all agents to produce population-scaled estimates with finer resolution than whole-agent counts.",React.createElement(Ref,{n:[10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]})
 ),
 React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 "📌 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Model disclaimer: "),
-"This is an educational simulation built for classroom use. Climate and mortality projections",React.createElement(Ref,{n:[5,6,7]}),", policy effectiveness estimates",React.createElement(Ref,{n:[18,19,20,21]}),", and scenario outcomes",React.createElement(Ref,{n:[2,3]})," are simplified models intended to illustrate relationships between climate variables and public health outcomes — not clinical forecasts. For official public health planning, consult Maricopa County Department of Public Health and the Arizona Department of Health Services."
+"This is an educational simulation built for classroom use. Climate and mortality projections",React.createElement(Ref,{n:[5,6,7]}),", policy effectiveness estimates",React.createElement(Ref,{n:[26,27,28,29]}),", and scenario outcomes",React.createElement(Ref,{n:[2,3]})," are simplified models intended to illustrate relationships between climate variables and public health outcomes — not clinical forecasts. For official public health planning, consult Maricopa County Department of Public Health and the Arizona Department of Health Services."
 )
 );
 }
@@ -1351,6 +1528,70 @@ source:"NERC Reliability Assessments",
 url:"https://www.nerc.com/pa/RAPA/ra/Reliability%20Assessments%20DL/NERC_SRA_2025.pdf",
 note:"Industry-standard Loss of Load Expectation (LOLE) planning criterion of 1 day in 10 years (0.1 days/year). Over a ~120-day summer this equates to ~0.027% daily probability of generation shortfall. The ABM default grid failure rate (0.025%) is a conservative estimate derived from this planning standard for the WECC/Desert Southwest region."
 },
+{
+authors:"U.S. Census Bureau",
+year:"2021",
+title:"2020 Census Redistricting Data (PL 94-171): Maricopa County, Arizona",
+source:"U.S. Department of Commerce",
+url:"https://data.census.gov/profile/Maricopa_County,_Arizona?g=050XX00US04013",
+note:"Maricopa County 2020 decennial census population: 4,420,568. Used as the base year anchor for the ABM population scaling projection."
+},
+{
+authors:"Arizona Office of Economic Opportunity",
+year:"2025",
+title:"Arizona State and County Population Projections, 2025–2060: Medium Series",
+source:"Arizona OEO, Population Statistics Unit",
+url:"https://oeo.az.gov/population/projections",
+note:"Official county-level population projections: Maricopa County at 4,787,790 (2025), 5,200,391 (2030), and 6,529,107 (2060). The ABM uses piecewise linear interpolation through these anchor points with extrapolation to ~8.3M by 2100 at the 2030–2060 growth rate."
+},
+{
+authors:"Maricopa Association of Governments (MAG)",
+year:"2025",
+title:"Heat Relief Network: Regional Partnership for Heat Relief Resources",
+source:"MAG Programs",
+url:"https://azmag.gov/Programs/Heat-Relief-Network",
+note:"The HRN is a regional partnership of MAG, municipalities, nonprofits, and faith-based organizations operating May 1–Sept 30 annually. The 2025 network includes 200+ locations countywide (cooling centers, respite centers, hydration stations, and donation sites). Basis for ABM policy intervention tier counts: ~50 cooling/respite centers, ~70 hydration stations at Current deployment level."
+},
+{
+authors:"Maricopa County Department of Public Health",
+year:"2024",
+title:"Maricopa County Launches 2024 Heat Relief Efforts",
+source:"Maricopa County News Flash",
+url:"https://www.maricopa.gov/CivicAlerts.aspx?AID=2912",
+note:"Documents expanded 2024 HRN with IGAs with Phoenix, Glendale, Chandler, Mesa, and Tempe. Cooling center assessment from 2023 informed extended hours and weekend access. In 2023, MCHSD supported 17,254 hours of heat relief center services for 41,024 visitors with 178,031 bottles of water distributed. Basis for Current/Extended/Extensive policy intervention tiers."
+},
+{
+authors:"Maricopa County Department of Public Health",
+year:"2025",
+title:"Heat Relief Network Wraps Up 2025 Season",
+source:"Maricopa County News Flash",
+url:"https://www.maricopa.gov/m/newsflash/home/detail/3468",
+note:"2025 season: 24 county-supported heat relief sites including a 24/7 respite center in downtown Phoenix. As of Sept 20, 2025: 156 confirmed heat deaths vs 265 at same period in 2024 — a significant decline attributed in part to coordinated HRN efforts. Validates the ABM policy intervention effectiveness modeling."
+},
+{
+authors:"Mazhar, N., et al.",
+year:"2018",
+title:"An Agent-Based Modeling Framework for Simulating Human Exposure to Environmental Stresses in Urban Areas",
+source:"Urban Science, 2(2), 36",
+url:"https://doi.org/10.3390/urbansci2020036",
+note:"Foundational ABM framework for simulating daily activity patterns (home-work commute cycles) with cumulative heat stress exposure in urban environments. Basis for Strategy #1 (home-anchored daily activity patterns): agents are assigned home and work locations and commute between them via shortest-path routing, producing realistic movement corridors rather than random wandering."
+},
+{
+authors:"Hondula, D.M., et al.",
+year:"2022",
+title:"The Role of Cooling Centers in Protecting Vulnerable Individuals from Extreme Heat",
+source:"GeoHealth, 6(8), e2022GH000649",
+url:"https://pmc.ncbi.nlm.nih.gov/articles/PMC9378433/",
+note:"Documents help-seeking behavior during heat events and barriers to cooling center access. Basis for Strategy #3 (infrastructure seeking): critical-state agents override commute patterns and navigate toward nearest cooling/hydration infrastructure, modeling real-world emergency shelter-seeking behavior observed in Maricopa County."
+},
+{
+authors:"Hsu, A., et al.",
+year:"2021",
+title:"Disproportionate exposure to urban heat island intensity across major US cities",
+source:"Nature Communications, 12, 2721",
+url:"https://doi.org/10.1038/s41467-021-22799-5",
+note:"Establishes that population density is a key determinant of heat exposure, with denser neighborhoods experiencing significantly higher UHI intensity. Basis for Strategy #5 (population density-weighted spawning): agents are spawned proportional to district density (Downtown 3.0×, Tempe 2.5×, Mesa 2.0×, etc.), reflecting the documented correlation between population concentration and disproportionate heat exposure."
+},
 ]
 },
 {
@@ -1480,7 +1721,7 @@ React.createElement('span',{style:{color:"#5C1130",fontWeight:600}},"Used for: "
 );}),
 React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 "📌 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Model disclaimer: "),
-"This is an educational simulation built for classroom use. Climate and mortality projections",React.createElement(Ref,{n:[5,6,7]}),", policy effectiveness estimates",React.createElement(Ref,{n:[18,19,20,21]}),", and scenario outcomes",React.createElement(Ref,{n:[2,3]})," are simplified models intended to illustrate relationships between climate variables and public health outcomes — not clinical forecasts. For official public health planning, consult Maricopa County Department of Public Health and the Arizona Department of Health Services."
+"This is an educational simulation built for classroom use. Climate and mortality projections",React.createElement(Ref,{n:[5,6,7]}),", policy effectiveness estimates",React.createElement(Ref,{n:[26,27,28,29]}),", and scenario outcomes",React.createElement(Ref,{n:[2,3]})," are simplified models intended to illustrate relationships between climate variables and public health outcomes — not clinical forecasts. For official public health planning, consult Maricopa County Department of Public Health and the Arizona Department of Health Services."
 )
 );
 }
@@ -1711,7 +1952,7 @@ React.createElement(SectionHead,null,"Heat Mortality Model: Variables, Parameter
 React.createElement('div',{style:{color:"#ef4444",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:4}},"1. Calibration Constants"),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16}},
 ...[
-{name:"BASE_DEATHS_2020",val:"425 deaths/yr",note:"Calibrated to Maricopa County 2020 baseline. The 2023 figure (645 deaths) represents an anomalous spike; 425 reflects the ~2018–2022 average trend."},
+{name:"BASE_DEATHS_2020",val:"663 deaths/yr (raw, pre-policy)",note:"Estimated counterfactual annual heat deaths without HRN policy interventions, calibrated so that the moderate scenario at 2022–2024 with Current policies matches the observed 3-year average (~557 deaths/yr). Observed: 425 (2022), 645 (2023), 602 (2024)."},
 {name:"BASE_HEAT_DAYS_2020",val:"104 days >110°F/yr",note:"NOAA 1991–2020 normal for Phoenix: sum of BASE.heat array = 104 extreme heat days annually at baseline."},
 {name:"HEAT_DAY_COEFFICIENT",val:"3.2 deaths / extra day",note:"Each additional day above 110°F beyond the 2020 baseline adds ~3.2 deaths. Derived from Hondula et al. (2015) heat-mortality dose-response analysis across seven U.S. cities including Phoenix."},
 {name:"WARMING_MULTIPLIER",val:"1.04 per °F warming",note:"Each degree of mean warming multiplies the base death rate by 1.04 (4% increase). From Baccini et al. (2008) European multi-city study adapted to desert climate."},
@@ -1816,7 +2057,7 @@ React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,6
 React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Major Variables Defined"),
 React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:12}},
 ...[
-["BASE_DEATHS_2020 (425)","Baseline annual heat-related deaths for Maricopa County, calibrated to the 2018–2022 average trend. The 2023 figure of 645 represents an anomalous spike and is not used as the baseline."],
+["BASE_DEATHS_2020 (663)","Estimated counterfactual annual heat deaths without HRN policy interventions. Calibrated so moderate scenario + Current policies matches the 2022–2024 observed average (~557 deaths/yr). Observed: 425 (2022), 645 (2023), 602 (2024)."],
 ["BASE_HEAT_DAYS_2020 (104)","Sum of the BASE.heat array from the climate model — the NOAA 1991–2020 normal count of days exceeding 110°F per year at Phoenix Sky Harbor."],
 ["additionalHeatDays","The number of extreme heat days projected in excess of the 104-day baseline. Only positive exceedances contribute to mortality increase. Computed from the climate model output for the selected scenario and year."],
 ["warming","Effective warming in °F at the selected year and scenario. Uses the same time factor f as the climate model: tempD × max(0, (year − 2020) / 80)."],
@@ -1836,7 +2077,7 @@ React.createElement('span',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},
 ),
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Implementation Code"),
 React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"12px 14px",fontSize:14,color:"#8C1D40",display:"block",whiteSpace:"pre-wrap",lineHeight:1.6}},
-"// Climate model inputs\nconst data = project(scenario, year);\nconst totalHeatDays = data.reduce((a, d) => a + d.heat, 0);\nconst warming = tempD × Math.max(0, (year - 2020) / 80);\n\n// Base mortality model\nconst BASE_DEATHS_2020 = 425;\nconst BASE_HEAT_DAYS_2020 = 104;\nconst additionalHeatDays = Math.max(0, totalHeatDays - BASE_HEAT_DAYS_2020);\nconst warmingMultiplier = Math.pow(1.04, warming);\nconst rawDeaths = Math.round((BASE_DEATHS_2020 + additionalHeatDays * 3.2) * warmingMultiplier);\n\n// Policy reductions\nconst coolingReduction = coolingCenters * 0.08;\nconst hydrationReduction = hydrationStations * 0.04;\nconst outreachReduction = outreach * 0.06;\nconst totalReductionPct = Math.min(0.65, coolingReduction + hydrationReduction + outreachReduction);\nconst preventedDeaths = Math.round(rawDeaths * totalReductionPct);\nconst finalDeaths = rawDeaths - preventedDeaths;\n\n// Cost-effectiveness\nconst costPerLifeSaved = preventedDeaths > 0\n  ? ((totalCost * 1000000) / preventedDeaths / 1000).toFixed(0)\n  : \"—\";"
+"// Climate model inputs\nconst data = project(scenario, year);\nconst totalHeatDays = data.reduce((a, d) => a + d.heat, 0);\nconst warming = tempD × Math.max(0, (year - 2020) / 80);\n\n// Base mortality model\nconst BASE_DEATHS_2020 = 663;\nconst BASE_HEAT_DAYS_2020 = 104;\nconst additionalHeatDays = Math.max(0, totalHeatDays - BASE_HEAT_DAYS_2020);\nconst warmingMultiplier = Math.pow(1.04, warming);\nconst rawDeaths = Math.round((BASE_DEATHS_2020 + additionalHeatDays * 3.2) * warmingMultiplier);\n\n// Policy reductions\nconst coolingReduction = coolingCenters * 0.08;\nconst hydrationReduction = hydrationStations * 0.04;\nconst outreachReduction = outreach * 0.06;\nconst totalReductionPct = Math.min(0.65, coolingReduction + hydrationReduction + outreachReduction);\nconst preventedDeaths = Math.round(rawDeaths * totalReductionPct);\nconst finalDeaths = rawDeaths - preventedDeaths;\n\n// Cost-effectiveness\nconst costPerLifeSaved = preventedDeaths > 0\n  ? ((totalCost * 1000000) / preventedDeaths / 1000).toFixed(0)\n  : \"—\";"
 ),
 React.createElement('div',{style:{color:"#ef4444",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:20}},"6. Mathematical Formulas"),
 React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Warming Delta (°F)"),
@@ -1924,263 +2165,169 @@ const varStyle={padding:"10px 14px",background:"rgba(140,29,64,0.04)",border:"1p
 const noteStyle={color:"#7A3045",fontSize:14,lineHeight:1.5,marginTop:3};
 const formulaStyle={fontFamily:"monospace",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"8px 12px",fontSize:16,color:"#8C1D40",marginTop:6,display:"block"};
 const districts=[
-["Downtown","1.25","Urban core, concrete heat sink, minimal green space"],
-["West Phoenix","1.10","Dense residential, high pavement fraction"],
-["Tempe","1.15","Urban heat island, ASU campus, mixed surface"],
-["South Mountain","0.90","Adjacent to South Mountain Park, some green buffer"],
-["Chandler","1.00","Suburban, baseline heat exposure"],
-["North Phoenix","0.85","Lower density, newer construction, desert preserve adjacent"],
-["Scottsdale","0.95","Mixed density, some desert landscape cooling"],
-["Avondale","1.05","Industrial corridor, high surface albedo reduction"],
-["Mesa","1.08","Dense suburban, aging infrastructure"],
-["Laveen","0.88","Low density, agricultural land nearby"],
+["Downtown","1.25","3.0×","Urban core, concrete heat sink, minimal green space"],
+["West Phoenix","1.10","1.5×","Dense residential, high pavement fraction"],
+["Tempe","1.15","2.5×","Urban heat island, ASU campus, mixed surface"],
+["South Mountain","0.90","0.8×","Adjacent to South Mountain Park, some green buffer"],
+["Chandler","1.00","1.8×","Suburban, baseline heat exposure"],
+["North Phoenix","0.85","1.5×","Lower density, newer construction, desert preserve adjacent"],
+["Scottsdale","0.95","1.2×","Mixed density, some desert landscape cooling"],
+["Avondale","1.05","0.8×","Industrial corridor, high surface albedo reduction"],
+["Mesa","1.08","2.0×","Dense suburban, aging infrastructure"],
+["Laveen","0.88","0.6×","Low density, agricultural land nearby"],
 ];
 return React.createElement('div',null,
 React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marginBottom:14,padding:"10px 14px",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:8}},
 React.createElement('span',{style:{fontSize:18}},"📐"),
 React.createElement('span',{style:{color:"#8C1D40",fontSize:16,letterSpacing:"2px",textTransform:"uppercase",fontWeight:600}},"Appendix C · ABM Model Variables & Assumptions")
 ),
-React.createElement(SectionHead,null,"Agent-Based Model: Variables, Parameters & Rules ",React.createElement(Ref,{n:[10,11,12,13,14,15,16]})),
+React.createElement(SectionHead,null,"Agent-Based Model: Variables, Parameters & Rules ",React.createElement(Ref,{n:[10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]})),
+
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:4}},"1. Global Parameters"),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16}},
 ...[
-{name:"N (agents)",val:"120",note:"Total population. Computationally tractable for real-time canvas rendering while providing statistically meaningful emergent behavior."},
-{name:"Vulnerable fraction",val:"25% (30 agents)",note:"Initialized randomly. Vulnerable agents have 1.6× heat sensitivity and are prioritized by outreach. Represents elderly, unhoused, medically compromised."},
-{name:"Canvas dimensions",val:"640 × 440 px",note:"GIS-aligned map space. Districts and infrastructure are placed at fixed pixel coordinates approximating real Phoenix geography."},
-{name:"Max ticks",val:"600",note:"Simulation auto-stops at tick 600. Approximately equivalent to a sustained 3–5 day extreme heat event."},
-{name:"Base summer peak",val:"105°F + scenario delta",note:"Starting ambient temperature for heat accumulation. Equals 105°F at baseline 2020, scales linearly with scenario tempD and time factor f."},
-{name:"Movement speed",val:"±0.4 px/tick + ±0.3 noise",note:"Agents wander semi-randomly. vx, vy initialized at ±0.2 px/tick. Boundary reflection at map edges."},
+{name:"N (agents)",val:"500 (default, adjustable 0–1000)",note:"Each agent represents a cluster of ~8,800 people (at 2020 popScale). Population-scaled outcomes are displayed in the sidebar using fractional mortality accumulation."},
+{name:"Vulnerable fraction",val:"25% (~125 agents at N=500)",note:"Initialized randomly. Vulnerable agents have 1.6× heat sensitivity and are prioritized by outreach. Represents elderly, unhoused, medically compromised."},
+{name:"Street network",val:"192 nodes, 170 edges",note:"Mapped to Phoenix major arterial grid (I-10, I-17, Loop 101/202, Central, Camelback, McDowell, Scottsdale Rd, etc.). Agents are constrained to move along street edges only — no off-road movement."},
+{name:"Max ticks",val:"365 or 366 (full calendar year)",note:"Each tick = 1 day. Simulation runs Jan 1 through Dec 31 of the selected year. Temperature follows the climate model's seasonal curve via dayToTemp() interpolation."},
+{name:"Movement model",val:"BFS shortest-path home-work commute",note:"Each agent is assigned a home node and work node via density-weighted random selection. On even ticks agents navigate toward work; on odd ticks toward home. BFS provides the next-hop at each intersection. [22]"},
+{name:"Density weighting",val:"Downtown 3.0×, Tempe 2.5×, Mesa 2.0×, etc.",note:"Agent spawn locations are weighted by district population density using cumulative distribution sampling. More agents in dense urban areas, fewer in outlying areas. [24]"},
+{name:"Infrastructure seeking",val:"Critical agents (heat ≥ 0.9) seek nearest cooling/hydration",note:"When an agent reaches critical state, it overrides its commute and navigates via BFS toward the nearest cooling center or hydration station. Resumes commute upon recovery. [23]"},
+{name:"Population projection",val:"Piecewise linear: 4.42M (2020) → 8.3M (2100)",note:"Based on U.S. Census 2020 [17] and AZ OEO 2025–2060 projections [18]. popScale = countyPop / numAgents."},
 ].map((v,i)=>React.createElement('div',{key:i,style:varStyle},
 React.createElement('div',{style:{color:"#D4607A",fontFamily:"monospace",fontSize:16,fontWeight:700,marginBottom:3}},v.name),
 React.createElement('div',{style:{color:"#1A0A10",fontSize:16,marginBottom:3}},v.val),
 React.createElement('div',{style:noteStyle},v.note)
 ))
 ),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"2. District Heat Bias Values"),
+
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"2. District Heat Bias & Population Density Weights"),
 React.createElement('div',{style:{overflowX:"auto",marginBottom:16}},
 React.createElement('table',{style:{width:"100%",borderCollapse:"collapse",fontSize:15}},
 React.createElement('thead',null,
 React.createElement('tr',null,
-...["District","Heat Bias","Rationale"].map((h,i)=>React.createElement('th',{key:i,style:{padding:"6px 8px",borderBottom:"1px solid #6B1530",color:"#7A3045",fontWeight:600,textAlign:"left"}},h))
+...["District","Heat Bias","Density Weight","Rationale"].map((h,i)=>React.createElement('th',{key:i,style:{padding:"6px 8px",borderBottom:"1px solid #6B1530",color:"#7A3045",fontWeight:600,textAlign:"left"}},h))
 )
 ),
 React.createElement('tbody',null,
-...districts.map(([name,bias,note],ri)=>{
+...districts.map(([name,bias,density,note],ri)=>{
 const b=parseFloat(bias);
 const col=b>=1.2?"#ef4444":b>=1.1?"#FFC627":b>=1.0?"#FFC627":b>=0.9?"#10b981":"#FFC627";
 return React.createElement('tr',{key:ri,style:{borderBottom:"1px solid #4A1428"}},
 React.createElement('td',{style:{padding:"6px 8px",color:"#5C1130",fontWeight:600}},name),
 React.createElement('td',{style:{padding:"6px 8px",color:col,fontWeight:700,fontFamily:"monospace"}},bias,"×"),
+React.createElement('td',{style:{padding:"6px 8px",color:"#8C1D40",fontWeight:600,fontFamily:"monospace"}},density),
 React.createElement('td',{style:{padding:"6px 8px",color:"#7A3045",fontSize:14,lineHeight:1.4}},note)
 );
 })
 )
 )
 ),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"3. Heat Accumulation & State Machine Equations"),
-React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:8,marginBottom:16}},
-...[
-{label:"Local ambient temperature",formula:"localHeat = baseTemp × districtHeatBias",note:"Agent's effective heat exposure is the global base temperature multiplied by the district bias for whichever district polygon they currently occupy."},
-{label:"Protection factor",formula:"protection = inCooling ? 0.05 : inHydration ? 0.40 : outreachHelped ? 0.30 : 1.0",note:"Cooling centers provide 95% protection (near-complete thermal refuge). Hydration reduces accumulation by 60%. Outreach reduces by 70%. Mutually exclusive; cooling takes priority."},
-{label:"Vulnerability multiplier",formula:"vulnerabilityMult = vulnerable ? 1.6 : 1.0",note:"At-risk agents accumulate heat 60% faster than general population. Calibrated to Harlan et al. (2006) neighborhood vulnerability study."},
-{label:"Heat accumulation rate",formula:"heatRate = ((localHeat − 100) / 40) × 0.12 × protection × vulnerabilityMult",note:"Normalized to a 0–1 heat stress index. Base rate 0.12/tick at 100°F. Scales linearly with temperature above 100°F. At 140°F (the divisor denominator): rate = 0.12 before protections."},
-{label:"Heat index update",formula:"agent.heat = clamp(0, 1, agent.heat + max(0, heatRate))\nif inCooling: agent.heat = max(0, agent.heat − 0.08)",note:"Heat only accumulates (never decreases) unless inside a cooling center, which actively reduces stress by 0.08/tick."},
-{label:"State thresholds",formula:"heat < 0.30  → Healthy\nheat < 0.65  → Heat-Stressed\nheat < 0.90  → Critical\nheat ≥ 0.90  → Death/Rescue zone",note:"Threshold values calibrated so that an unprotected agent in Downtown at severe 2100 scenario reaches critical status within ~100 ticks (~2 simulation hours)."},
-{label:"Death probability",formula:"if heat ≥ 0.90 and not rescued:\n  P(death/tick) = 0.015\n  P(rescue by outreach) = 0.30 if outreachVisited",note:"Per-tick death probability of 1.5% in the critical zone. Outreach rescue: 30% chance to transition to 'saved' state (heat reset to 0.2). Once saved, agent is permanently protected."},
-{label:"Outreach contact probability",formula:"P(contact/tick) = 0.002 × outreachLevel  if dist(agent, cityCenter) < 80 × outreachLevel",note:"Outreach contacts vulnerable agents within a radius scaled by outreach level (80/160/240 px). Contact is probabilistic to simulate incomplete coverage."},
-].map((eq,i)=>React.createElement('div',{key:i,style:varStyle},
-React.createElement('div',{style:{color:"#D4607A",fontWeight:700,fontSize:16}},eq.label),
-React.createElement('code',{style:{...formulaStyle,whiteSpace:"pre"}},eq.formula),
-React.createElement('div',{style:noteStyle},eq.note)
-))
-),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"4. Infrastructure Parameters"),
+
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"3. Mortality Calibration & Fractional Accumulation"),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16}},
 ...[
-{name:"Cooling center radius",val:"30 px",note:"Effective service radius on the 640×440 canvas. Approximately 1–2 km at Phoenix GIS scale."},
-{name:"Hydration station radius",val:"20 px",note:"Smaller catchment than cooling centers. Approximately 500m–1km service radius."},
-{name:"Max cooling centers",val:"10 (5 positions × 2/tier)",note:"Positions pre-set at key intersections: downtown, major corridors. Tier slider adds 2 centers per step."},
-{name:"Max hydration stations",val:"10 (pre-set positions)",note:"Distributed across district centers, transit stops, and parks. Tier slider adds 3 stations per step."},
+{name:"baseFracDeathRate (normal)",val:"0.0000347 per agent-tick",note:"Calibrated so that moderate scenario at 2023 + Current policies produces ~557 population-scaled deaths, matching the 2022–2024 observed Maricopa County average (425, 645, 602)."},
+{name:"baseFracDeathRate (blackout)",val:"0.0000867 per agent-tick",note:"2.5× normal rate during grid failure events. Based on Stone et al. (2023) finding that concurrent blackouts more than double heat mortality. [15]"},
+{name:"policyMortMult",val:"1 − min(0.65, cooling×0.08 + hydration×0.04 + outreach×0.06)",note:"Population-wide policy modifier. Identical formula to slide 8 analytical model. At Current tier (all=1): 1−0.18 = 0.82. Ensures ABM aggregate outcomes match the analytical model."},
+{name:"fracDeathRate",val:"baseFracDeathRate × policyMortMult",note:"Effective fractional death rate per agent-tick in the critical zone. Accumulated across all agents each tick to produce fractionalDeaths, then multiplied by popScale for population-level estimates."},
+{name:"visualDeathProb (normal)",val:"0.00015 per agent-tick",note:"Higher threshold for visual agent-dot deaths so a few dots visually die in severe scenarios. Does not affect population-scaled sidebar numbers."},
+{name:"visualDeathProb (blackout)",val:"0.0004 per agent-tick",note:"Visual death probability during blackout events."},
+{name:"fracRescueRate",val:"rescueChance × 0.008",note:"Fractional rescue accumulation rate. rescueChance=0.3 for outreach-visited agents in the critical zone."},
+{name:"gridFailure (default)",val:"0.025%",note:"Daily blackout probability on days ≥100°F, derived from NERC LOLE planning criterion of 1 day in 10 years (~0.027% daily over 120-day summer). [16]"},
 ].map((v,i)=>React.createElement('div',{key:i,style:varStyle},
 React.createElement('div',{style:{color:"#D4607A",fontFamily:"monospace",fontSize:16,fontWeight:700,marginBottom:3}},v.name),
 React.createElement('div',{style:{color:"#1A0A10",fontSize:16,marginBottom:3}},v.val),
 React.createElement('div',{style:noteStyle},v.note)
 ))
 ),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"5. Key Assumptions & Limitations"),
-React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:6}},
+
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"4. Policy Infrastructure Deployment"),
+React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16}},
 ...[
-["Random equal-probability district placement","Agents are initialized uniformly across districts with equal probability. Real Phoenix has unequal population density across districts."],
-["No agent social networks","Agents do not communicate, warn each other, or travel to cooling centers unless randomly passing near one. Social network effects on heat event response are not modeled."],
-["Static infrastructure placement","Cooling centers and hydration stations are at fixed pre-set coordinates. Optimal placement algorithms (e.g., maximum coverage) are not implemented."],
-["Homogeneous within-district heat","All agents within the same district experience the same heat bias. Micro-scale variation (e.g., shade, building type) is averaged into the district bias value."],
-["No behavioral adaptation","Agents do not modify their movement in response to heat stress or seek shade/water. In reality, people would alter behavior at elevated heat stress levels."],
-["Stochastic death threshold","The 1.5% per-tick death probability in the critical zone is a stochastic process producing variable outcomes per run. Multiple runs should be averaged for statistical inference."],
-["Simplified GIS geometry","District polygons are rectangular approximations of real Phoenix district boundaries, positioned to approximate geographic centroids on the canvas."],
-].map(([title,note],i)=>React.createElement('div',{key:i,style:{display:"flex",gap:10,padding:"8px 12px",background:"rgba(140,29,64,0.04)",border:"1px solid #8C1D4022",borderRadius:6}},
-React.createElement('span',{style:{color:"#8C1D40",flexShrink:0,marginTop:1}},"▸"),
-React.createElement('div',null,
-React.createElement('span',{style:{color:"#D4607A",fontWeight:600,fontSize:16}},title,": "),
-React.createElement('span',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},note)
-)
+{name:"Cooling centers",val:"0 / 2 / 4 / 5 map nodes (representing ~0 / ~50 / ~80 / ~120 real sites)",note:"Snapped to major intersections: Central/McDowell, 51st Ave/Thomas, Scottsdale/McDowell, Central/Cactus, Alma School/Southern. 35px coverage radius. Based on Maricopa County HRN data. [19,20]"},
+{name:"Hydration stations",val:"0 / 3 / 6 / 9 map nodes (representing ~0 / ~70 / ~110 / ~160 real sites)",note:"Distributed across network: Central/Camelback, 7th Ave/Indian School, 32nd St/Thomas, etc. 25px coverage radius. [19,20]"},
+{name:"Outreach nodes",val:"0 / 6 / 12 / 18 map nodes (representing ~0 / ~60 / ~120 / ~200 programs)",note:"Distributed from downtown core outward. 40px radius per node. Contact probability 0.003 × outreachLevel per node per tick for vulnerable agents. [19,20,21]"},
+{name:"Blackout effect",val:"Cooling centers disabled, heat ×2.5, death ×2.5",note:"During blackout events (gridFailure probability on days ≥100°F), all cooling centers become inoperable. Heat accumulation rate and death probability are multiplied by 2.5. [15,16]"},
+].map((v,i)=>React.createElement('div',{key:i,style:varStyle},
+React.createElement('div',{style:{color:"#D4607A",fontFamily:"monospace",fontSize:16,fontWeight:700,marginBottom:3}},v.name),
+React.createElement('div',{style:{color:"#1A0A10",fontSize:16,marginBottom:3}},v.val),
+React.createElement('div',{style:noteStyle},v.note)
 ))
 ),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:16}},"6. Model Equation Explanation & Implementation"),
-React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:12}},
-"The Agent-Based Model (ABM) simulates individual agents moving across a simplified GIS representation of Phoenix districts. Each simulation tick represents one day. Agents accumulate heat stress based on their local temperature exposure, which is modified by district-level urban heat island biases. Policy interventions (cooling centers, hydration stations, outreach) provide protective effects that reduce heat accumulation rates. Agents transition through health states — healthy, stressed, critical — and may die or be rescued depending on stochastic probabilities."
-),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Daily Temperature Interpolation"),
+
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"5. Heat Accumulation & State Machine"),
 React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
-"Each tick, the simulation computes the day's ambient temperature by interpolating between monthly climate projections using the ",
-React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(140,29,64,0.08)",padding:"2px 6px",borderRadius:4,color:"#D4607A"}},"dayToTemp(day, monthlyHighs)"),
-" function. This performs linear interpolation between monthly midpoints with wrap-around handling for December-to-January transitions, producing a smooth seasonal temperature curve from the climate model's 12 monthly high values."
+"Each tick, an agent's heat stress index Q is updated based on the local temperature, protection factor, and vulnerability. Protection factors: cooling center = 0.05 (95% reduction), hydration station = 0.40 (60% reduction), outreach-visited = 0.30 (70% reduction), none = 1.0. Vulnerable agents have v = 1.6. During blackout: blackoutMult = 2.5."
 ),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Local Heat Exposure"),
-React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
-"Each agent's effective temperature is the daily ambient temperature multiplied by the heat bias of whichever district polygon they currently occupy: ",
-React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(140,29,64,0.08)",padding:"2px 6px",borderRadius:4,color:"#D4607A"}},"localHeat = dailyTemp × heatBias"),
-". District heat biases range from 0.85 (North Phoenix, lower density with desert preserve) to 1.25 (Downtown, concrete heat sink). An agent in Downtown at a baseline 105°F day experiences an effective temperature of 131.25°F, while an agent in North Phoenix experiences 89.25°F."
-),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Heat Accumulation"),
-React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
-"When local temperature is at or above 85°F, agents accumulate heat stress: ",
-React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(140,29,64,0.08)",padding:"2px 6px",borderRadius:4,color:"#D4607A"}},"heatRate = ((localHeat − 85) / 50) × 0.008 × protection × vulnerabilityMult"),
-". The agent's heat index (0 to 1) is then updated: ",
-React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(140,29,64,0.08)",padding:"2px 6px",borderRadius:4,color:"#D4607A"}},"heat = min(1, heat + heatRate)"),
-". Inside cooling centers, heat actively decreases: ",
-React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(140,29,64,0.08)",padding:"2px 6px",borderRadius:4,color:"#D4607A"}},"heat = max(0, heat − 0.005)"),
-". On cool days (below 85°F), gradual recovery occurs: ",
-React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(140,29,64,0.08)",padding:"2px 6px",borderRadius:4,color:"#D4607A"}},"heat = max(0, heat − 0.003)"),
-"."
-),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Protection Factors"),
-React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
-"Interventions reduce the heat accumulation rate through the protection multiplier: cooling centers = 0.05 (95% reduction), hydration stations = 0.40 (60% reduction), outreach-visited agents = 0.30 (70% reduction), no protection = 1.0. These are mutually exclusive with cooling centers taking priority. Vulnerable agents (25% of population) have a vulnerability multiplier of 1.6, meaning they accumulate heat 60% faster than general population agents."
-),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"State Machine & Death/Rescue"),
-React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
-"Agents transition through health states based on their cumulative heat index: healthy (heat < 0.3), stressed (0.3 ≤ heat < 0.65), critical (0.65 ≤ heat < 0.9). When heat reaches 0.9 or above, the agent enters the death/rescue zone. Each tick in this zone, there is a 0.2% probability of death (",
-React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(140,29,64,0.08)",padding:"2px 6px",borderRadius:4,color:"#D4607A"}},"Math.random() < 0.002"),
-"). If the agent has been visited by outreach, there is a 30% chance of rescue instead, which resets their heat to 0.2 and permanently protects them. Outreach contacts vulnerable agents probabilistically within a radius scaled by outreach level."
-),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Major Variables Defined"),
-React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:12}},
-...[
-["dailyTemp","The ambient high temperature for the current simulation day, interpolated from the climate model's 12 monthly projections using dayToTemp(). Varies smoothly over the simulated year."],
-["localHeat","Effective temperature experienced by an individual agent: dailyTemp × districtHeatBias. Varies spatially across the map based on which district polygon the agent occupies."],
-["heatBias","A per-district multiplier representing urban heat island intensity. Downtown (1.25) is hottest; North Phoenix (0.85) is coolest. Based on satellite-derived land surface temperature differentials."],
-["protection","A multiplier (0.05 to 1.0) applied to the heat accumulation rate depending on whether the agent is inside a cooling center, near a hydration station, has been contacted by outreach, or has no protection."],
-["vulnerabilityMult","Set to 1.6 for vulnerable agents (elderly, unhoused, medically compromised — 25% of population) and 1.0 for general population. Makes vulnerable agents accumulate heat 60% faster."],
-["agent.heat","A cumulative heat stress index ranging from 0 (no stress) to 1 (maximum). Increases each tick when localHeat ≥ 85°F, decreases in cooling centers or on cool days. Drives the state machine transitions."],
-["heatRate","The per-tick increment to agent.heat: ((localHeat − 85) / 50) × 0.008 × protection × vulnerabilityMult. Only positive when localHeat ≥ 85°F."],
-["agent.state","One of: healthy, stressed, critical, dead, or saved. Determined by heat thresholds and stochastic death/rescue events in the critical zone."],
-["outreachRange","The geographic radius of outreach coverage: 80 × outreachLevel pixels. At maximum outreach (level 3), covers a 240px radius from city center."],
-["outreachVisited","A boolean flag per agent. Once an outreach worker contacts a vulnerable agent (probabilistic), the flag is set permanently, granting a 30% rescue chance if the agent enters the death zone."],
-].map(([title,note],i)=>React.createElement('div',{key:i,style:{display:"flex",gap:10,padding:"8px 12px",background:"rgba(140,29,64,0.04)",border:"1px solid #8C1D4022",borderRadius:6}},
-React.createElement('span',{style:{color:"#8C1D40",flexShrink:0,marginTop:1}},"▸"),
-React.createElement('div',null,
-React.createElement('span',{style:{color:"#D4607A",fontWeight:600,fontSize:16}},title,": "),
-React.createElement('span',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},note)
-)
-))
-),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Implementation Code"),
-React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"12px 14px",fontSize:14,color:"#8C1D40",display:"block",whiteSpace:"pre-wrap",lineHeight:1.6}},
-"// Daily temperature from climate model\nconst dailyTemp = dayToTemp(day, monthlyHighs);\n\n// District heat bias\nlet localHeat = dailyTemp;\nDISTRICTS.forEach(d => {\n  if (a.x > d.x && a.x < d.x + d.w && a.y > d.y && a.y < d.y + d.h)\n    localHeat *= d.heatBias;\n});\n\n// Protection factor\nconst protection = inCooling ? 0.05 : inHydration ? 0.4 : outreachHelped ? 0.3 : 1.0;\nconst vulnerabilityMult = a.vulnerable ? 1.6 : 1.0;\n\n// Heat accumulation\nif (inCooling) {\n  a.heat = Math.max(0, a.heat - 0.005);\n} else if (localHeat >= 85) {\n  const heatRate = ((localHeat - 85) / 50) * 0.008 * protection * vulnerabilityMult;\n  a.heat = Math.min(1, a.heat + heatRate);\n} else {\n  a.heat = Math.max(0, a.heat - 0.003);  // cool day recovery\n}\n\n// State machine\nif (a.heat < 0.3)       a.state = \"healthy\";\nelse if (a.heat < 0.65) a.state = \"stressed\";\nelse if (a.heat < 0.9)  a.state = \"critical\";\nelse {\n  const rescueChance = (outreachHelped || a.outreachVisited) ? 0.3 : 0;\n  if (Math.random() < rescueChance) { a.state = \"saved\"; a.heat = 0.2; }\n  else if (Math.random() < 0.002)    { a.state = \"dead\"; }\n  else                                { a.state = \"critical\"; }\n}"
-),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:20}},"7. Mathematical Formulas"),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Daily Temperature Interpolation"),
-React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:4,lineHeight:1.8}},
-React.createElement('i',null,"T"),React.createElement('sub',null,"day")," = ",React.createElement('i',null,"T"),React.createElement('sub',null,"high"),"(",React.createElement('i',null,"m"),") + ( ",React.createElement('i',null,"T"),React.createElement('sub',null,"high"),"(",React.createElement('i',null,"m"),"+1) − ",React.createElement('i',null,"T"),React.createElement('sub',null,"high"),"(",React.createElement('i',null,"m"),") ) × ",React.createElement('i',null,"t")
-),
-React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.05)",border:"1px solid #8C1D4022",borderRadius:5,padding:"10px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
-"where  ",React.createElement('i',null,"t")," = ",React.createElement('span',{style:{display:"inline-block",textAlign:"center",verticalAlign:"middle"}},React.createElement('span',{style:{display:"block",borderBottom:"1px solid #8C1D40",paddingBottom:2}},"day − mid(",React.createElement('i',null,"m"),")"),React.createElement('span',{style:{display:"block",paddingTop:2}},"mid(",React.createElement('i',null,"m"),"+1) − mid(",React.createElement('i',null,"m"),")"))
-),
-React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Linear interpolation between monthly midpoints with wrap-around for December–January. Produces a smooth seasonal temperature curve from 12 monthly climate projections."),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Local Heat Exposure"),
-React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
-React.createElement('i',null,"L"),React.createElement('sub',null,"agent")," = ",React.createElement('i',null,"T"),React.createElement('sub',null,"day")," × ",React.createElement('i',null,"β"),React.createElement('sub',null,"district")
-),
-React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Agent's effective temperature is the daily ambient multiplied by the district's urban heat island bias (0.85–1.25)."),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Heat Accumulation Rate (when L ≥ 85°F)"),
-React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
-"Δ",React.createElement('i',null,"Q")," = ",React.createElement('span',{style:{display:"inline-block",textAlign:"center",verticalAlign:"middle"}},React.createElement('span',{style:{display:"block",borderBottom:"1px solid #8C1D40",paddingBottom:2}},React.createElement('i',null,"L")," − 85"),React.createElement('span',{style:{display:"block",paddingTop:2}},"50"))," × 0.008 × ",React.createElement('i',null,"p")," × ",React.createElement('i',null,"v")
-),
-React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Normalized heat stress increment per tick. Scales linearly with temperature above 85°F. Modified by protection factor and vulnerability multiplier."),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Heat Index Update"),
 React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"left",marginBottom:8,lineHeight:2.4}},
-"If in cooling center:   ",React.createElement('i',null,"Q")," = max( 0, ",React.createElement('i',null,"Q")," − 0.005 )",React.createElement('br'),
-"If ",React.createElement('i',null,"L")," ≥ 85:                    ",React.createElement('i',null,"Q")," = min( 1, ",React.createElement('i',null,"Q")," + Δ",React.createElement('i',null,"Q")," )",React.createElement('br'),
-"If ",React.createElement('i',null,"L")," < 85:                    ",React.createElement('i',null,"Q")," = max( 0, ",React.createElement('i',null,"Q")," − 0.003 )"
+"If in cooling (no blackout):  Q = max(0, Q − 0.005)",React.createElement('br'),
+"If L ≥ 85°F:  ΔQ = ((L − 85) / 50) × 0.008 × p × v × blackoutMult",React.createElement('br'),
+"                      Q = min(1, Q + ΔQ)",React.createElement('br'),
+"If L < 85°F:          Q = max(0, Q − 0.003)"
 ),
-React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Three regimes: active cooling (recovery), hot day (accumulation), cool day (gradual recovery). Heat index is clamped to [0, 1]."),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Protection Factor"),
+React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.05)",border:"1px solid #8C1D4022",borderRadius:5,padding:"14px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"left",marginBottom:8,lineHeight:2.2}},
+"Q < 0.30            → Healthy",React.createElement('br'),
+"0.30 ≤ Q < 0.65  → Heat-Stressed",React.createElement('br'),
+"0.65 ≤ Q < 0.90  → Critical (triggers infrastructure seeking)",React.createElement('br'),
+"Q ≥ 0.90            → Death / Rescue zone"
+),
+React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},
+"In the death/rescue zone: fractionalDeaths += (1 − rescueChance) × fracDeathRate per tick. fractionalSaved += fracRescueRate per tick. Visual agent death uses visualDeathProb (separate from analytical rate). Rescue resets heat to 0.2."
+),
+
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:14}},"6. Key Formulas"),
+
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6}},"Population-Scaled Death Estimate"),
 React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
-React.createElement('i',null,"p")," = { 0.05 (cooling), 0.40 (hydration), 0.30 (outreach), 1.0 (none) }"
+"Deaths = fractionalDeaths × popScale = ( Σ fracDeathRate ) × (countyPop / N)"
 ),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Vulnerability Multiplier"),
+
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:12}},"Fractional Death Rate (per agent-tick in critical zone)"),
 React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
-React.createElement('i',null,"v")," = { 1.6 (vulnerable), 1.0 (general population) }"
+"fracDeathRate = baseFracDeathRate × policyMortMult"
 ),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"State Thresholds"),
+
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:12}},"Population Density Weight (per node)"),
+React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+"w(node) = DISTRICT_DENSITY[ nearestDistrict(node) ]"
+),
+
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:12}},"BFS Next-Hop Pathfinding"),
+React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+"nextNode = bfsNextNode(currentNode, targetNode)  via breadth-first search on STREET_ADJ"
+),
+
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:12}},"Electric Grid Failure"),
 React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"left",marginBottom:8,lineHeight:2.2}},
-React.createElement('i',null,"Q")," < 0.30             → Healthy",React.createElement('br'),
-"0.30 ≤ ",React.createElement('i',null,"Q")," < 0.65  → Heat-Stressed",React.createElement('br'),
-"0.65 ≤ ",React.createElement('i',null,"Q")," < 0.90  → Critical",React.createElement('br'),
-React.createElement('i',null,"Q")," ≥ 0.90             → Death / Rescue zone"
+"isBlackout = (dailyTemp ≥ 100) AND (random() < gridFailure / 100)",React.createElement('br'),
+"If blackout: cooling disabled, blackoutMult = 2.5, baseFracDeathRate = 0.0000867"
 ),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Death Probability (per tick, when Q ≥ 0.9)"),
-React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
-React.createElement('i',null,"P"),"(death) = 0.002"
+
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:12}},"Maricopa County Population Projection"),
+React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
+"maricopaPop(year) = piecewise linear through [2020: 4.42M, 2025: 4.79M, 2030: 5.20M, 2060: 6.53M, 2100: 8.30M]"
 ),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Rescue Probability (per tick, when Q ≥ 0.9 and outreach-visited)"),
-React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
-React.createElement('i',null,"P"),"(rescue) = 0.30"
-),
-React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Rescue resets agent heat to 0.2 and permanently protects the agent from further death risk."),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Outreach Contact Probability (per tick)"),
-React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
-React.createElement('i',null,"P"),"(contact) = 0.002 × ",React.createElement('i',null,"o"),",   when  ",React.createElement('i',null,"d"),"(agent, center) < 80 × ",React.createElement('i',null,"o")
-),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Euclidean Distance"),
-React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
-React.createElement('i',null,"d")," = √( (",React.createElement('i',null,"x"),React.createElement('sub',null,"agent")," − ",React.createElement('i',null,"x"),React.createElement('sub',null,"center"),")",React.createElement('sup',null,"2")," + (",React.createElement('i',null,"y"),React.createElement('sub',null,"agent")," − ",React.createElement('i',null,"y"),React.createElement('sub',null,"center"),")",React.createElement('sup',null,"2")," )"
-),
-React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Used for cooling center proximity, hydration station proximity, and outreach contact range calculations."),
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:18}},"Variable Definitions"),
+
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:14}},"7. Assumptions & Limitations"),
 React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:12}},
 ...[
-["T_day","Daily ambient high temperature (°F), interpolated from the climate model's 12 monthly projections using linear interpolation between monthly midpoints"],
-["T_high(m)","Projected monthly high temperature for month m, from the climate model's project() function output"],
-["m","Month index bracketing the current simulation day; determined by midpoint positions within the year"],
-["t","Interpolation parameter (0 to 1) representing position between two monthly midpoints"],
-["mid(m)","The midpoint day of month m, computed as cumulative days to month m plus half the days in month m"],
-["L_agent","Local effective temperature experienced by an individual agent (°F), after applying district heat bias"],
-["β_district","District urban heat island bias multiplier: Downtown = 1.25, West Phoenix = 1.10, Tempe = 1.15, South Mountain = 0.90, Chandler = 1.00, North Phoenix = 0.85, Scottsdale = 0.95, Avondale = 1.05, Mesa = 1.08, Laveen = 0.88"],
-["ΔQ","Per-tick heat stress increment; only positive when local temperature ≥ 85°F"],
-["Q","Agent cumulative heat stress index, ranging from 0 (no stress) to 1 (maximum). Drives state machine transitions"],
-["p","Protection factor multiplier: 0.05 in cooling center (95% reduction), 0.40 at hydration station (60% reduction), 0.30 if outreach-visited (70% reduction), 1.0 with no protection. Mutually exclusive; cooling takes priority"],
-["v","Vulnerability multiplier: 1.6 for vulnerable agents (elderly, unhoused, medically compromised — 25% of population), 1.0 for general population"],
-["85","Temperature threshold (°F) below which heat does not accumulate and gradual recovery occurs"],
-["50","Normalization divisor for the heat rate formula, calibrating the accumulation speed"],
-["0.008","Base heat accumulation coefficient per tick at the reference temperature"],
-["0.005","Per-tick heat recovery rate inside a cooling center"],
-["0.003","Per-tick heat recovery rate on cool days (below 85°F)"],
-["0.002","Per-tick death probability in the critical zone (Q ≥ 0.9)"],
-["0.30","Rescue probability per tick for outreach-visited agents in the death zone; resets heat to 0.2"],
-["0.2","Heat index reset value upon rescue — agent transitions to 'saved' state permanently"],
-["o","Outreach level (0–3), controls both contact probability and geographic coverage radius"],
-["80","Base outreach radius in pixels per outreach level; at level 3 covers 240px from city center"],
-["d","Euclidean distance between agent position and an infrastructure point (cooling center, hydration station, or outreach center)"],
-["x_agent, y_agent","Agent's current position on the 640×440 pixel canvas, updated each tick with velocity plus random noise"],
-["x_center, y_center","Outreach center coordinates (fixed at 300, 220), representing approximate Phoenix city center on the canvas"],
-].map(([sym,def],i)=>React.createElement('div',{key:i,style:{display:"flex",gap:10,padding:"8px 12px",background:"rgba(140,29,64,0.04)",border:"1px solid #8C1D4022",borderRadius:6}},
-React.createElement('span',{style:{color:"#8C1D40",fontFamily:"'Times New Roman',serif",fontWeight:700,fontStyle:"italic",fontSize:16,flexShrink:0,minWidth:110}},sym),
-React.createElement('span',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},def)
+"Street network is a simplified representation (~192 nodes) of Phoenix's major arterial grid, not a complete street map. Minor streets and pedestrian paths are not modeled.",
+"Home-work commute is a simplified 2-phase daily cycle. Real commute patterns include multi-stop trips, variable schedules, and non-work activities.",
+"Population density weights are approximate ratios based on relative district populations, not census-tract-level data.",
+"Infrastructure seeking uses BFS shortest path, not real-time traffic or actual pedestrian routing. Agents may not find the optimal cooling center.",
+"Fractional mortality accumulation assumes a constant per-tick death probability in the critical zone. Real heat mortality has non-linear onset dynamics.",
+"The 2.5× blackout multiplier is derived from Stone et al. (2023) modeling; actual blackout impacts depend on duration, geographic extent, and time of day.",
+"Policy intervention effectiveness (8%/4%/6% per tier) is calibrated to the 2022–2024 observed average. Individual year variance (e.g., 2023's anomalous 645 deaths) reflects weather variability not captured by the trend model.",
+"Population projection beyond 2060 is extrapolated at the 2030–2060 growth rate; actual growth depends on migration, policy, and climate factors.",
+].map((note,i)=>React.createElement('div',{key:i,style:{display:"flex",gap:8,padding:"8px 12px",background:"rgba(140,29,64,0.04)",border:"1px solid #8C1D4022",borderRadius:6}},
+React.createElement('span',{style:{color:"#8C1D40",flexShrink:0,fontSize:14}},(i+1)+"."),
+React.createElement('span',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5}},note)
 ))
 )
 );
 }
+
 function App(){
 const[lesson,setLesson]=useState(function(){try{var s=history.state;if(s&&s.lesson)return s.lesson;}catch(e){}return"followalong";}());
 const navigateLesson=React.useCallback(function(id){setLesson(id);try{history.pushState({lesson:id},"","#"+id);}catch(e){}},[]);
@@ -2237,12 +2384,7 @@ React.createElement('div',{style:{fontSize:10,color:"#5C1130",fontWeight:600,pad
 )
 );
 if(l.id==="policy"){
-return[React.createElement('div',{key:"year-widget",style:{margin:"8px 16px",padding:"12px 14px",background:"rgba(140,29,64,0.12)",border:"1px solid rgba(140,29,64,0.3)",borderRadius:10}},
-React.createElement('div',{style:{fontSize:10,color:"#5C1130",letterSpacing:"2px",marginBottom:6,textTransform:"uppercase",fontWeight:700}},"Active Scenario"),
-React.createElement('div',{style:{color:"#3D0A20",fontSize:12,marginBottom:5,fontWeight:600}},s.emoji," ",s.label),
-React.createElement('div',{style:{fontSize:10,color:"#5C1130",marginBottom:3}},"Year: ",React.createElement('strong',null,year)),
-React.createElement('input',{type:"range",min:"2020",max:"2100",value:year,onChange:e=>setYear(+e.target.value),style:{width:"100%",accentColor:"#8C1D40"}})
-),btn];
+return btn;
 }
 return btn;
 }),
