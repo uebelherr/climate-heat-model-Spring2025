@@ -204,7 +204,7 @@ React.createElement(FactBox,{icon:"🌡",stat:"107",unit:"days >100°F",note:"Av
 React.createElement(FactBox,{icon:"💧",stat:'8"',unit:"rain/yr",note:"Annual precipitation — drier than the Sahara",color:"#2E86C1",refs:[1]})
 ),
 React.createElement(SectionHead,null,"The Urban Heat Island"),
-React.createElement('p',{style:prose},"Phoenix's asphalt, concrete, and sprawling development trap heat long after sunset. Nighttime temperatures rarely drop below 90°F in summer — a phenomenon called the urban heat island effect — which prevents the body's natural overnight recovery from heat stress.",React.createElement(Ref,{n:[14,1]})),
+React.createElement('p',{style:prose},"Phoenix's asphalt, concrete, and sprawling development trap heat long after sunset. Nighttime temperatures rarely drop below 90°F in summer — a phenomenon called the urban heat island effect — which prevents the body's natural overnight recovery from heat stress.",React.createElement(Ref,{n:[1,14]})),
 React.createElement(KeyConcept,{term:"Urban Heat Island",color:"#8C1D40"},"When cities replace natural land cover with heat-absorbing surfaces, they create localized warming zones 2–8°F hotter than surrounding rural areas.",React.createElement(Ref,{n:14}))
 );
 }
@@ -228,7 +228,7 @@ React.createElement('div',{style:{background:`linear-gradient(90deg,${d.color},$
 ),
 React.createElement('p',{style:{...prose,fontSize:18,margin:0,color:"#7A3045"}},d.desc)
 )),
-React.createElement(KeyConcept,{term:"Feedback Loops",color:"#ef4444"},"As Phoenix warms, more A/C is used → more electricity is burned → more heat & CO₂ is released → further warming. This is a positive feedback loop.",React.createElement(Ref,{n:[2,24]}))
+React.createElement(KeyConcept,{term:"Feedback Loops",color:"#ef4444"},"As Phoenix warms, more A/C is used → more electricity is burned → more heat & CO₂ is released → further warming. This is a positive feedback loop.",React.createElement(Ref,{n:[2,25]}))
 );
 }
 function ScenariosPanel({scenario,setScenario,year,setYear}){
@@ -440,7 +440,7 @@ React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},i
 ))
 ),
 React.createElement('div',{style:{marginTop:12,paddingTop:10,borderTop:"1px solid #6B1530",fontSize:15,color:"#5C1130",lineHeight:1.6}},
-"💡 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Policy takeaway: "),"No single intervention is sufficient. Cooling centers protect the most critical cases; hydration stations provide broad passive protection; outreach reaches those who cannot self-rescue. A layered approach — deployed ",React.createElement('em',null,"before")," heat events — is 3–4× more effective than reactive response.",React.createElement(Ref,{n:[15,16,17,19,21]})
+"💡 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Policy takeaway: "),"No single intervention is sufficient. Cooling centers protect the most critical cases; hydration stations provide broad passive protection; outreach reaches those who cannot self-rescue. A layered approach — deployed ",React.createElement('em',null,"before")," heat events — is 3–4× more effective than reactive response.",React.createElement(Ref,{n:[16,17,18,20,22]})
 )
 )
 );
@@ -554,7 +554,7 @@ React.createElement('div',{style:{padding:"16px 18px",background:"rgba(239,68,68
 React.createElement('div',{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}},
 React.createElement('div',null,
 React.createElement('span',{style:{fontSize:16,marginRight:8}},"🏢"),
-React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Cooling Centers"),React.createElement(Ref,{n:[17,20]}),
+React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Cooling Centers"),React.createElement(Ref,{n:[18,21]}),
 React.createElement('div',{style:{fontSize:15,color:"#7A3045",marginTop:2}},"24-hr air-conditioned public facilities for vulnerable residents")
 ),
 React.createElement('span',{style:{color:"#ef4444",fontSize:16,fontWeight:700}},POLICY_LABELS.coolingCenters[coolingCenters])
@@ -570,7 +570,7 @@ React.createElement('div',{style:{padding:"16px 18px",background:"rgba(255,198,3
 React.createElement('div',{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}},
 React.createElement('div',null,
 React.createElement('span',{style:{fontSize:16,marginRight:8}},"💧"),
-React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Hydration Stations"),React.createElement(Ref,{n:[18,20]}),
+React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Hydration Stations"),React.createElement(Ref,{n:[19,21]}),
 React.createElement('div',{style:{fontSize:15,color:"#7A3045",marginTop:2}},"Free water & electrolyte access at bus stops, parks, and public spaces")
 ),
 React.createElement('span',{style:{color:"#8C1D40",fontSize:16,fontWeight:700}},POLICY_LABELS.hydrationStations[hydrationStations])
@@ -586,7 +586,7 @@ React.createElement('div',{style:{padding:"16px 18px",background:"rgba(140,29,64
 React.createElement('div',{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}},
 React.createElement('div',null,
 React.createElement('span',{style:{fontSize:16,marginRight:8}},"🤝"),
-React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Community Outreach Programs"),React.createElement(Ref,{n:[16,21]}),
+React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Community Outreach Programs"),React.createElement(Ref,{n:[17,22]}),
 React.createElement('div',{style:{fontSize:15,color:"#7A3045",marginTop:2}},"Targeted wellness checks, early warnings, and support for elderly & unhoused residents")
 ),
 React.createElement('span',{style:{color:"#8C1D40",fontSize:16,fontWeight:700}},POLICY_LABELS.outreach[outreach])
@@ -634,11 +634,11 @@ React.createElement('p',{style:{margin:0}},React.createElement('span',{style:{fo
 ),
 React.createElement('div',{style:{padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 React.createElement('span',{style:{color:"#7A3045",fontWeight:700}},"Model notes: "),
-"The model was coded using Claude.ai with a baseline calibrated to Maricopa County 2023 heat mortality data (~645 deaths).",React.createElement(Ref,{n:5})," Projections use a dose-response function scaling deaths to heat-day exposure and mean warming.",React.createElement(Ref,{n:[6,7]})," Policy reduction estimates are based on published public health intervention studies (95% CI ±15%).",React.createElement(Ref,{n:[16,17,18,19,20,21]})
+"The model was coded using Claude.ai with a baseline calibrated to Maricopa County 2023 heat mortality data (~645 deaths).",React.createElement(Ref,{n:5})," Projections use a dose-response function scaling deaths to heat-day exposure and mean warming.",React.createElement(Ref,{n:[6,7]})," Policy reduction estimates are based on published public health intervention studies (95% CI ±15%).",React.createElement(Ref,{n:[17,18,19,20,21,22]})
 ),
 React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 "📌 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Model disclaimer: "),
-"This is an educational simulation built for classroom use. Climate and mortality projections",React.createElement(Ref,{n:[5,6,7]}),", policy effectiveness estimates",React.createElement(Ref,{n:[16,17,18,19]}),", and scenario outcomes",React.createElement(Ref,{n:[2,3]})," are simplified models intended to illustrate relationships between climate variables and public health outcomes — not clinical forecasts. For official public health planning, consult Maricopa County Department of Public Health and the Arizona Department of Health Services."
+"This is an educational simulation built for classroom use. Climate and mortality projections",React.createElement(Ref,{n:[5,6,7]}),", policy effectiveness estimates",React.createElement(Ref,{n:[17,18,19,20]}),", and scenario outcomes",React.createElement(Ref,{n:[2,3]})," are simplified models intended to illustrate relationships between climate variables and public health outcomes — not clinical forecasts. For official public health planning, consult Maricopa County Department of Public Health and the Arizona Department of Health Services."
 )
 );
 }
@@ -653,6 +653,7 @@ const[tick,setTick]=useState(0);
 const[stats,setStats]=useState({healthy:0,stressed:0,critical:0,dead:0,saved:0});
 const[speed,setSpeed]=useState(1);
 const[numAgents,setNumAgents]=useState(500);
+const[gridFailure,setGridFailure]=useState(0);
 const W=640, H=440;
 const DISTRICTS=[
 {x:250,y:160,w:90,h:70,name:"Downtown",heatBias:1.25,color:"rgba(239,68,68,0.18)"},
@@ -762,6 +763,7 @@ const day=sim.tick; // 0-indexed day of year
 const monthlyHighs=sim.monthlyHighs||project(scenario,year).map(d=>d.high);
 const dailyTemp=dayToTemp(day,monthlyHighs); // seasonal interpolation
 const{agents,coolingLocs,hydLocs}=sim;
+const isBlackout=dailyTemp>=100&&gridFailure>0&&Math.random()<(gridFailure/100);
 const outreachRange=outreach>0?80*outreach:0;
 const outreachCenter={x:300,y:220};
 agents.forEach(a=>{
@@ -777,10 +779,10 @@ DISTRICTS.forEach(d=>{
 if(a.x>d.x&&a.x<d.x+d.w&&a.y>d.y&&a.y<d.y+d.h) localHeat*=d.heatBias;
 });
 let inCooling=false;
-coolingLocs.forEach(c=>{
+if(!isBlackout){coolingLocs.forEach(c=>{
 const dx=a.x-c.x,dy=a.y-c.y;
 if(Math.sqrt(dx*dx+dy*dy)<c.r) inCooling=true;
-});
+});}
 let inHydration=false;
 hydLocs.forEach(h=>{
 const dx=a.x-h.x,dy=a.y-h.y;
@@ -794,10 +796,11 @@ if(outreachHelped) a.outreachVisited=true;
 }
 const protection=inCooling?0.05:inHydration?0.4:outreachHelped?0.3:1.0;
 const vulnerabilityMult=a.vulnerable?1.6:1.0;
-if(inCooling){
+const blackoutMult=isBlackout?2.5:1.0;
+if(inCooling&&!isBlackout){
 a.heat=Math.max(0,a.heat-0.005);
 } else if(localHeat>=85){
-const heatRate=((localHeat-85)/50)*0.008*protection*vulnerabilityMult;
+const heatRate=((localHeat-85)/50)*0.008*protection*vulnerabilityMult*blackoutMult;
 a.heat=Math.min(1,a.heat+heatRate);
 } else {
 a.heat=Math.max(0,a.heat-0.003);
@@ -808,7 +811,7 @@ else if(a.heat<0.9){a.state="critical";}
 else{
 const rescueChance=(outreachHelped||a.outreachVisited)?0.3:0;
 if(Math.random()<rescueChance){a.state="saved";a.heat=0.2;}
-else if(Math.random()<0.002){a.state="dead";} // lower daily death probability
+else if(Math.random()<(isBlackout?0.005:0.002)){a.state="dead";}
 else{a.state="critical";}
 }
 });
@@ -898,7 +901,7 @@ const ctx=canvas.getContext("2d");
 drawFrame(ctx,simRef.current);
 setStats(simRef.current.stats||{healthy:numAgents,stressed:0,critical:0,dead:0,saved:0});
 }
-},[scenario,year,coolingCenters,hydrationStations,outreach,numAgents]);
+},[scenario,year,coolingCenters,hydrationStations,outreach,numAgents,gridFailure]);
 useEffect(()=>{
 if(running){
 const delay=50;const stepsPerTick=speed;
@@ -913,7 +916,7 @@ if(simRef.current.tick>=totalDays) setRunning(false);
 },delay);
 return()=>clearInterval(id);
 }
-},[running,speed,coolingCenters,hydrationStations,outreach]);
+},[running,speed,coolingCenters,hydrationStations,outreach,gridFailure]);
 const s=SCENARIOS[scenario];
 const total=stats.healthy+stats.stressed+stats.critical+stats.dead+stats.saved||120;
 const totalDays=daysInYear(year);
@@ -997,6 +1000,12 @@ React.createElement('span',{style:{color:"#7A3045",fontSize:15,whiteSpace:"nowra
 React.createElement('input',{type:"range",min:"0",max:"1000",step:"1",value:numAgents,onChange:e=>{setNumAgents(+e.target.value);setRunning(false);},style:{flex:1,accentColor:"#8C1D40"}}),
 React.createElement('span',{style:{color:"#8C1D40",fontWeight:700,minWidth:40,fontSize:17}},numAgents)
 ),
+React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marginBottom:8}},
+React.createElement('span',{style:{color:gridFailure>0?"#ef4444":"#7A3045",fontSize:15,whiteSpace:"nowrap"}},"⚡ Electric Grid Failure:"),
+React.createElement('input',{type:"range",min:"0",max:"50",step:"0.25",value:gridFailure,onChange:e=>{setGridFailure(+e.target.value);setRunning(false);},style:{flex:1,accentColor:"#ef4444"}}),
+React.createElement('span',{style:{color:gridFailure>0?"#ef4444":"#7A3045",fontWeight:700,minWidth:44,fontSize:17}},gridFailure,"%")
+),
+gridFailure>0?React.createElement('div',{style:{fontSize:14,fontWeight:700,color:"#ef4444",marginBottom:6,padding:"6px 10px",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:6}},"⚠ Electric grid failure active: ",gridFailure,"% daily blackout probability on days ≥100°F — cooling centers disabled, heat accumulation ×2.5, mortality ×2+ per Stone et al. (2023) [15]"):null,
 React.createElement('div',{style:{display:"flex",gap:14,flexWrap:"wrap",fontSize:15,color:"#7A3045",marginTop:6}},
 ...Object.entries({
 "🟢 Healthy":"#10b981","🟡 Heat-Stressed":"#B8960B",
@@ -1056,15 +1065,15 @@ React.createElement('div',{style:{fontSize:14,color:"#A05070",lineHeight:1.6,mar
 ),
 React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 React.createElement('span',{style:{color:"#7A3045",fontWeight:700}},"ABM Rules: "),
-"Each dot = 1 agent. Each tick = 1 day (365 or 366/yr). Temperature follows the climate model seasonal curve — cool in winter, peaking in July. Heat accumulates on hot days (≥85°F), dissipates slowly on cool days. Cooling centers actively reduce heat 95%. Hydration slows accumulation 60%. Outreach rescues critical vulnerable agents. Vulnerable agents (ringed) have 1.6× heat sensitivity.",React.createElement(Ref,{n:[9,12,14]})
+"Each dot = 1 agent. Each tick = 1 day (365 or 366/yr). Temperature follows the climate model seasonal curve — cool in winter, peaking in July. Heat accumulates on hot days (≥85°F), dissipates slowly on cool days. Cooling centers actively reduce heat 95%. Hydration slows accumulation 60%. Outreach rescues critical vulnerable agents. Vulnerable agents (ringed) have 1.6× heat sensitivity. Electric grid failure: on days ≥100°F, blackout probability triggers per slider — cooling centers are disabled, heat accumulation rate ×2.5, and death probability ×2.5, per Stone et al. (2023) finding that concurrent blackouts more than double Phoenix heat mortality.",React.createElement(Ref,{n:[9,12,14,15]})
 ),
 React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 React.createElement('span',{style:{color:"#7A3045",fontWeight:700}},"Model notes: "),
-"This is a policy-intervention ABM designed to show how infrastructure choices affect heat mortality outcomes under different climate scenarios.",React.createElement(Ref,{n:[10,11,12,13,14]})
+"This is a policy-intervention ABM designed to show how infrastructure choices and electric grid failure events affect heat mortality outcomes under different climate scenarios.",React.createElement(Ref,{n:[10,11,12,13,14,15]})
 ),
 React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 "📌 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Model disclaimer: "),
-"This is an educational simulation built for classroom use. Climate and mortality projections",React.createElement(Ref,{n:[5,6,7]}),", policy effectiveness estimates",React.createElement(Ref,{n:[16,17,18,19]}),", and scenario outcomes",React.createElement(Ref,{n:[2,3]})," are simplified models intended to illustrate relationships between climate variables and public health outcomes — not clinical forecasts. For official public health planning, consult Maricopa County Department of Public Health and the Arizona Department of Health Services."
+"This is an educational simulation built for classroom use. Climate and mortality projections",React.createElement(Ref,{n:[5,6,7]}),", policy effectiveness estimates",React.createElement(Ref,{n:[17,18,19,20]}),", and scenario outcomes",React.createElement(Ref,{n:[2,3]})," are simplified models intended to illustrate relationships between climate variables and public health outcomes — not clinical forecasts. For official public health planning, consult Maricopa County Department of Public Health and the Arizona Department of Health Services."
 )
 );
 }
@@ -1287,6 +1296,14 @@ source:"Climate Research, 33(2), 171–182",
 url:"https://doi.org/10.3354/cr033171",
 note:"District-level heat bias calibration (Downtown +25%, Tempe +15%, North Phoenix −15%, etc.) derived from spatial UHI variation across Phoenix development zones."
 },
+{
+authors:"Stone, B., Jr., et al.",
+year:"2023",
+title:"How Blackouts during Heat Waves Amplify Mortality and Morbidity Risk",
+source:"Environmental Science & Technology, 57(22), 8245–8255",
+url:"https://doi.org/10.1021/acs.est.2c09588",
+note:"Concurrent heat wave + blackout events more than double heat-related mortality in Phoenix; >50% of population requires medical attention. Grid failure disables A/C cooling, amplifying indoor heat exposure. Basis for ABM electric grid failure probability slider."
+},
 ]
 },
 {
@@ -1416,7 +1433,7 @@ React.createElement('span',{style:{color:"#5C1130",fontWeight:600}},"Used for: "
 );}),
 React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 "📌 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Model disclaimer: "),
-"This is an educational simulation built for classroom use. Climate and mortality projections",React.createElement(Ref,{n:[5,6,7]}),", policy effectiveness estimates",React.createElement(Ref,{n:[16,17,18,19]}),", and scenario outcomes",React.createElement(Ref,{n:[2,3]})," are simplified models intended to illustrate relationships between climate variables and public health outcomes — not clinical forecasts. For official public health planning, consult Maricopa County Department of Public Health and the Arizona Department of Health Services."
+"This is an educational simulation built for classroom use. Climate and mortality projections",React.createElement(Ref,{n:[5,6,7]}),", policy effectiveness estimates",React.createElement(Ref,{n:[17,18,19,20]}),", and scenario outcomes",React.createElement(Ref,{n:[2,3]})," are simplified models intended to illustrate relationships between climate variables and public health outcomes — not clinical forecasts. For official public health planning, consult Maricopa County Department of Public Health and the Arizona Department of Health Services."
 )
 );
 }
