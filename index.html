@@ -1436,7 +1436,7 @@ year:"2023",
 title:"Heat-Associated Deaths in Maricopa County — 2023 Final Report",
 source:"",
 url:"https://www.maricopa.gov/ArchiveCenter/ViewFile/Item/5820",
-note:"Primary calibration source: 645 confirmed heat-associated deaths in 2023. Used to set baseline ~425 deaths/yr for the mortality estimator model."
+note:"Primary calibration source: 645 confirmed heat-associated deaths in 2023. Three-year average (2022–2024): ~557 deaths/yr with current HRN policies. Raw counterfactual baseline (BASE_DEATHS_2020) calibrated to 663 deaths/yr."
 },
 {
 authors:"Hondula, D.M., et al.",
@@ -1973,7 +1973,7 @@ React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:8,ma
 {label:"Additional Heat Days",formula:"additionalHeatDays = max(0, totalHeatDays − 104)",note:"Counts heat days in excess of the 2020 baseline (104/yr). Only positive exceedances contribute to projected mortality increase."},
 {label:"Warming Delta",formula:"warming = tempD × max(0, (year − 2020) / 80)",note:"Effective warming in °F at the selected year and scenario. Same time factor (f) as the climate model."},
 {label:"Warming Multiplier",formula:"warmingMultiplier = 1.04 ^ warming",note:"Exponential dose-response. Each additional °F of mean warming compounds the baseline death rate multiplicatively."},
-{label:"Raw Deaths (no policy)",formula:"rawDeaths = round((425 + additionalHeatDays × 3.2) × warmingMultiplier)",note:"Two additive heat stress pathways (extra extreme days + general warming) combined before the warming multiplier is applied."},
+{label:"Raw Deaths (no policy)",formula:"rawDeaths = round((BASE_DEATHS_2020 + additionalHeatDays × 3.2) × warmingMultiplier)",note:"BASE_DEATHS_2020 = 663. Two additive heat stress pathways (extra extreme days + general warming) combined before the warming multiplier is applied."},
 {label:"Policy Reduction %",formula:"totalReductionPct = min(0.65, coolingReduction + hydrationReduction + outreachReduction)",note:"Cooling: 8% per tier. Hydration: 4% per tier. Outreach: 6% per tier. Combined and hard-capped at 65%."},
 {label:"Prevented Deaths",formula:"preventedDeaths = round(rawDeaths × totalReductionPct)",note:"Lives saved by active policy interventions. Displayed as the positive impact of each policy configuration."},
 {label:"Final Deaths",formula:"finalDeaths = rawDeaths − preventedDeaths",note:"Projected heat deaths after policy interventions. Used for risk level classification and monthly distribution chart."},
@@ -1994,8 +1994,8 @@ React.createElement('tr',null,
 ),
 React.createElement('tbody',null,
 ...[
-{name:"🏢 Cooling Centers",vals:["0 / 0%","50 centers / −8%","150 centers / −16%","300 centers / −24%"],costs:["$0","$2.1M/yr","$4.8M/yr","$9.2M/yr"]},
-{name:"💧 Hydration Stations",vals:["0 / 0%","200 stations / −4%","500 stations / −8%","1,000 stations / −12%"],costs:["$0","$0.4M/yr","$0.9M/yr","$1.8M/yr"]},
+{name:"🏢 Cooling Centers",vals:["0 / 0%","~50 centers / −8%","~80 centers / −16%","~120 centers / −24%"],costs:["$0","$2.1M/yr","$4.8M/yr","$9.2M/yr"]},
+{name:"💧 Hydration Stations",vals:["0 / 0%","~70 stations / −4%","~110 stations / −8%","~160 stations / −12%"],costs:["$0","$0.4M/yr","$0.9M/yr","$1.8M/yr"]},
 {name:"🤝 Outreach",vals:["None / 0%","Basic / −6%","Expanded / −12%","Comprehensive / −18%"],costs:["$0","$1.2M/yr","$2.6M/yr","$4.5M/yr"]},
 ].map((row,ri)=>React.createElement('tr',{key:ri,style:{borderBottom:"1px solid #4A1428"}},
 React.createElement('td',{style:{padding:"6px 8px",color:"#5C1130",fontWeight:600,whiteSpace:"nowrap"}},row.name),
@@ -2030,8 +2030,8 @@ React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,mar
 React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Core Mortality Equation"),
 React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
 "The model computes raw (pre-intervention) deaths using two additive heat stress pathways combined with an exponential warming multiplier: ",
-React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"rawDeaths = round((425 + additionalHeatDays × 3.2) × warmingMultiplier)"),
-". The constant 425 represents the 2020 baseline annual heat deaths for Maricopa County, calibrated to the 2018–2022 average trend. The coefficient 3.2 means each additional extreme heat day (above 110°F) beyond the baseline of 104 days per year adds approximately 3.2 deaths, derived from dose-response regressions in Hondula et al. (2015) examining heat-related mortality across seven U.S. cities including Phoenix."
+React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"rawDeaths = round((663 + additionalHeatDays × 3.2) × warmingMultiplier)"),
+". The constant 663 (BASE_DEATHS_2020) represents the estimated counterfactual annual heat deaths without HRN policy interventions, calibrated so that the moderate scenario at 2022–2024 with Current policies matches the observed 3-year average (~557 deaths/yr). Observed: 425 (2022), 645 (2023), 602 (2024). The coefficient 3.2 means each additional extreme heat day (above 110°F) beyond the baseline of 104 days per year adds approximately 3.2 deaths, derived from dose-response regressions in Hondula et al. (2015) examining heat-related mortality across seven U.S. cities including Phoenix."
 ),
 React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Warming Multiplier"),
 React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
@@ -2105,9 +2105,9 @@ React.createElement('i',null,"D"),React.createElement('sub',null,"add")," = max(
 React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Heat days in excess of the 2020 baseline (104 days/yr). Only positive exceedances contribute to mortality increase."),
 React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Raw Deaths (pre-intervention)"),
 React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
-React.createElement('i',null,"R")," = ⌊ ( 425 + ",React.createElement('i',null,"D"),React.createElement('sub',null,"add")," × 3.2 ) × ",React.createElement('i',null,"M")," + 0.5 ⌋"
+React.createElement('i',null,"R")," = ⌊ ( 663 + ",React.createElement('i',null,"D"),React.createElement('sub',null,"add")," × 3.2 ) × ",React.createElement('i',null,"M")," + 0.5 ⌋"
 ),
-React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Two additive heat stress pathways (extra extreme days + general warming) combined. The 425 base and 3.2 coefficient are multiplied by the warming multiplier M."),
+React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Two additive heat stress pathways (extra extreme days + general warming) combined. The 663 base (BASE_DEATHS_2020, estimated counterfactual without HRN) and 3.2 coefficient are multiplied by the warming multiplier M."),
 React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Policy Reduction Percentages"),
 React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"left",marginBottom:8,lineHeight:2.2}},
 React.createElement('i',null,"r"),React.createElement('sub',null,"cool")," = ",React.createElement('i',null,"c")," × 0.08",React.createElement('br'),
@@ -2142,7 +2142,7 @@ React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:6,ma
 ["D_total","Total projected extreme heat days per year, summed from the climate model's 12 monthly H(i) values"],
 ["D_add","Additional heat days above the 2020 baseline of 104 days/yr"],
 ["104","Baseline extreme heat days per year (NOAA 1991–2020 normal, sum of BASE.heat array)"],
-["425","Baseline annual heat-related deaths for Maricopa County (2018–2022 average trend)"],
+["663","BASE_DEATHS_2020: estimated counterfactual annual heat deaths without HRN policy interventions, calibrated so moderate scenario + Current policies ≈ 557 (2022–2024 observed average)"],
 ["3.2","Deaths per additional extreme heat day beyond baseline, from Hondula et al. (2015) heat-mortality analysis across seven U.S. cities including Phoenix"],
 ["1.04","Per-°F warming multiplier — each degree of mean warming increases the death rate by 4%, from Baccini et al. (2008)"],
 ["R","Raw projected deaths before any policy intervention"],
