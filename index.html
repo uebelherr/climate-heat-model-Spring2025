@@ -732,6 +732,9 @@ const DISTRICT_DENSITY=[3.0,1.5,2.5,0.8,1.8,1.5,1.2,0.8,2.0,0.6];
 const NODE_WEIGHTS=(()=>{const w=new Float32Array(STREET_NODES.length);
 for(let i=0;i<STREET_NODES.length;i++){
 const nx=STREET_NODES[i][0],ny=STREET_NODES[i][1];
+// Zero-weight peripheral nodes in mountain/desert/park areas on the map
+// These nodes exist for road connectivity but are not residential/commercial areas
+if(nx<90||nx>570||ny<70||ny>370){w[i]=0;continue;}
 let bestDist=1e9,bestIdx=0;
 for(let d=0;d<DISTRICTS.length;d++){
 const cx=DISTRICTS[d].x+DISTRICTS[d].w/2,cy=DISTRICTS[d].y+DISTRICTS[d].h/2;
