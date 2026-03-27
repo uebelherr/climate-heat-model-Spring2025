@@ -41,6 +41,41 @@ body{-webkit-text-size-adjust:100%;overflow-x:auto;}
 const{useState,useEffect,useRef}=React;
 const{AreaChart,Area,BarChart,Bar,LineChart,Line,XAxis,YAxis,CartesianGrid,Tooltip:RechartTooltip,ResponsiveContainer,ReferenceLine}=Recharts;
 const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+// ─── Seedable MT19937 RNG (replaces _rng.random()) ───────────────────────────
+// Produces identical output to C++ std::mt19937 given the same seed.
+// All arithmetic uses bitwise ops to stay in 32-bit unsigned integer space.
+class MT19937 {
+  constructor(seed = Date.now()) {
+    this.mt = new Uint32Array(624);
+    this.index = 624;
+    this.mt[0] = seed >>> 0;
+    for (let i = 1; i < 624; i++) {
+      this.mt[i] = (Math.imul(1812433253, (this.mt[i-1] ^ (this.mt[i-1] >>> 30))) + i) >>> 0;
+    }
+  }
+  _generate() {
+    for (let i = 0; i < 624; i++) {
+      const y = ((this.mt[i] & 0x80000000) + (this.mt[(i+1) % 624] & 0x7fffffff)) >>> 0;
+      this.mt[i] = this.mt[(i + 397) % 624] ^ (y >>> 1);
+      if (y & 1) this.mt[i] ^= 0x9908b0df;
+    }
+    this.index = 0;
+  }
+  nextUint32() {
+    if (this.index >= 624) this._generate();
+    let y = this.mt[this.index++];
+    y ^= y >>> 11;
+    y ^= (y << 7) & 0x9d2c5680;
+    y ^= (y << 15) & 0xefc60000;
+    y ^= y >>> 18;
+    return y >>> 0;
+  }
+  random() { return this.nextUint32() / 4294967296; }
+  randomInt(n) { return Math.floor(this.random() * n); }
+}
+const RNG_SEED = 20240101;
+const _rng = new MT19937(RNG_SEED);
+// ─────────────────────────────────────────────────────────────────────────────
 const BASE={
 high:[67,71,78,85,95,104,106,105,100,89,76,66],
 low:[44,47,52,59,68,77,84,83,76,64,51,44],
@@ -479,13 +514,14 @@ React.createElement('div',{style:{fontSize:14,color:iv.color,fontWeight:600}},"C
 ))
 ),
 React.createElement('div',{style:{padding:"14px 18px",background:"rgba(239,68,68,0.05)",border:"1px solid #ef444433",borderRadius:10,marginBottom:16}},
-React.createElement('div',{style:{color:"#ef4444",fontWeight:700,fontSize:16,marginBottom:10}},"⚡ Electric Grid Failure — ABM Findings",React.createElement(Ref,{n:[17,18]})),
-React.createElement('p',{style:{...prose,marginBottom:12}},"The Agent-Based Model (slide 9) reveals that electric grid failure during heat waves is a catastrophic risk multiplier. When the grid fails on days ≥100°F, air conditioning — the primary defense against heat mortality — is disabled across affected areas."),
+React.createElement('div',{style:{color:"#ef4444",fontWeight:700,fontSize:16,marginBottom:10}},"⚡ Electric Grid Failure — ABM Findings",React.createElement(Ref,{n:[17,18,47,48]})),
+React.createElement('p',{style:{...prose,marginBottom:12}},"The Agent-Based Model (slide 9) reveals that electric grid failure during heat waves is a catastrophic risk multiplier. When the grid fails on days ≥100°F, air conditioning — the primary defense against heat mortality — is disabled across affected areas. Blackout events persist across multiple days using a hybrid duration model: a strain-dependent minimum floor ensures that outages during severe heat domes last longer, while a geometric restoration tail produces realistic stochastic variation in recovery time."),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:12}},
 ...[
 {stat:"×2.5",desc:"heat accumulation rate during blackout — indoor temperatures rapidly approach outdoor ambient",col:"#ef4444"},
 {stat:"×2+",desc:"mortality risk multiplier when blackout coincides with extreme heat, per Stone et al. (2023)",col:"#ef4444"},
 {stat:"0.083%",desc:"base daily grid failure probability (NERC LOLE standard), dynamically amplified ×1–10 by logistic function of Tmax, Tmin, heatwave duration, and cumulative grid strain",col:"#B8960B"},
+{stat:"1–7 days",desc:"multi-day blackout persistence: duration = max(1, ⌈gridStrain/4⌉) + Geometric(p=0.5), capped at 7. Severe heat domes produce longer outages.",col:"#7A3045"},
 {stat:"Cooling disabled",desc:"all cooling centers become inoperable during blackout — the highest-impact intervention is eliminated",col:"#7A3045"},
 ].map((item,i)=>React.createElement('div',{key:i,style:{display:"flex",gap:10,alignItems:"flex-start"}},
 React.createElement('div',{style:{color:item.col,fontWeight:700,fontSize:16,fontFamily:"'Playfair Display',serif",minWidth:90,flexShrink:0}},item.stat),
@@ -493,7 +529,7 @@ React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},i
 ))
 ),
 React.createElement('div',{style:{fontSize:15,color:"#5C1130",lineHeight:1.6}},
-"⚠ ",React.createElement('strong',{style:{color:"#ef4444"}},"Critical finding: "),"Grid resilience is not just an energy policy issue — it is a public health imperative. As data center demand strains the Maricopa County grid (19 GW of pending interconnection requests to APS alone), the probability of summer blackouts during heat waves may increase. Even a short blackout during a multi-day heat dome event could produce mass casualty outcomes exceeding 12,000 deaths, as modeled by ASU/Georgia Tech researchers.",React.createElement(Ref,{n:[17,18]})
+"⚠ ",React.createElement('strong',{style:{color:"#ef4444"}},"Critical finding: "),"Grid resilience is not just an energy policy issue — it is a public health imperative. As data center demand strains the Maricopa County grid (19 GW of pending interconnection requests to APS alone), the probability of summer blackouts during heat waves may increase. Multi-day blackouts during sustained heat domes are particularly dangerous because indoor temperatures rise progressively as thermal mass is exhausted, and restoration time correlates with event severity. Even a short blackout during a multi-day heat dome event could produce mass casualty outcomes exceeding 12,000 deaths, as modeled by ASU/Georgia Tech researchers.",React.createElement(Ref,{n:[17,18,47,48]})
 )
 ),
 React.createElement('div',{style:{padding:"14px 18px",background:"rgba(255,217,102,0.05)",border:"1px solid #FFD96633",borderRadius:10}},
@@ -512,7 +548,7 @@ React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},i
 ))
 ),
 React.createElement('div',{style:{marginTop:12,paddingTop:10,borderTop:"1px solid #6B1530",fontSize:15,color:"#5C1130",lineHeight:1.6}},
-"💡 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Policy takeaway: "),"No single intervention is sufficient. Cooling centers protect the most critical cases; hydration stations provide broad passive protection; outreach reaches those who cannot self-rescue. A layered approach — deployed ",React.createElement('em',null,"before")," heat events — is 3–4× more effective than reactive response. However, all three interventions depend on a functioning electric grid. Grid resilience planning must be integrated into heat mortality prevention strategy.",React.createElement(Ref,{n:[17,18,25,27,29,31]})
+"💡 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Policy takeaway: "),"No single intervention is sufficient. Cooling centers protect the most critical cases; hydration stations provide broad passive protection; outreach reaches those who cannot self-rescue. A layered approach — deployed ",React.createElement('em',null,"before")," heat events — is 3–4× more effective than reactive response. Critically, cooling centers — the highest-impact single intervention — depend on a functioning electric grid and are disabled during blackout events. Hydration stations and outreach programs continue operating without grid power, making them essential resilience backstops during multi-day blackouts. Grid resilience planning must be integrated into heat mortality prevention strategy.",React.createElement(Ref,{n:[17,18,25,27,29,31,47,48]})
 )
 )
 );
@@ -743,8 +779,8 @@ const DISTRICTS=[
 {x:420,y:200,w:75,h:60,name:"Mesa",heatBias:1.08,color:"rgba(249,115,22,0.1)"},
 {x:280,y:270,w:80,h:55,name:"Laveen",heatBias:0.88,color:"rgba(16,185,129,0.1)"},
 ];
-const STREET_NODES=[[69,264],[240,264],[309,276],[378,303],[447,327],[516,345],[585,354],[309,264],[330,258],[102,120],[207,120],[309,120],[414,111],[483,102],[345,327],[414,345],[483,372],[531,387],[585,396],[69,216],[171,216],[276,216],[330,216],[414,216],[483,216],[552,216],[69,234],[171,234],[276,234],[330,234],[414,234],[483,234],[102,243],[207,243],[309,243],[414,243],[483,243],[102,258],[207,258],[309,258],[414,258],[483,258],[552,258],[138,267],[240,267],[330,267],[414,267],[483,267],[102,285],[207,285],[309,285],[414,285],[309,303],[414,303],[483,303],[552,303],[207,318],[309,318],[414,318],[483,318],[552,318],[171,327],[276,327],[378,327],[483,327],[552,327],[309,354],[414,354],[483,354],[552,354],[378,372],[483,372],[378,387],[483,387],[552,387],[138,102],[240,102],[330,102],[447,102],[171,120],[276,120],[378,120],[483,120],[138,138],[240,138],[330,138],[447,138],[138,156],[240,156],[330,156],[447,156],[138,174],[240,174],[330,174],[447,174],[171,180],[276,180],[330,180],[447,180],[138,198],[240,198],[330,198],[447,198],[138,195],[240,195],[330,195],[516,156],[309,51],[309,180],[309,234],[345,276],[378,327],[207,102],[207,156],[207,216],[207,267],[318,96],[318,156],[318,216],[318,258],[318,303],[330,69],[330,120],[330,285],[330,318],[330,354],[345,96],[345,156],[345,216],[345,258],[345,303],[366,120],[366,180],[366,234],[366,258],[366,303],[384,120],[384,180],[384,234],[384,258],[384,303],[405,120],[405,180],[405,234],[405,258],[405,303],[432,138],[432,180],[432,234],[432,258],[432,303],[432,51],[432,102],[432,156],[432,216],[432,354],[432,387],[447,234],[447,285],[462,120],[462,180],[462,234],[276,267],[276,318],[288,120],[288,180],[288,234],[288,267],[288,318],[297,96],[297,156],[297,216],[297,258],[297,303],[309,96],[309,156],[309,216],[462,258],[462,303],[462,327],[462,354],[501,303],[501,327],[501,354],[501,387],[531,303],[531,327],[531,354],[432,285],[420,285],[420,303],[420,327]];
-const STREET_EDGES=[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[7,8],[9,10],[10,11],[11,12],[12,13],[14,15],[15,16],[16,17],[17,18],[19,20],[20,21],[21,22],[22,23],[23,24],[24,25],[26,27],[27,28],[28,29],[29,30],[30,31],[32,33],[33,34],[34,35],[35,36],[37,38],[38,39],[39,40],[40,41],[41,42],[43,44],[44,45],[45,46],[46,47],[48,49],[49,50],[50,51],[52,53],[53,54],[54,55],[56,57],[57,58],[58,59],[59,60],[61,62],[62,63],[63,64],[64,65],[66,67],[67,68],[68,69],[70,16],[16,71],[72,73],[73,74],[75,76],[76,77],[77,78],[79,80],[80,81],[81,82],[83,84],[84,85],[85,86],[87,88],[88,89],[89,90],[91,92],[92,93],[93,94],[95,96],[96,97],[97,98],[99,100],[100,101],[101,102],[103,104],[104,105],[90,106],[107,11],[11,108],[108,109],[109,7],[8,110],[110,3],[3,111],[112,113],[113,114],[114,115],[115,56],[116,117],[117,118],[118,119],[119,120],[121,122],[122,97],[97,29],[29,8],[8,123],[123,124],[124,125],[126,127],[127,128],[128,129],[129,130],[131,132],[132,133],[133,134],[134,135],[136,137],[137,138],[138,139],[139,140],[141,142],[142,143],[143,144],[144,145],[146,147],[147,148],[148,149],[149,150],[151,152],[152,153],[153,154],[154,149],[150,155],[155,156],[86,98],[98,157],[157,158],[159,160],[160,161],[96,28],[28,162],[162,163],[164,165],[165,166],[166,167],[167,168],[169,170],[170,171],[171,172],[172,173],[174,175],[175,176],[176,39],[39,52],[47,54],[54,64],[64,68],[68,73],[41,54],[177,178],[178,179],[179,180],[181,182],[182,183],[183,184],[185,186],[186,187],[187,17],[149,188],[188,150],[189,190],[190,191]];
+const STREET_NODES=[[69,264],[240,264],[309,276],[378,303],[447,327],[516,345],[585,354],[309,264],[330,258],[102,120],[207,120],[309,120],[414,111],[483,102],[345,327],[414,345],[483,372],[531,387],[585,396],[69,216],[171,216],[276,216],[330,216],[414,216],[483,216],[552,216],[69,234],[171,234],[276,234],[330,234],[414,234],[483,234],[102,243],[207,243],[309,243],[414,243],[483,243],[102,258],[207,258],[309,258],[414,258],[483,258],[552,258],[138,267],[240,267],[330,267],[414,267],[483,267],[102,285],[207,285],[309,285],[414,285],[309,303],[414,303],[483,303],[552,303],[207,318],[309,318],[414,318],[483,318],[552,318],[171,327],[276,327],[378,327],[483,327],[552,327],[309,354],[414,354],[483,354],[552,354],[378,372],[378,387],[483,387],[552,387],[138,102],[240,102],[330,102],[447,102],[171,120],[276,120],[378,120],[483,120],[138,138],[240,138],[330,138],[447,138],[138,156],[240,156],[330,156],[447,156],[138,174],[240,174],[330,174],[447,174],[171,180],[276,180],[330,180],[447,180],[138,198],[240,198],[330,198],[447,198],[138,195],[240,195],[330,195],[516,156],[309,51],[309,180],[309,234],[345,276],[207,102],[207,156],[207,216],[207,267],[318,96],[318,156],[318,216],[318,258],[318,303],[330,69],[330,120],[330,285],[330,318],[330,354],[345,96],[345,156],[345,216],[345,258],[345,303],[366,120],[366,180],[366,234],[366,258],[366,303],[384,120],[384,180],[384,234],[384,258],[384,303],[405,120],[405,180],[405,234],[405,258],[405,303],[432,138],[432,180],[432,234],[432,258],[432,303],[432,51],[432,102],[432,156],[432,216],[432,354],[432,387],[447,234],[447,285],[462,120],[462,180],[462,234],[276,267],[276,318],[288,120],[288,180],[288,234],[288,267],[288,318],[297,96],[297,156],[297,216],[297,258],[297,303],[309,96],[309,156],[309,216],[462,258],[462,303],[462,327],[462,354],[501,303],[501,327],[501,354],[501,387],[531,303],[531,327],[531,354],[432,285],[420,285],[420,303],[420,327]];
+const STREET_EDGES=[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[7,8],[9,10],[10,11],[11,12],[12,13],[14,15],[15,16],[16,17],[17,18],[19,20],[20,21],[21,22],[22,23],[23,24],[24,25],[26,27],[27,28],[28,29],[29,30],[30,31],[32,33],[33,34],[34,35],[35,36],[37,38],[38,39],[39,40],[40,41],[41,42],[43,44],[44,45],[45,46],[46,47],[48,49],[49,50],[50,51],[52,53],[53,54],[54,55],[56,57],[57,58],[58,59],[59,60],[61,62],[62,63],[63,64],[64,65],[66,67],[67,68],[68,69],[70,16],[71,72],[72,73],[74,75],[75,76],[76,77],[78,79],[79,80],[80,81],[82,83],[83,84],[84,85],[86,87],[87,88],[88,89],[90,91],[91,92],[92,93],[94,95],[95,96],[96,97],[98,99],[99,100],[100,101],[102,103],[103,104],[89,105],[106,11],[11,107],[107,108],[108,7],[8,109],[109,3],[3,63],[110,111],[111,112],[112,113],[113,56],[114,115],[115,116],[116,117],[117,118],[119,120],[120,96],[96,29],[29,8],[8,121],[121,122],[122,123],[124,125],[125,126],[126,127],[127,128],[129,130],[130,131],[131,132],[132,133],[134,135],[135,136],[136,137],[137,138],[139,140],[140,141],[141,142],[142,143],[144,145],[145,146],[146,147],[147,148],[149,150],[150,151],[151,152],[152,147],[148,153],[153,154],[85,97],[97,155],[155,156],[157,158],[158,159],[95,28],[28,160],[160,161],[162,163],[163,164],[164,165],[165,166],[167,168],[168,169],[169,170],[170,171],[172,173],[173,174],[174,39],[39,52],[47,54],[54,64],[64,68],[68,72],[41,54],[175,176],[176,177],[177,178],[179,180],[180,181],[181,182],[183,184],[184,185],[185,17],[147,186],[186,148],[187,188],[188,189]];
 // Build adjacency list for street graph
 const STREET_ADJ=(()=>{const adj=Array.from({length:STREET_NODES.length},()=>[]);STREET_EDGES.forEach(([a,b])=>{adj[a].push(b);adj[b].push(a);});return adj;})();
 // Precompute edge lengths for movement speed
@@ -865,7 +901,7 @@ const NODE_CUM_WEIGHTS=(()=>{const c=[];let sum=0;
 for(let i=0;i<NODE_WEIGHTS.length;i++){sum+=NODE_WEIGHTS[i];c.push(sum);}
 return{cdf:c,total:sum};})();
 function weightedRandomNode(){
-const r=Math.random()*NODE_CUM_WEIGHTS.total;
+const r=_rng.random()*NODE_CUM_WEIGHTS.total;
 const cdf=NODE_CUM_WEIGHTS.cdf;
 let lo=0,hi=cdf.length-1;
 while(lo<hi){const mid=(lo+hi)>>1;if(cdf[mid]<r)lo=mid+1;else hi=mid;}
@@ -970,6 +1006,35 @@ let cum=0;
 for(let m=0;m<12;m++){if(day<cum+dpm[m])return m;cum+=dpm[m];}
 return 11;
 }
+// ═══════════════════════════════════════════════════════════════════════════════
+// KNOWN REALISM LIMITATIONS (Option 4 audit — documented, not code bugs)
+// ═══════════════════════════════════════════════════════════════════════════════
+// (1) BLACKOUT DURATION: Grid failure uses a hybrid persistence model (Option E).
+//     When a new blackout triggers via the logistic stress-response probability, duration
+//     is computed as: minDays = max(1, ceil(gridStrain/4)) + Geometric(p=0.5), capped at
+//     7 days. The strain-dependent floor ensures that blackouts during severe heat domes
+//     last longer (Panteli & Mancarella, 2015), while the geometric tail produces stochastic
+//     variation in restoration time (Mukherjee et al., 2018). During ongoing blackout days,
+//     no new onset roll occurs — the event persists until the counter expires. The model
+//     does not represent spatial outage geography, partial outages, or phased restoration
+//     order. These are intentional simplifications for an educational model.
+//
+// (2) SAVED-STATE PERMANENCE: Agents who are "saved" (rescued from the death zone) are
+//     permanently removed from further heat risk processing, treated identically to dead
+//     agents for the remainder of the simulation year. In reality, rescued individuals
+//     might recover and re-enter risk on subsequent hot days. This simplification avoids
+//     the need for a recovery-and-re-exposure model, and implicitly assumes that saved
+//     agents receive ongoing care or shelter placement. Changing this would require
+//     adding recovery dynamics and recalibrating death rates.
+//
+// (3) UTILITY DISCONNECTION: AC loss due to inability to pay utility bills is modeled
+//     as a per-tick independent probability roll (precarious: 1.5–4.5%/tick, vulnerable
+//     sheltered: 0.5%/tick, non-vulnerable sheltered: 0.1%/tick). In reality, utility
+//     disconnection would be persistent until the account is resolved. The per-tick
+//     approach represents the daily probability of AC service disruption from any cause
+//     (non-payment, equipment failure, voluntary conservation) rather than a single
+//     shutoff-reconnection cycle.
+// ═══════════════════════════════════════════════════════════════════════════════
 function buildSim(){
 const climateData=project(scenario,year);
 const monthlyHighs=climateData.map(d=>d.high);
@@ -1093,14 +1158,14 @@ const _homeCell=gridCellAt(hx,hy);
 // Housing situation: grid-cell-level rates (finer than district-level)
 const dh={precRate:_homeCell.precRate,unshRate:_homeCell.unshRate};
 const homeCellIdx=(Math.max(0,Math.min(MICRO_GRID_ROWS-1,Math.floor((hy-MICRO_GRID_Y0)/MICRO_CELL_H))))*MICRO_GRID_COLS+Math.max(0,Math.min(MICRO_GRID_COLS-1,Math.floor((hx-MICRO_GRID_X0)/MICRO_CELL_W)));
-const housingRoll=Math.random();
+const housingRoll=_rng.random();
 const housing=housingRoll<dh.unshRate?"unsheltered":housingRoll<(dh.unshRate+dh.precRate)?"precarious":"sheltered";
 // All unsheltered agents are automatically vulnerable; ~60% of precarious are vulnerable
-const vulnerable=housing==="unsheltered"?true:(housing==="precarious"?Math.random()<0.6:Math.random()<0.12);
+const vulnerable=housing==="unsheltered"?true:(housing==="precarious"?_rng.random()<0.6:_rng.random()<0.12);
 // Social isolation: ~35% of vulnerable agents live alone without regular social contact.
 // Isolated agents are harder to reach via outreach, less likely to self-rescue, and have
 // a lower rescue chance in the death zone. Source: Klinenberg (2002), Harlan et al. (2011). [44]
-const isolated=vulnerable&&Math.random()<0.35;
+const isolated=vulnerable&&_rng.random()<0.35;
 // === BEHAVIORAL HETEROGENEITY TRAITS ===
 // Five high-leverage traits that alter travel, shelter use, heat exposure, and mortality risk.
 // Trait prevalence is correlated with housing/district/vulnerability to produce realistic
@@ -1109,7 +1174,7 @@ const isolated=vulnerable&&Math.random()<0.35;
 // Unsheltered: 5% have vehicle. Precarious: 45–65% (district-dependent). Sheltered: 90%.
 // Source: Maricopa Association of Governments 2023 transportation survey. [39]
 const _vehBase=housing==="unsheltered"?0.05:(housing==="precarious"?0.45+dh.precRate*(-0.5):0.90);
-const hasVehicle=Math.random()<_vehBase;
+const hasVehicle=_rng.random()<_vehBase;
 // (2) Utility stress: risk of AC disconnection due to inability to pay electric bills.
 // Each tick during summer, small probability that sheltered agent loses AC for that tick.
 // Precarious: higher base rate. Sheltered: low rate. Unsheltered: N/A (no AC).
@@ -1119,20 +1184,20 @@ const utilityStress=housing==="unsheltered"?0:(housing==="precarious"?(0.015+dh.
 // and infrastructure-seeking speed. High awareness = earlier response to heat stress.
 // Lower in younger adults, non-English speakers, and those without prior heat illness experience.
 // Source: Harlan et al. (2006) Maricopa County heat vulnerability survey. [44]
-const riskAwareness=housing==="unsheltered"?0.3+Math.random()*0.4:(vulnerable?0.35+Math.random()*0.45:0.55+Math.random()*0.45);
+const riskAwareness=housing==="unsheltered"?0.3+_rng.random()*0.4:(vulnerable?0.35+_rng.random()*0.45:0.55+_rng.random()*0.45);
 // (4) Mobility limited: reduced movement speed, reduced infrastructure reach range.
 // Correlated with elderly, disability, and unsheltered populations.
 // Source: CDC heat vulnerability index — age/disability component. [9]
-const mobilityLimited=vulnerable?Math.random()<0.25:Math.random()<0.05;
+const mobilityLimited=vulnerable?_rng.random()<0.25:_rng.random()<0.05;
 // (5) Outdoor worker: works outdoors during daytime phase (construction, landscaping,
 // delivery, agriculture). Full outdoor heat exposure during work hours instead of
 // partial indoor relief. Higher daytime heat accumulation.
 // ~15% of Maricopa County workforce is outdoor-exposed. Higher in precarious housing districts.
 // Source: BLS Occupational Employment Statistics; Hondula et al. (2015). [6]
-const outdoorWorker=housing==="unsheltered"?true:(housing==="precarious"?Math.random()<(0.20+dh.precRate*0.3):Math.random()<0.08);
+const outdoorWorker=housing==="unsheltered"?true:(housing==="precarious"?_rng.random()<(0.20+dh.precRate*0.3):_rng.random()<0.08);
 // === AGE BAND (needed by both schedule archetypes and susceptibility model) ===
 // (1) Age band: 0=young(18-44), 1=middle(45-64), 2=elder(65+). Prevalence varies by housing.
-const _ageRoll=Math.random();
+const _ageRoll=_rng.random();
 const _ageDistrib=housing==="unsheltered"?[0.45,0.85]:(vulnerable?[0.25,0.60]:[0.40,0.75]);
 const ageBand=_ageRoll<_ageDistrib[0]?0:(_ageRoll<_ageDistrib[1]?1:2);
 // === DAILY SCHEDULE ARCHETYPES ===
@@ -1151,13 +1216,13 @@ if(housing==="unsheltered"){
 scheduleType="unsheltered_mobile";
 } else if(outdoorWorker){
 scheduleType="outdoor_worker";
-} else if(ageBand===2&&Math.random()<0.80){
+} else if(ageBand===2&&_rng.random()<0.80){
 // ~80% of elders are retired/not working. Remaining 20% are indoor/night-shift workers.
 scheduleType="retiree";
-} else if(Math.random()<0.08){
+} else if(_rng.random()<0.08){
 // ~8% of housed non-outdoor non-retired workers do night shift (healthcare, logistics,
 // hospitality, security). Higher among precarious housing (service economy workers).
-scheduleType=housing==="precarious"?(Math.random()<0.12?"night_shift":"indoor_worker"):"night_shift";
+scheduleType=housing==="precarious"?(_rng.random()<0.12?"night_shift":"indoor_worker"):"night_shift";
 } else {
 scheduleType="indoor_worker";
 }
@@ -1175,20 +1240,20 @@ const _ageSusc=ageBand===0?0:(ageBand===1?0.15:0.40);
 // (2) Cardiovascular burden: hypertension, heart disease, diabetes — major heat mortality comorbidities.
 // Prevalence rises with age. Source: AHA 2024 Heart Disease & Stroke Statistics.
 const _cvdProb=ageBand===0?0.08:(ageBand===1?0.30:0.55);
-const hasCVD=Math.random()<_cvdProb;
+const hasCVD=_rng.random()<_cvdProb;
 const _cvdSusc=hasCVD?0.25:0;
 //
 // (3) Medication burden: psychotropics, diuretics, beta-blockers, anticholinergics impair
 // thermoregulation. Correlated with age and CVD. Source: Westaway et al. (2015). [9]
 const _medProb=hasCVD?0.70:(ageBand>=1?0.25:0.08);
-const hasMedBurden=Math.random()<_medProb;
+const hasMedBurden=_rng.random()<_medProb;
 const _medSusc=hasMedBurden?0.15:0;
 //
 // (4) Substance use: alcohol/opioids/stimulants impair heat awareness, thermoregulation,
 // and help-seeking. Strongly correlated with unsheltered status.
 // Source: MCDPH 2023 heat death toxicology report (>50% of heat decedents test positive). [5]
 const _subProb=housing==="unsheltered"?0.55:(housing==="precarious"?0.12:0.04);
-const hasSubstanceRisk=Math.random()<_subProb;
+const hasSubstanceRisk=_rng.random()<_subProb;
 const _subSusc=hasSubstanceRisk?0.20:0;
 //
 // (5) Prior-day heat carryover: dynamic component updated each tick. Captures residual
@@ -1204,12 +1269,12 @@ const priorHeatLoad=0;
 const _staticSusc=Math.min(1.0,_ageSusc+_cvdSusc+_medSusc+_subSusc);
 // Start at home
 const nb=STREET_ADJ[homeNode];
-const initTo=nb.length>0?nb[Math.floor(Math.random()*nb.length)]:homeNode;
+const initTo=nb.length>0?nb[Math.floor(_rng.random()*nb.length)]:homeNode;
 agents.push({
 id:i,
 x:STREET_NODES[homeNode][0],y:STREET_NODES[homeNode][1],
 fromNode:homeNode,toNode:initTo,edgeT:0,
-speed:(mobilityLimited?0.3+Math.random()*0.4:0.6+Math.random()*0.8),
+speed:(mobilityLimited?0.3+_rng.random()*0.4:0.6+_rng.random()*0.8),
 state:"healthy",
 heat:0,
 indoorTemp:housing==="unsheltered"?startTemp:(housing==="sheltered"?72:Math.min(82,startTemp*0.82+14)),
@@ -1305,17 +1370,17 @@ if(_cntUnsh<_minUnsheltered){
 const need=_minUnsheltered-_cntUnsh;
 const donors=_findDonors(agents,_used,need);
 donors.forEach(a=>{
-a.housing="unsheltered";a.vulnerable=true;a.isolated=Math.random()<0.35;
-a.hasVehicle=Math.random()<0.05;a.utilityStress=0;
-a.riskAwareness=0.3+Math.random()*0.4;
-a.mobilityLimited=Math.random()<0.25;
+a.housing="unsheltered";a.vulnerable=true;a.isolated=_rng.random()<0.35;
+a.hasVehicle=_rng.random()<0.05;a.utilityStress=0;
+a.riskAwareness=0.3+_rng.random()*0.4;
+a.mobilityLimited=_rng.random()<0.25;
 a.outdoorWorker=true;a.scheduleType="unsheltered_mobile";
 a.indoorTemp=startTemp;
-a.speed=a.mobilityLimited?0.3+Math.random()*0.4:0.6+Math.random()*0.8;
-a.hasSubstanceRisk=Math.random()<0.55;
-a.ageBand=[0,0,1,1,2][Math.floor(Math.random()*5)]; // unsheltered age distrib
-a.hasCVD=Math.random()<(a.ageBand===0?0.08:(a.ageBand===1?0.30:0.55));
-a.hasMedBurden=Math.random()<(a.hasCVD?0.70:(a.ageBand>=1?0.25:0.08));
+a.speed=a.mobilityLimited?0.3+_rng.random()*0.4:0.6+_rng.random()*0.8;
+a.hasSubstanceRisk=_rng.random()<0.55;
+a.ageBand=[0,0,1,1,2][Math.floor(_rng.random()*5)]; // unsheltered age distrib
+a.hasCVD=_rng.random()<(a.ageBand===0?0.08:(a.ageBand===1?0.30:0.55));
+a.hasMedBurden=_rng.random()<(a.hasCVD?0.70:(a.ageBand>=1?0.25:0.08));
 _recomputeSusc(a);
 });
 }
@@ -1325,18 +1390,18 @@ const need=_minPrecVuln-_cntPrecVuln;
 const donors=_findDonors(agents,_used,need);
 donors.forEach(a=>{
 const _dh2=MICRO_GRID[a.homeCellIdx];
-a.housing="precarious";a.vulnerable=true;a.isolated=Math.random()<0.35;
-a.hasVehicle=Math.random()<(0.45+(_dh2?_dh2.precRate:0.25)*(-0.5));
+a.housing="precarious";a.vulnerable=true;a.isolated=_rng.random()<0.35;
+a.hasVehicle=_rng.random()<(0.45+(_dh2?_dh2.precRate:0.25)*(-0.5));
 a.utilityStress=0.015+(_dh2?_dh2.precRate:0.25)*0.03;
-a.riskAwareness=0.35+Math.random()*0.45;
-a.mobilityLimited=Math.random()<0.25;
-a.outdoorWorker=Math.random()<0.25;
-a.scheduleType=a.outdoorWorker?"outdoor_worker":(a.ageBand===2&&Math.random()<0.80?"retiree":"indoor_worker");
+a.riskAwareness=0.35+_rng.random()*0.45;
+a.mobilityLimited=_rng.random()<0.25;
+a.outdoorWorker=_rng.random()<0.25;
+a.scheduleType=a.outdoorWorker?"outdoor_worker":(a.ageBand===2&&_rng.random()<0.80?"retiree":"indoor_worker");
 a.indoorTemp=Math.min(82,startTemp*0.82+14);
-a.speed=a.mobilityLimited?0.3+Math.random()*0.4:0.6+Math.random()*0.8;
-a.hasSubstanceRisk=Math.random()<0.12;
-a.hasCVD=Math.random()<(a.ageBand===0?0.08:(a.ageBand===1?0.30:0.55));
-a.hasMedBurden=Math.random()<(a.hasCVD?0.70:(a.ageBand>=1?0.25:0.08));
+a.speed=a.mobilityLimited?0.3+_rng.random()*0.4:0.6+_rng.random()*0.8;
+a.hasSubstanceRisk=_rng.random()<0.12;
+a.hasCVD=_rng.random()<(a.ageBand===0?0.08:(a.ageBand===1?0.30:0.55));
+a.hasMedBurden=_rng.random()<(a.hasCVD?0.70:(a.ageBand>=1?0.25:0.08));
 _recomputeSusc(a);
 });
 }
@@ -1346,11 +1411,11 @@ const need=_minElder-_cntElder;
 const donors=_findDonors(agents,_used,need);
 donors.forEach(a=>{
 a.ageBand=2;
-a.hasCVD=Math.random()<0.55;a.hasMedBurden=Math.random()<(a.hasCVD?0.70:0.25);
-a.mobilityLimited=a.vulnerable?Math.random()<0.25:Math.random()<0.05;
-a.speed=a.mobilityLimited?0.3+Math.random()*0.4:0.6+Math.random()*0.8;
+a.hasCVD=_rng.random()<0.55;a.hasMedBurden=_rng.random()<(a.hasCVD?0.70:0.25);
+a.mobilityLimited=a.vulnerable?_rng.random()<0.25:_rng.random()<0.05;
+a.speed=a.mobilityLimited?0.3+_rng.random()*0.4:0.6+_rng.random()*0.8;
 // ~80% of elders are retirees
-if(a.housing!=="unsheltered"&&!a.outdoorWorker&&Math.random()<0.80) a.scheduleType="retiree";
+if(a.housing!=="unsheltered"&&!a.outdoorWorker&&_rng.random()<0.80) a.scheduleType="retiree";
 _recomputeSusc(a);
 });
 }
@@ -1371,10 +1436,10 @@ if(_cntMobLim<_minMobilityLimited&&_totalPromoted<_maxPromotions){
 const need=Math.min(_minMobilityLimited-_cntMobLim,_maxPromotions-_totalPromoted);
 const pool=agents.filter(a=>a.vulnerable&&!a.mobilityLimited&&!_used.has(a.id));
 const pool2=pool.length>=need?pool:agents.filter(a=>!a.mobilityLimited&&!_used.has(a.id));
-pool2.slice(0,need).forEach(a=>{_used.add(a.id);_totalPromoted++;a.mobilityLimited=true;a.speed=0.3+Math.random()*0.4;});
+pool2.slice(0,need).forEach(a=>{_used.add(a.id);_totalPromoted++;a.mobilityLimited=true;a.speed=0.3+_rng.random()*0.4;});
 }
 // === END STRATIFIED POPULATION GUARANTEE ===
-return{agents,coolingLocs,hydLocs,activeOutreachNodes,NODE_NEAR_COOL,NODE_NEAR_HYD,NODE_NEAR_OUT,NODE_NEAREST_INFRA_ALL,NODE_NEAREST_INFRA_WALK,baseTemp:startTemp,monthlyHighs,monthlyLows,hotDaysSeason:0,gridStrain:0,consecutiveHotDays:0,tick:0,deaths:0,saved:0,fractionalDeaths:0,fractionalSaved:0,stats:{healthy:agents.length,stressed:0,critical:0,dead:0,saved:0}};
+return{agents,coolingLocs,hydLocs,activeOutreachNodes,NODE_NEAR_COOL,NODE_NEAR_HYD,NODE_NEAR_OUT,NODE_NEAREST_INFRA_ALL,NODE_NEAREST_INFRA_WALK,baseTemp:startTemp,monthlyHighs,monthlyLows,hotDaysSeason:0,gridStrain:0,consecutiveHotDays:0,blackoutDaysRemaining:0,tick:0,deaths:0,saved:0,fractionalDeaths:0,fractionalSaved:0,stats:{healthy:agents.length,stressed:0,critical:0,dead:0,saved:0}};
 }
 function stepSim(sim){
 const day=sim.tick; // 0-indexed day of year
@@ -1395,9 +1460,21 @@ sim.gridStrain=(sim.gridStrain||0)+Math.max(0,dailyTemp-95)/20+Math.max(0,nightT
 sim.gridStrain=(sim.gridStrain||0)*0.70; // 30% recovery per cool day
 }
 sim.gridStrain=Math.min(sim.gridStrain||0,15);
-// Logistic blackout probability: P = baseProbability × logisticMultiplier(Tmax, Tmin, duration, strain)
-// Dynamically modulates base probability by heat stress conditions.
-// Multiplier ≈1× on a single mild hot day, rising to ~10× during multi-day extreme heat domes.
+// === MULTI-DAY BLACKOUT MODEL (Option E: grid-strain floor + geometric persistence) ===
+// When a new blackout triggers, duration = minDays + geometricDraw, capped at 7.
+//   minDays = max(1, ceil(gridStrain / 4)) — severity determines minimum duration.
+//   geometricDraw ~ Geometric(p=0.5) via inverse CDF — stochastic restoration tail.
+// On subsequent days, ongoing blackout continues without a new onset roll.
+// Literature: Panteli & Mancarella (2015) — restoration time correlates with event
+// severity. Mukherjee et al. (2018) — empirical outage durations approximate exponential
+// recovery. Stone et al. (2023) [17] — modeled 1/3/7-day Phoenix blackout scenarios.
+let isBlackout=false;
+if((sim.blackoutDaysRemaining||0)>0){
+// Ongoing blackout — no new onset roll, just decrement
+isBlackout=true;
+sim.blackoutDaysRemaining--;
+} else {
+// New onset: logistic stress-response probability (unchanged)
 const _gridLogistic=(function(){
 if(dailyTemp<95||gridFailure<=0) return 0;
 const tempExcess=Math.max(0,dailyTemp-100)/15;
@@ -1408,7 +1485,15 @@ const S=0.35*tempExcess+0.20*nightExcess+0.25*durationFactor+0.20*strainFactor;
 const multiplier=1+9/(1+Math.exp(-8*(S-0.45)));
 return(gridFailure/100)*multiplier;
 })();
-const isBlackout=_gridLogistic>0&&Math.random()<_gridLogistic;
+if(_gridLogistic>0&&_rng.random()<_gridLogistic){
+isBlackout=true;
+// Duration: strain-dependent floor + geometric tail, capped at 7
+const _minDays=Math.max(1,Math.ceil((sim.gridStrain||0)/4));
+const _geoP=0.50;
+const _extraDays=Math.min(5,Math.floor(Math.log(1-_rng.random())/Math.log(1-_geoP)));
+sim.blackoutDaysRemaining=Math.min(7,_minDays+_extraDays)-1; // -1 because today counts
+}
+}
 // Early-season acclimatization: populations physiologically adapt to heat over ~3 weeks
 // of cumulative exposure (vasodilation, increased plasma volume, enhanced sweat rates).
 // The first heat waves of summer are more lethal than later ones at the same temperature.
@@ -1439,7 +1524,7 @@ if(a.state==="dead"||a.state==="saved") return;
 // Roll once per tick during hot season (May–Sep). If disconnected, agent is
 // effectively precarious for this tick (loses AC cooling for indoor temp model).
 if(a.utilityStress>0&&month>=4&&month<=8){
-a.acDisconnected=Math.random()<a.utilityStress;
+a.acDisconnected=_rng.random()<a.utilityStress;
 } else { a.acDisconnected=false; }
 // Determine movement target based on phase and health state
 // === RISK-AWARE INFRASTRUCTURE SEEKING ===
@@ -1454,7 +1539,7 @@ if(shouldSeek){
 // NODE_NEAREST_INFRA_WALK[nodeIdx] = nearest infra within 60px walk range (vehicle=false, -1 if none)
 // Pre-computed at initSim() — eliminates per-agent allInfra construction, filter, and linear scan.
 const nearestInfra=a.hasVehicle?NODE_NEAREST_INFRA_ALL[a.fromNode]:NODE_NEAREST_INFRA_WALK[a.fromNode];
-if(nearestInfra>=0&&(!a.isolated||Math.random()<0.5)){
+if(nearestInfra>=0&&(!a.isolated||_rng.random()<0.5)){
 a.seekTarget=nearestInfra;
 }
 }
@@ -1464,7 +1549,7 @@ if(a.heat<seekThreshold&&a.seekTarget>=0) a.seekTarget=-1; // recovered, resume 
 // Infrastructure seeking always overrides schedule (life-saving behavior).
 // indoor_worker / outdoor_worker: standard home↔work commute (tick%2 alternation).
 // retiree: stays home ~70% of ticks; 30% chance of short errand to random nearby node.
-// unsheltered_mobile: wanders to a new random node each tick (no fixed workplace).
+// unsheltered_mobile: wanders to a deterministically pseudo-random node each tick via (tick×17+id×13)%N (no fixed workplace).
 // night_shift: stays at homeNode during daytime (sleeping/resting); works at night.
 let targetNode;
 let goingToWork=false;
@@ -1491,7 +1576,7 @@ targetNode=a.homeNode; // stay home
 }
 } else if(a.scheduleType==="unsheltered_mobile"){
 // Unsheltered individuals wander between locations during the day — parks, underpasses,
-// sidewalks, bus stops. Target a random node each tick (no fixed workplace).
+// sidewalks, bus stops. Target a deterministically pseudo-random node each tick via (tick×17+id×13)%N (no fixed workplace).
 // Movement is slower (mobility often limited) and covers the street network organically.
 const _wanderIdx=(sim.tick*17+a.id*13)%STREET_NODES.length;
 targetNode=_wanderIdx;
@@ -1518,7 +1603,7 @@ if(arrived===targetNode){
 // Arrived at destination — stay put (small jitter)
 a.fromNode=arrived;
 const nb=STREET_ADJ[arrived];
-a.toNode=nb.length>0?nb[Math.floor(Math.random()*nb.length)]:arrived;
+a.toNode=nb.length>0?nb[Math.floor(_rng.random()*nb.length)]:arrived;
 a.edgeT=0;
 } else {
 // Navigate toward target using BFS shortest path
@@ -1562,7 +1647,7 @@ const _awarenessOutreachMod=a.riskAwareness>0.7?1.5:(a.riskAwareness<0.4?0.5:1.0
 const outreachProb=(a.isolated?0.0015*outreach:0.003*outreach)*_awarenessOutreachMod;
 // Tier 2 (enrolled) agents can still be re-contacted (maintains enrollment); tier 1 can be refreshed
 if(outreach>0&&a.vulnerable&&a.outreachTier<2&&NODE_NEAR_OUT[a.fromNode]){
-if(Math.random()<outreachProb){outreachHelped=true;}
+if(_rng.random()<outreachProb){outreachHelped=true;}
 if(outreachHelped){
 a.outreachContacts++;
 if(a.outreachContacts>=3){
@@ -1652,8 +1737,8 @@ else{
 const _mobilityRescueMod=a.mobilityLimited?0.6:1.0;
 const _baseRescue=_outreachEnrolled?(a.isolated?0.15:0.30):(_outreachActive?(a.isolated?0.10:0.20):0);
 const rescueChance=_baseRescue*_mobilityRescueMod;
-// Counterfactual (no-policy) mortality rate: at Current policies (policyMortMult=0.82),
-// effective rate for unprotected agents = 0.0000013×0.82 ≈ 0.0000011, which combined with
+// Counterfactual (no-policy) mortality rate: at Current policies (policyMortMult=0.81),
+// effective rate for unprotected agents = 0.0000013×0.81 ≈ 0.0000011, which combined with
 // nighttime death zone and gap-fix multipliers produces ~577
 // deaths/yr at moderate + 2023, matching the 2022-2024 observed Maricopa County average (~577 deaths/yr).
 // Sources: MCDPH 2023 heat mortality report [5]; dose-response calibration [6,7]
@@ -1690,8 +1775,8 @@ sim.fractionalSaved+=fracRescueRate;
 // which agents visually die — eliminating the prior disconnect between displayed
 // dot deaths and the reported population-scaled death count.
 const visualDeathProb=fracDeathRate*VISUAL_DEATH_SCALE;
-if(Math.random()<rescueChance){a.state="saved";a.heat=0.2;}
-else if(Math.random()<visualDeathProb){a.state="dead";}
+if(_rng.random()<rescueChance){a.state="saved";a.heat=0.2;}
+else if(_rng.random()<visualDeathProb){a.state="dead";}
 else{a.state="critical";}
 }
 });
@@ -1758,8 +1843,8 @@ const fracDeathRate=baseFracDeathRate*policyMortMult;
 sim.fractionalDeaths+=(1-_nsRescueChance)*fracDeathRate;
 // Unified visual mortality: derived from fracDeathRate × VISUAL_DEATH_SCALE
 const visualDeathProb=fracDeathRate*VISUAL_DEATH_SCALE;
-if(Math.random()<_nsRescueChance){a.state="saved";a.heat=0.2;}
-else if(Math.random()<visualDeathProb){a.state="dead";}
+if(_rng.random()<_nsRescueChance){a.state="saved";a.heat=0.2;}
+else if(_rng.random()<visualDeathProb){a.state="dead";}
 else{a.state="critical";}
 }
 return; // skip standard nighttime processing for night-shift workers
@@ -1833,8 +1918,8 @@ const fracDeathRate=baseFracDeathRate*policyMortMult;
 sim.fractionalDeaths+=(1-rescueChance)*fracDeathRate;
 // Unified visual mortality: derived from fracDeathRate × VISUAL_DEATH_SCALE
 const visualDeathProb=fracDeathRate*VISUAL_DEATH_SCALE;
-if(Math.random()<rescueChance){a.state="saved";a.heat=0.2;}
-else if(Math.random()<visualDeathProb){a.state="dead";}
+if(_rng.random()<rescueChance){a.state="saved";a.heat=0.2;}
+else if(_rng.random()<visualDeathProb){a.state="dead";}
 else{a.state="critical";}
 }
 });
@@ -1874,7 +1959,10 @@ a.outreachVisited=false;
 }
 });
 const avgIndoorTemp=_indoorCount>0?(_indoorSum/_indoorCount):0;
-return{...sim,baseTemp:dailyTemp,nightTemp:nightTemp,avgIndoorTemp,tick:sim.tick+1,fractionalDeaths:sim.fractionalDeaths,fractionalSaved:sim.fractionalSaved,stats:{healthy,stressed,critical,dead,saved}};
+// Mutate sim in place (avoids creating a new object via spread every tick)
+sim.baseTemp=dailyTemp;sim.nightTemp=nightTemp;sim.avgIndoorTemp=avgIndoorTemp;
+sim.tick=sim.tick+1;sim.stats={healthy,stressed,critical,dead,saved};
+return sim;
 }
 function drawFrame(ctx,sim){
 ctx.clearRect(0,0,W,H);
@@ -1987,13 +2075,44 @@ useEffect(()=>{
 if(running){
 const delay=50;const stepsPerTick=speed;
 const totalDays=daysInYear(year);
+let _frameQueued=false;
 const id=setInterval(()=>{
 for(let i=0;i<stepsPerTick;i++){if(simRef.current.tick<totalDays)simRef.current=stepSim(simRef.current);}
+// Throttle canvas redraws via requestAnimationFrame to avoid blocking the main thread
+// and prevent redundant draws when the browser can't keep up at high simulation speeds.
+if(!_frameQueued){
+_frameQueued=true;
+requestAnimationFrame(()=>{
+_frameQueued=false;
 const canvas=canvasRef.current;
 if(canvas){drawFrame(canvas.getContext("2d"),simRef.current);}
-setTick(simRef.current.tick);
-setStats(simRef.current.stats);
-if(simRef.current.tick>=totalDays) setRunning(false);
+});
+}
+// Batch React state updates (single re-render per interval tick)
+const _curTick=simRef.current.tick;
+const _curStats=simRef.current.stats;
+setTick(_curTick);
+setStats(_curStats);
+if(simRef.current.tick>=totalDays){
+// ═══ VERIFICATION DIAGNOSTICS (Option 4 audit) ═══
+// Console output for before/after comparison. No simulation logic change.
+const _sim=simRef.current;
+const _popScale=maricopaPop(year)/(numAgents||1);
+const _scaledDeaths=Math.round(_sim.fractionalDeaths*_popScale);
+console.log('═══ ABM RUN COMPLETE ═══');
+console.log('Scenario:',scenario,'Year:',year,'Agents:',numAgents);
+console.log('Policy tiers — Cooling:',coolingCenters,'Hydration:',hydrationStations,'Outreach:',outreach);
+console.log('Grid failure base:',gridFailure+'%');
+console.log('───────────────────────');
+console.log('Fractional deaths:',_sim.fractionalDeaths.toFixed(6));
+console.log('Population-scaled deaths:',_scaledDeaths,'(popScale:',_popScale.toFixed(1)+')');
+console.log('Fractional saved:',(_sim.fractionalSaved||0).toFixed(6));
+console.log('Agent states — H:',_sim.stats.healthy,'S:',_sim.stats.stressed,'C:',_sim.stats.critical,'D:',_sim.stats.dead,'Saved:',_sim.stats.saved);
+console.log('Grid strain:',(_sim.gridStrain||0).toFixed(2),'Hot days (season):',_sim.hotDaysSeason||0,'Blackout days remaining:',_sim.blackoutDaysRemaining||0);
+console.log('Avg indoor temp:',(_sim.avgIndoorTemp||0).toFixed(1)+'°F');
+console.log('═══════════════════════');
+setRunning(false);
+}
 },delay);
 return()=>clearInterval(id);
 }
@@ -2100,7 +2219,7 @@ React.createElement('span',{style:{color:gridFailure>0?"#ef4444":"#7A3045",fontS
 React.createElement('input',{type:"range",min:"0",max:String(GRID_STEPS.length-1),step:"1",value:GRID_STEPS_IDX.get(gridFailure)??1,onChange:e=>{setGridFailure(GRID_STEPS[+e.target.value]);setRunning(false);},style:{flex:1,accentColor:"#ef4444"}}),
 React.createElement('span',{style:{color:gridFailure>0?"#ef4444":"#7A3045",fontWeight:700,minWidth:54,fontSize:17,textAlign:"right"}},gridFailure<1?gridFailure+"%":gridFailure+"%")
 ),
-gridFailure>0?React.createElement('div',{style:{fontSize:14,fontWeight:700,color:"#ef4444",marginBottom:6,padding:"6px 10px",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:6}},"⚠ Grid failure model active: ",gridFailure,"% base probability, dynamically scaled by a logistic function of daily max/min temperature, heatwave duration, and cumulative grid strain (×1–10). Cooling centers disabled during blackout, heat accumulation ×2.5, mortality ×2+ per Stone et al. (2023) [15]"):null,
+gridFailure>0?React.createElement('div',{style:{fontSize:14,fontWeight:700,color:"#ef4444",marginBottom:6,padding:"6px 10px",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:6}},"⚠ Grid failure model active: ",gridFailure,"% base probability, dynamically scaled by a logistic function of daily max/min temperature, heatwave duration, and cumulative grid strain (×1–10). When triggered, blackout persists 1–7 days (strain-dependent floor + geometric tail). Cooling centers disabled during blackout, heat accumulation ×2.5, mortality ×2+ per Stone et al. (2023) [15]"):null,
 React.createElement('div',{style:{display:"flex",gap:14,flexWrap:"wrap",fontSize:15,color:"#7A3045",marginTop:6}},
 ...Object.entries({
 "🟢 Healthy":"#10b981","🟡 Heat-Stressed":"#B8960B",
@@ -2171,7 +2290,7 @@ React.createElement('div',{style:{marginTop:16,padding:"14px 18px",background:"r
 React.createElement('div',{style:{color:"#7A3045",fontWeight:700,fontSize:16,marginBottom:10}},"ABM Rules"),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"1. Agents & Street Network"),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Each dot = 1 agent on a street network (~192 intersections, ~170 road segments) mapped to Maricopa County\u2019s major arterial grid."),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Each dot = 1 agent on a street network (~190 intersections, ~169 road segments) mapped to Maricopa County\u2019s major arterial grid."),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Agents spawn at density-weighted locations (Downtown 3.0\u00D7, Tempe 2.5\u00D7, Mesa 2.0\u00D7). Each is assigned a home node, work node, district, and neighborhood micro-grid cell."),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Housing assigned per grid cell: sheltered (AC), precarious (no/broken AC), or unsheltered. Vulnerability is housing-dependent: unsheltered=100%, precarious=60%, sheltered=12%.",React.createElement(Ref,{n:[38,39,40]})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 ~35% of vulnerable agents are socially isolated \u2014 halving help-seeking, outreach contact, and rescue probabilities.",React.createElement(Ref,{n:44})),
@@ -2205,9 +2324,10 @@ React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}}
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Rescue: tiered by outreach \u2014 enrolled (day 0.30/night 0.15, isolated halved), one-time (0.20/0.10), none (0). Mobility limits reduce by 40%. Night-shift coworker rescue = 0.25."),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Unified visual mortality: visualDeathProb = fracDeathRate \u00D7 VISUAL_DEATH_SCALE (20\u00D7). Every modifier reflected in which dots die."),
 
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"8. Grid Failure Model ",React.createElement(Ref,{n:[17,18]})),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Logistic blackout: P = base \u00D7 (1+9/(1+exp(\u22128\u00B7(S\u22120.45)))). S = 0.35\u00D7tempExcess + 0.20\u00D7nightExcess + 0.25\u00D7duration + 0.20\u00D7strain. Multiplier ranges ~1\u00D7 to ~10\u00D7."),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Default 0.083% base (NERC LOLE: 1 day/10yr \u00F7 120-day season). Grid strain accumulates during hot days, recovers 30%/cool day. Blackout persists across day+night.",React.createElement(Ref,{n:[18,36]})),
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"8. Grid Failure Model ",React.createElement(Ref,{n:[17,18,47,48]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Logistic blackout onset: P = base \u00D7 (1+9/(1+exp(\u22128\u00B7(S\u22120.45)))). S = 0.35\u00D7tempExcess + 0.20\u00D7nightExcess + 0.25\u00D7duration + 0.20\u00D7strain. Multiplier ranges ~1\u00D7 to ~10\u00D7."),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Multi-day persistence (hybrid model): Once triggered, duration = max(1, \u2308gridStrain/4\u2309) + Geometric(p=0.5), capped at 7 days. The strain-dependent floor ensures severe heat domes produce longer outages (Panteli & Mancarella, 2015); the geometric tail adds stochastic restoration variation (Mukherjee et al., 2018). On ongoing blackout days, no new onset roll occurs.",React.createElement(Ref,{n:[47,48]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Default 0.083% base (NERC LOLE: 1 day/10yr \u00F7 120-day season). Grid strain accumulates during hot days, recovers 30%/cool day. Blackout persists across day+night of each affected day.",React.createElement(Ref,{n:[18,36]})),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"9. Computational Architecture"),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Micro-grid: 12\u00D78 (96 cells, ~40\u00D738px) with IDW-interpolated heatBias/precRate/unshRate \u00B1 spatial noise, replacing 10 coarse district rectangles."),
@@ -2480,7 +2600,7 @@ year:"2023",
 title:"How Blackouts during Heat Waves Amplify Mortality and Morbidity Risk",
 source:"Environmental Science & Technology, 57(22), 8245–8255",
 url:"https://doi.org/10.1021/acs.est.2c09588",
-note:"Concurrent heat wave + blackout events more than double heat-related mortality in Maricopa County; >50% of population requires medical attention. Grid failure disables A/C cooling, amplifying indoor heat exposure. Basis for ABM electric grid failure probability slider."
+note:"Concurrent heat wave + blackout events more than double heat-related mortality in Maricopa County; >50% of population requires medical attention. Grid failure disables A/C cooling, amplifying indoor heat exposure. Basis for ABM electric grid failure probability slider and the 2.5× blackout mortality multiplier. Stone et al. modeled 1-day, 3-day, and 7-day blackout scenarios for Phoenix — the ABM's hybrid multi-day persistence model (strain floor + geometric tail, capped at 7 days) produces a distribution spanning these scenario durations."
 },
 {
 authors:"North American Electric Reliability Corporation (NERC)",
@@ -2753,6 +2873,27 @@ title:"The North American Monsoon in Arizona",
 source:"NWS Phoenix Weather Forecast Office",
 url:"https://www.weather.gov/psr/Monsoon",
 note:"Authoritative reference for Maricopa County monsoon climatology. Monsoon season officially runs June 15 – September 30 with peak moisture July–August. Dewpoints rise from typical pre-monsoon values of 30–40°F to 55–65°F+ during active monsoon surges, raising the heat index 3–8°F above dry-bulb temperature. Basis for the ABM's MONSOON_BUMP array (+3°F July, +5°F August, +4°F September) and the principle that humidity impairs evaporative cooling (sweat efficiency) for outdoor and non-AC-cooled populations."
+},
+]
+},
+{
+id:"gridresilience",icon:"⚡",title:"Grid Resilience & Outage Duration",color:"#ef4444",
+refs:[
+{
+authors:"Panteli, M. & Mancarella, P.",
+year:"2015",
+title:"Influence of extreme weather and climate change on the resilience of power systems: Impacts and possible mitigation strategies",
+source:"Electric Power Systems Research, 127, 259–270",
+url:"https://doi.org/10.1016/j.epsr.2015.06.012",
+note:"Establishes that power system restoration time correlates with event severity — outages triggered by sustained extreme weather take longer to repair because the underlying cause persists, repair crews face exposure limits, and replacement equipment may be unavailable. Basis for the ABM's strain-dependent minimum blackout duration floor: minDays = max(1, ceil(gridStrain/4)), ensuring that blackouts triggered during severe heat domes persist longer than those during mild single-day hot spells."
+},
+{
+authors:"Mukherjee, S., et al.",
+year:"2018",
+title:"A multi-hazard approach to assess severe weather-induced major power outage risks in the U.S.",
+source:"Reliability Engineering & System Safety, 175, 283–305",
+url:"https://doi.org/10.1016/j.ress.2018.03.015",
+note:"Empirical analysis of major U.S. power outage data showing that outage durations follow right-skewed distributions approximating exponential/geometric recovery — rapid initial restoration of priority feeders followed by a slower tail. Basis for the ABM's geometric persistence tail (p=0.5) that produces stochastic variation in blackout duration beyond the strain-dependent floor, with most outages lasting 1–3 days but occasional events persisting 5–7+ days."
 },
 ]
 },
@@ -3066,7 +3207,7 @@ React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:8,ma
 {label:"Policy Reduction %",formula:"E(c) = Emax × c^n / (K^n + c^n); total = 1 − (1−E_cool)×(1−E_hyd)×(1−E_out)",note:"Hill dose-response per intervention converts coverage fraction to efficacy with diminishing returns. Multiplicative combination avoids independence assumption and produces natural saturation (~46% max at all tier 3)."},
 {label:"Prevented Deaths",formula:"preventedDeaths = round(rawDeaths × totalReductionPct)",note:"Lives saved by active policy interventions. Displayed as the positive impact of each policy configuration."},
 {label:"Final Deaths",formula:"finalDeaths = rawDeaths − preventedDeaths",note:"Projected heat deaths after policy interventions. Used for risk level classification and monthly distribution chart."},
-{label:"Cost per Life Saved",formula:"costPerLife = (totalCost_$M × 1,000,000) / preventedDeaths",note:"Displayed in $thousands. Compared against the regulatory VSL (Value of a Statistical Life) threshold of ~$10M."},
+{label:"Cost per Life Saved",formula:"costPerLife = (totalCost_$M × 1,000,000) / (preventedDeaths × 1,000)",note:"Displayed in $thousands. Compared against the regulatory VSL (Value of a Statistical Life) threshold of ~$10M."},
 ].map((eq,i)=>React.createElement('div',{key:i,style:varStyle},
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16}},eq.label),
 React.createElement('code',{style:formulaStyle},eq.formula),
@@ -3281,10 +3422,10 @@ React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",g
 ...[
 {name:"N (agents)",val:"2500 (default, adjustable 50–10,000, step 50)",note:"Each agent represents a cluster of ~8,800 people (at 2020 popScale). Population-scaled outcomes are displayed in the sidebar using fractional mortality accumulation."},
 {name:"Vulnerable fraction",val:"Housing-dependent (unsheltered=100%, precarious=60%, sheltered=12%)",note:"Vulnerability assigned by housing tier, not flat random. Vulnerable agents have up to 3.0× heat sensitivity (unsheltered) or 1.6× (precarious) / 1.3× (sheltered+vulnerable). ~35% of vulnerable agents are also socially isolated."},
-{name:"Street network",val:"192 nodes, 170 edges",note:"Mapped to Maricopa County's major arterial grid (I-10, I-17, Loop 101/202, Central, Camelback, McDowell, Scottsdale Rd, etc.). Agents are constrained to move along street edges only — no off-road movement."},
+{name:"Street network",val:"190 nodes, 169 edges",note:"Mapped to Maricopa County's major arterial grid (I-10, I-17, Loop 101/202, Central, Camelback, McDowell, Scottsdale Rd, etc.). Agents are constrained to move along street edges only — no off-road movement."},
 {name:"Spatial index (NODE_HEAT_BIAS, NODE_NEAR_*, NODE_NEAREST_INFRA_*)",val:"O(1) pre-computed lookups for ~190 nodes, grid-cell bucketed",note:"Five optimizations eliminate all per-agent-per-tick linear scans: (1) NODE_HEAT_BIAS[nodeIdx] — pre-computed heatBias per node (module-level). (2) NODE_NEAR_COOL/HYD/OUT[nodeIdx] — Uint8Array proximity flags computed via grid-cell buckets at initSim() (checks only neighboring cells, not full list). (3) NODE_NEAREST_INFRA_ALL/WALK[nodeIdx] — pre-computed nearest infrastructure street node for full-map (vehicle) and walk-range (60px) searches, replacing per-agent allInfra construction + filter + linear scan. (4) Agent curCellIdx — cached grid cell updated on node arrival. (5) _cellNeighborItems() — returns only items from a cell and its 8 neighbors. Combined: zero linear infrastructure scans in the hot loop. All spatial operations are O(1) per agent per tick."},
 {name:"Max ticks",val:"365 or 366 (full calendar year)",note:"Each tick = 1 day. Simulation runs Jan 1 through Dec 31 of the selected year. Temperature follows the climate model's seasonal curve via dayToTemp() interpolation."},
-{name:"Movement model",val:"Schedule-dependent BFS shortest-path routing",note:"Each agent is assigned a home node and work node via density-weighted random selection. Movement target varies by schedule archetype: indoor/outdoor workers alternate home↔work (even/odd ticks); retirees stay home ~70% of days with 30% short errands; unsheltered agents wander to random nodes; night-shift workers stay home during day and work at night. BFS provides the next-hop at each intersection. Infrastructure seeking overrides all schedules. [22]"},
+{name:"Movement model",val:"Schedule-dependent BFS shortest-path routing",note:"Each agent is assigned a home node and work node via density-weighted random selection. Movement target varies by schedule archetype: indoor/outdoor workers alternate home↔work (even/odd ticks); retirees stay home ~70% of days with 30% short errands; unsheltered agents wander to deterministically pseudo-random nodes via (tick×17+id×13)%N; night-shift workers stay home during day and work at night. BFS provides the next-hop at each intersection. Infrastructure seeking overrides all schedules. [22]"},
 {name:"Schedule archetypes",val:"indoor_worker, outdoor_worker, retiree, unsheltered_mobile, night_shift",note:"Five daily activity patterns Assignment correlated with housing, age, and occupation: unsheltered→unsheltered_mobile; elder (80%)→retiree; outdoor workers→outdoor_worker; ~8% of housed non-outdoor→night_shift; remainder→indoor_worker. Night-shift workers experience outdoor nighttime temps at their workplace (precarious-equivalent cooling) and get daytime indoor recovery at home. Retirees' limited outdoor exposure reduces heat accumulation but limits access to cooling infrastructure. Source: BLS American Time Use Survey (2023); Hondula et al. (2015). [5,6]"},
 {name:"Density weighting",val:"Downtown 3.0×, Tempe 2.5×, Mesa 2.0×, etc.",note:"Agent spawn locations are weighted by district population density using cumulative distribution sampling. More agents in dense urban areas, fewer in outlying areas. [24]"},
 {name:"Infrastructure seeking",val:"Critical agents seek nearest cooling/hydration via O(1) lookup",note:"When an agent reaches its risk-aware seek threshold (Q≥0.65 for high-awareness, Q≥0.9 default, Q≥0.95 for low-awareness), it overrides its schedule and navigates toward the nearest facility. Nearest facility is retrieved from pre-computed NODE_NEAREST_INFRA_ALL[nodeIdx] (vehicle) or NODE_NEAREST_INFRA_WALK[nodeIdx] (walk-only, 60px range). Replaces per-seek allInfra array construction + filter + linear scan with single Int16Array access. Resumes schedule upon recovery. [23]"},
@@ -3330,7 +3471,7 @@ React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",g
 {name:"indoorTemp",val:"per-agent state, 65–Toutdoor+5 °F",note:"Explicit indoor temperature for each housed agent, updated every daytime and nighttime sub-phase via first-order thermal dynamics: T_indoor += coupling×(T_outdoor−T_indoor) − AC_cooling. Unsheltered agents: indoorTemp = outdoor temp (coupling=1.0). Initialized at 72°F (sheltered) or ~0.82×Tstart+14 (precarious). [40]"},
 {name:"THERMAL.sheltered.coupling",val:"0.08",note:"Low thermal coupling for well-insulated sheltered homes — indoor temp changes slowly in response to outdoor temperature. [40]"},
 {name:"THERMAL.precarious.baseCoupling",val:"0.18 × (1 + precRate×0.5)",note:"Higher thermal coupling for precarious housing; district-dependent building quality modifier increases coupling in districts with older/poorly-insulated housing stock. [40]"},
-{name:"AC cooling",val:"min(3.0, max(0, T_indoor−72) × 0.4) × (1 − acStrain×0.7)",note:"AC cooling rate proportional to indoor-setpoint differential (setpoint=72°F), capped at 3.0°F/tick. AC capacity degrades above 115°F outdoor: each degree above 115 reduces AC effectiveness by up to 70% at extreme temperatures. During blackout, AC cooling = 0. [40]"},
+{name:"AC cooling",val:"min(3.0, max(0, T_indoor−72) × 0.4) × (1 − acStrain×0.7)",note:"AC cooling rate proportional to indoor-setpoint differential (setpoint=72°F), capped at 3.0°F/tick. AC capacity degrades above 115°F outdoor via a linear ramp: strain = min(1.0, (T−115)×0.08), giving AC_cool = max_cool×(1−strain×0.7). At 120°F strain=0.40 (28% reduction); at 127.5°F strain=1.0 (70% maximum, then capped). The 70% maximum is only reached at T≥127.5°F — not per-degree. During blackout, AC cooling = 0. [40]"},
 {name:"housingVulnMult",val:"unsheltered=3.0×, precarious+vuln=1.6×, sheltered+vuln=1.3×",note:"Housing-aware vulnerability multiplier applied to heat accumulation rate. Unsheltered agents face 3.0× heat sensitivity reflecting continuous outdoor exposure. Precarious-housing vulnerable agents retain the original 1.6× multiplier. Sheltered vulnerable agents get a reduced 1.3× (AC provides partial protection)."},
 {name:"housingHeatMult",val:"unsheltered=1.5×, precarious=1.15×, sheltered=1.0×",note:"Additional heat accumulation multiplier reflecting 24/7 outdoor exposure (unsheltered) vs. partial indoor relief (precarious) vs. full AC (sheltered). During blackout, sheltered agents become functionally precarious (lose AC). [38]"},
 {name:"recoveryRate",val:"sheltered=0.003, precarious=0.001, unsheltered=0.0005 (base; degraded by AC strain)",note:"Heat recovery rate per cool-day tick. Sheltered agents recover fully via AC; precarious agents recover slowly (inadequate cooling); unsheltered agents barely recover. Above 115°F, AC strain degrades recovery: sheltered loses up to 60% of recovery per degree, precarious up to 80%. Recovery floor = 0.0002/tick (never zero). [25,27]"},
@@ -3340,7 +3481,7 @@ React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",g
 {name:"Night accumulation (precarious)",val:"+rate (≥80°F), 0 (75–80°F), −0.001 (<75°F)",note:"Precarious agents have no AC; indoor temps track outdoor with thermal lag. On hot nights (≥80°F) heat continues accumulating. Only cool nights (<75°F) allow any recovery through open windows. [40,41]"},
 {name:"Night accumulation (unsheltered)",val:"+rate (≥75°F), −0.0003 (65–75°F), −0.0008 (<65°F)",note:"Unsheltered agents are fully exposed to outdoor nighttime temperatures. Accumulate heat on any warm night (≥75°F). Even cool nights provide only minimal recovery. [38,41,42]"},
 {name:"baseFracDeathRate (nighttime)",val:"0.00000084 × housingDeathMult × suscDeathMult per agent-tick",note:"Overnight death rate in the nighttime death zone. Lower than daytime (0.00000118) because overnight period has less physical exertion, but still contributes ~40% of total fractional mortality due to prolonged exposure without physiological recovery. During nighttime blackout: 0.00000210 × housingDeathMult × suscDeathMult. [41,42]"},
-{name:"baseFracDeathRate (night-shift)",val:"0.00000073 × housingDeathMult × suscDeathMult per agent-tick",note:"Death rate for night-shift workers at their workplace during the nighttime phase. Lower than standard nighttime (0.00000084) because night-shift workers are assumed active and alert at their workplace, with coworker presence providing some protective effect. During nighttime blackout: 0.00000183 × housingDeathMult × suscDeathMult (2.5× normal). Coworker rescue chance = 0.25 × mobilityMod. [17,41]"},
+{name:"baseFracDeathRate (night-shift)",val:"0.00000073 × housingDeathMult × suscDeathMult per agent-tick",note:"Death rate for night-shift workers at their workplace during the nighttime phase. Lower than standard nighttime (0.00000084) because night-shift workers are assumed active and alert at their workplace, with coworker presence providing some protective effect. During nighttime blackout: 0.00000183 × housingDeathMult × suscDeathMult (≈2.51× normal — calibrated independently; the 0.00000183/0.00000073 pair was set to match observed night-shift mortality risk, not derived as an exact 2.5× multiple). Coworker rescue chance = 0.25 × mobilityMod. [17,41]"},
 {name:"heatStreak",val:"0–∞ (consecutive days at heat ≥ 0.65)",note:"Counter tracking consecutive days each agent has been at heat ≥ 0.65 (stressed or critical). Increments at end of each full day-night tick. Resets to 0 when agent recovers to healthy (heat < 0.3). If agent is between 0.3–0.65, streak holds (not compounding but not recovered). Used by heatWaveMult. [43]"},
 {name:"heatWaveMult",val:"1.0 + min(0.3, max(0, heatStreak − 4) × 0.05)",note:"Multi-day cumulative heat stress multiplier. No effect for streaks ≤ 4 days. After 4 days: +5% per additional day, capped at 1.3× (30% increase at 10+ days). Applied to both daytime heat accumulation rate and nighttime accumulation for precarious/unsheltered agents. Models the documented heat wave duration effect: sustained consecutive hot days cause progressive thermoregulatory degradation. The 4-day threshold and modest effect size reflect U.S. Southwest findings where AC prevalence and acclimatization reduce the wave effect vs. other regions. [43]"},
 {name:"isolated",val:"boolean; ~35% of vulnerable agents",note:"Social isolation flag: ~35% of vulnerable agents are socially isolated (living alone, limited regular social contact). All unsheltered agents can be isolated; precarious and sheltered vulnerable agents can be isolated. Non-vulnerable agents are never isolated. Source: Klinenberg (2002) Chicago heat wave analysis; Harlan et al. (2011) Maricopa County case study. [44]"},
@@ -3361,14 +3502,15 @@ React.createElement('div',{style:noteStyle},v.note)
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"4. Mortality Calibration & Fractional Accumulation"),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16}},
 ...[
-{name:"baseFracDeathRate (normal)",val:"0.00000118 × housingDeathMult × suscDeathMult per agent-tick",note:"Counterfactual (no-policy) death rate, now multiplied by housing-dependent death rate multiplier (unsheltered=2.5×, precarious=1.3×, sheltered=1.0×). For sheltered unprotected agents at Current policies (policyMortMult=0.82), the effective rate is ~0.0000011, which combined with nighttime mortality and all gap-fix multipliers produces ~577 population-scaled deaths/yr at moderate + 2023. Unsheltered agents face 2.5× this base rate in the death zone, reflecting the 200–300× relative risk documented in the MAP AZ Dashboard White Paper. [38]"},
+{name:"baseFracDeathRate (normal)",val:"0.00000118 × housingDeathMult × suscDeathMult per agent-tick",note:"Counterfactual (no-policy) death rate, now multiplied by housing-dependent death rate multiplier (unsheltered=2.5×, precarious=1.3×, sheltered=1.0×). For sheltered unprotected agents at Current policies (policyMortMult=0.81), the effective rate is ~0.0000011, which combined with nighttime mortality and all gap-fix multipliers produces ~577 population-scaled deaths/yr at moderate + 2023. Unsheltered agents face 2.5× this base rate in the death zone, reflecting the 200–300× relative risk documented in the MAP AZ Dashboard White Paper. [38]"},
 {name:"baseFracDeathRate (blackout)",val:"0.00000295 × housingDeathMult × suscDeathMult per agent-tick",note:"2.5× normal rate (0.00000118 × 2.5) during grid failure events, further multiplied by housingDeathMult. During blackout, sheltered agents also lose AC recovery and behave like precarious agents. [17,38]"},
-{name:"policyMortMult",val:"(1−E_cool)×(1−E_hyd)×(1−E_out)  [Hill dose-response]",note:"Population-wide policy modifier applied ONLY to agents not currently receiving spatial protection (protection=1.0). Uses coverage-based Hill dose-response per intervention with multiplicative combination. Each E(c) = Emax·c^n/(K^n+c^n) converts district-level service coverage into mortality reduction with diminishing returns. At Current tier (all=1): ~0.83. Spatially-protected agents already benefit from reduced heat accumulation — applying policyMortMult on top would double-count."},
+{name:"policyMortMult",val:"(1−E_cool)×(1−E_hyd)×(1−E_out)  [Hill dose-response]",note:"Population-wide policy modifier applied ONLY to agents not currently receiving spatial protection (protection=1.0). Uses coverage-based Hill dose-response per intervention with multiplicative combination. Each E(c) = Emax·c^n/(K^n+c^n) converts district-level service coverage into mortality reduction with diminishing returns. At Current tier (all=1): ~0.81. Spatially-protected agents already benefit from reduced heat accumulation — applying policyMortMult on top would double-count."},
 {name:"fracDeathRate",val:"baseFracDeathRate × (spatiallyProtected ? 1.0 : policyMortMult)",note:"Effective fractional death rate per agent-tick in the critical zone. Spatially-protected agents (near infrastructure, protection<1.0) receive the full baseFracDeathRate since their protection is already applied upstream via reduced heat accumulation. Unprotected agents (protection=1.0) receive the policyMortMult discount. Accumulated across all agents each tick to produce fractionalDeaths, then multiplied by popScale for population-level estimates."},
 {name:"visualDeathProb",val:"fracDeathRate × VISUAL_DEATH_SCALE (20×)",note:"Visual death probability for agent dots is now derived directly from the same fracDeathRate used for population-scaled estimates, multiplied by VISUAL_DEATH_SCALE=20 so a visible number of dots die during severe scenarios. This replaces the prior independent baseVisualDeath constants (0.00015 day / 0.00008 night) that only varied by housing and blackout. The unified approach ensures every modifier — housing tier, susceptibility, policy interventions, blackout, spatial protection, and outreach rescue — is reflected in which agents visually die on screen, eliminating the interpretive disconnect between displayed dot deaths and the reported death count."},
 {name:"fracRescueRate",val:"rescueChance × 0.008",note:"Fractional rescue accumulation rate. rescueChance=0.3 for outreach-visited agents in the critical zone."},
 {name:"gridStrain",val:"cumulative, 0–15",note:"Sim-level variable tracking multi-day thermal degradation of grid infrastructure. Increases daily by (Tmax−95)/20 + (Tmin−75)/25×0.5 on days ≥95°F. Decays 30% per cool day. Models transformer fatigue, feeder thermal limits, and substation stress that compound over multi-week heat events. [17,18]"},
 {name:"consecutiveHotDays",val:"0+",note:"Running count of consecutive days with Tmax ≥100°F. Resets to 0 when daily max drops below 100°F. Drives the heatwave-duration component of the logistic blackout multiplier. [17]"},
+{name:"blackoutDaysRemaining",val:"0–6",note:"Counter tracking remaining days of an ongoing blackout event. When a new blackout triggers, set to min(7, max(1,⌈gridStrain/4⌉) + Geometric(p=0.5)) − 1. Decremented each tick during ongoing blackout (no new onset roll while >0). The strain-dependent floor ensures severe heat domes produce longer outages; the geometric tail adds stochastic restoration variation. [17,47,48]"},
 {name:"logistic grid multiplier",val:"1 + 9/(1+exp(−8·(S−0.45)))",note:"S = 0.35·tempExcess + 0.20·nightExcess + 0.25·durationFactor + 0.20·strainFactor. tempExcess = max(0,Tmax−100)/15; nightExcess = max(0,Tmin−78)/15; durationFactor = max(0,consecutiveHotDays−1)/6; strainFactor = min(1,gridStrain/8). Multiplier ranges from ~1× (single mild hot day) to ~10× (multi-day extreme heat dome with accumulated strain). Applied to the user-set base probability. [17,18]"},
 {name:"gridFailure (default)",val:"0.083%",note:"Base daily blackout probability, derived from NERC LOLE planning criterion of 1 day in 10 years. This base rate is dynamically amplified ×1–10 by a logistic function of Tmax, Tmin, heatwave duration, and cumulative grid strain. Effective daily probability during a 7-day 115°F heat dome can reach ~0.8%. [18]"},
 ].map((v,i)=>React.createElement('div',{key:i,style:varStyle},
@@ -3384,7 +3526,7 @@ React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",g
 {name:"Cooling centers",val:"0 / 2 / 4 / 5 map nodes (representing ~0 / ~50 / ~80 / ~120 real sites)",note:"Snapped to major intersections: Central/McDowell, 51st Ave/Thomas, Scottsdale/McDowell, Central/Cactus, Alma School/Southern. 35px coverage radius. Based on Maricopa County HRN data. [19,20]"},
 {name:"Hydration stations",val:"0 / 3 / 6 / 9 map nodes (representing ~0 / ~70 / ~110 / ~160 real sites)",note:"Distributed across network: Central/Camelback, 7th Ave/Indian School, 32nd St/Thomas, etc. 25px coverage radius. [19,20]"},
 {name:"Outreach nodes",val:"0 / 6 / 12 / 18 map nodes (representing ~0 / ~60 / ~120 / ~200 programs)",note:"Distributed from downtown core outward. 40px radius per node. Contact probability 0.003 × outreachLevel per node per tick for vulnerable agents. [19,20,21]"},
-{name:"Blackout effect",val:"Cooling centers disabled, heat ×2.5, death ×2.5",note:"During blackout events, all cooling centers become inoperable. Heat accumulation rate and death probability are multiplied by 2.5. Blackout probability is computed once per tick via a logistic grid-strain model and persists across both daytime and nighttime phases. [17,18]"},
+{name:"Blackout effect",val:"Cooling centers disabled, heat ×2.5, death ×2.5, multi-day persistence",note:"During blackout events, all cooling centers become inoperable. Heat accumulation rate and death probability are multiplied by 2.5. Blackout onset is computed via a logistic grid-strain model. Once triggered, duration = max(1,ceil(gridStrain/4)) + Geometric(p=0.5), capped at 7 days. The strain-dependent floor ensures severe heat domes produce longer outages (Panteli & Mancarella, 2015), while the geometric tail adds stochastic variation (Mukherjee et al., 2018). Blackout persists across both daytime and nighttime phases of each affected day. [17,18]"},
 ].map((v,i)=>React.createElement('div',{key:i,style:varStyle},
 React.createElement('div',{style:{color:"#D4607A",fontFamily:"monospace",fontSize:16,fontWeight:700,marginBottom:3}},v.name),
 React.createElement('div',{style:{color:"#1A0A10",fontSize:16,marginBottom:3}},v.val),
@@ -3402,7 +3544,7 @@ React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",backgroun
 "                      × buildingQualityMult × heatWaveMult × acclimMult × suscHeatMult",React.createElement('br'),
 "                      Q = min(1, Q + ΔQ)",React.createElement('br'),
 "If L < 85°F:  baseRecovery = sheltered:0.003, precarious:0.001, unsheltered:0.0005",React.createElement('br'),
-"                      indoorMod = 1.0 if T_in<76, degrading to 0.15 if T_in≥85",React.createElement('br'),
+"                      indoorMod = 1.0 if T_in<76; max(0.3, 1.0−(T_in−76)×0.08) if 76≤T_in<85; 0.15 if T_in≥85",React.createElement('br'),
 "                      Q = max(0, Q − max(0.0002, baseRecovery × indoorMod × suscRecoveryMult))"
 ),
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:12}},"Indoor Temperature Dynamics (per sub-phase)"),
@@ -3435,7 +3577,7 @@ React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",backgroun
 "If unprotected (p = 1):              fracDeathRate = baseFracDeathRate × policyMortMult"
 ),
 React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},
-"where p = protection factor (0.05 cooling, 0.40 hydration, 0.30 outreach, 1.0 none). This separation prevents double-counting: agents already receiving spatial heat reduction are not additionally discounted by policyMortMult."
+"where p = protection factor (0.05 cooling, 0.40 hydration, 0.30–0.35 outreach enrolled / 0.40–0.50 one-time, 1.0 none). This separation prevents double-counting: agents already receiving spatial heat reduction are not additionally discounted by policyMortMult."
 ),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:12}},"Policy Mortality Multiplier (unprotected agents only)"),
@@ -3506,13 +3648,21 @@ React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",backgroun
 "nextNode = NEXT_HOP[currentNode][targetNode]  (pre-computed at module load via BFS on STREET_ADJ)"
 ),
 
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:12}},"Electric Grid Failure"),
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:12}},"Electric Grid Failure (Hybrid Multi-Day Model) ",React.createElement(Ref,{n:[17,18,47,48]})),
 React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"left",marginBottom:8,lineHeight:2.2}},
+"ONSET (logistic stress-response):",React.createElement('br'),
 "S = 0.35×max(0,(Tmax−100)/15) + 0.20×max(0,(Tmin−78)/15)",React.createElement('br'),
 "      + 0.25×max(0,(consecutiveHotDays−1)/6) + 0.20×min(1,gridStrain/8)",React.createElement('br'),
 "P(blackout) = (gridFailure/100) × (1 + 9/(1 + exp(−8·(S−0.45))))",React.createElement('br'),
-"isBlackout = (dailyTemp ≥ 95) AND (random() < P)",React.createElement('br'),
-"If blackout: cooling disabled, blackoutMult = 2.5, persists day+night"
+"New blackout triggers when dailyTemp ≥ 95 AND random() < P",React.createElement('br'),
+React.createElement('br'),
+"DURATION (hybrid: strain floor + geometric tail):",React.createElement('br'),
+"minDays = max(1, ⌈gridStrain / 4⌉)   [severity-dependent floor]",React.createElement('br'),
+"extraDays = ⌊ln(1−U) / ln(0.5)⌋, U~Uniform(0,1), capped at 5   [geometric tail, p=0.5]",React.createElement('br'),
+"totalDays = min(7, minDays + extraDays)",React.createElement('br'),
+React.createElement('br'),
+"PERSISTENCE: ongoing blackout days decrement counter; no new onset roll.",React.createElement('br'),
+"EFFECTS: cooling disabled, blackoutMult = 2.5, persists day+night of each affected day."
 ),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:12}},"Maricopa County Population Projection"),
@@ -3527,10 +3677,19 @@ React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(140,2
 +"const nightTemp = dayToTemp(day, monthlyLows);\n"
 +"const month = dayToMonth(day);\n"
 +"const monsoonBump = MONSOON_BUMP_C[month] || 0;\n"
-+"// Grid failure: logistic model\n"
-+"const S = 0.35*tempExcess + 0.20*nightExcess + 0.25*durationFactor + 0.20*strainFactor;\n"
-+"const multiplier = 1 + 9/(1+Math.exp(-8*(S-0.45)));\n"
-+"const isBlackout = dailyTemp>=95 && Math.random() < (gridFailure/100)*multiplier;\n"
++"// Grid failure: logistic onset + multi-day persistence\n"
++"let isBlackout = false;\n"
++"if(sim.blackoutDaysRemaining > 0) { isBlackout=true; sim.blackoutDaysRemaining--; }\n"
++"else {\n"
++"  const S = 0.35*tempExcess + 0.20*nightExcess + 0.25*durationFactor + 0.20*strainFactor;\n"
++"  const multiplier = 1 + 9/(1+Math.exp(-8*(S-0.45)));\n"
++"  if(dailyTemp>=95 && _rng.random() < (gridFailure/100)*multiplier) {\n"
++"    isBlackout = true;\n"
++"    const minDays = Math.max(1, Math.ceil(sim.gridStrain/4));\n"
++"    const extraDays = Math.min(5, Math.floor(Math.log(1-_rng.random())/Math.log(0.5)));\n"
++"    sim.blackoutDaysRemaining = Math.min(7, minDays+extraDays) - 1;\n"
++"  }\n"
++"}\n"
 +"// Acclimatization\n"
 +"if(dailyTemp>=100) sim.hotDaysSeason++;\n"
 +"const acclimMult = 1.0 + 0.4*Math.max(0, 1 - sim.hotDaysSeason/21);\n"
@@ -3569,13 +3728,13 @@ React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(140,2
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:14}},"8. Assumptions & Limitations"),
 React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:12}},
 ...[
-"Street network is a simplified representation (~192 nodes) of Maricopa County's major arterial grid, not a complete street map. Minor streets and pedestrian paths are not modeled.",
+"Street network is a simplified representation (~190 nodes) of Maricopa County's major arterial grid, not a complete street map. Minor streets and pedestrian paths are not modeled.",
 "Five schedule archetypes (indoor worker, outdoor worker, retiree, unsheltered mobile, night shift) capture major daily pattern variation, but do not model multi-stop trips, weekend/weekday differences, or shift-length variation within archetypes.",
 "Population density weights are approximate ratios based on relative district populations, not census-tract-level data.",
 "Infrastructure seeking uses BFS shortest path, not real-time traffic or actual pedestrian routing. Agents may not find the optimal cooling center.",
 "Fractional mortality accumulation assumes a constant per-tick death probability in the critical zone. Real heat mortality has non-linear onset dynamics.",
-"The 2.5× blackout multiplier is derived from Stone et al. (2023) modeling; actual blackout impacts depend on duration, geographic extent, and time of day. The logistic grid-strain model captures how multi-day heat domes, hot overnight minimums, and accumulated transformer fatigue compound blackout risk beyond the NERC baseline.",
-"Policy intervention effectiveness (8%/4%/6% per tier) is calibrated to the 2022–2024 observed average. Individual year variance (e.g., 2023's anomalous 645 deaths) reflects weather variability not captured by the trend model.",
+"The 2.5× blackout multiplier is derived from Stone et al. (2023) modeling; actual blackout impacts depend on duration, geographic extent, and time of day. The logistic grid-strain model captures how multi-day heat domes, hot overnight minimums, and accumulated transformer fatigue compound blackout risk beyond the NERC baseline. When triggered, blackout duration is computed as max(1, ceil(gridStrain/4)) + Geometric(p=0.5), capped at 7 days, reflecting the empirical observation that outages during sustained heat events take longer to restore (Panteli & Mancarella, 2015; Mukherjee et al., 2018).",
+"Policy intervention effectiveness uses Hill dose-response functions (E(c) = Emax·c^n/(K^n+c^n)) with parameters calibrated so that moderate scenario + Current tier policies yield ~577 deaths/yr, matching the 2022–2024 observed average. Individual year variance (e.g., 2023's anomalous 645 deaths) reflects weather variability not captured by the trend model. There are no fixed 'per-tier' percentages; efficacy is a continuous function of coverage (tier-1 examples: cooling ~10%, hydration ~5%, outreach ~5%; combined reduction ~19% at tier 1 all; ~46% maximum at tier 3 all).",
 "Population projection beyond 2060 is extrapolated at the 2030–2060 growth rate; actual growth depends on migration, policy, and climate factors.",
 ].map((note,i)=>React.createElement('div',{key:i,style:{display:"flex",gap:8,padding:"8px 12px",background:"rgba(140,29,64,0.04)",border:"1px solid #8C1D4022",borderRadius:6}},
 React.createElement('span',{style:{color:"#8C1D40",flexShrink:0,fontSize:14}},(i+1)+"."),
