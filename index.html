@@ -1121,12 +1121,13 @@ return 11;
 //     Hosokawa et al. (2021) [53]; Shapiro et al. (1979) [54]; Hondula et al. (2022) [25]; Klinenberg (2002) [44].
 //
 // (3) UTILITY DISCONNECTION: AC loss due to inability to pay utility bills is modeled
-//     as a per-tick independent probability roll (precarious: 1.5–4.5%/tick, vulnerable
-//     sheltered: 0.5%/tick, non-vulnerable sheltered: 0.1%/tick). In reality, utility
-//     disconnection would be persistent until the account is resolved. The per-tick
-//     approach represents the daily probability of AC service disruption from any cause
-//     (non-payment, equipment failure, voluntary conservation) rather than a single
-//     shutoff-reconnection cycle.
+//     as a two-state Markov chain (connected ↔ disconnected). Onset probability per tick
+//     = utilityStress × 0.33 during May–Sep. Once disconnected, the agent stays off until
+//     a geometric reconnection roll succeeds: precarious p=0.07 (mean ~14 days),
+//     sheltered-vulnerable p=0.14 (mean ~7 days), sheltered p=0.20 (mean ~5 days).
+//     This produces persistent multi-day episodes matching real-world disconnection
+//     dynamics where households remain off until arrears are paid or LIHEAP assistance
+//     is received (ACC moratorium rules; NEADA disconnection data).
 // ═══════════════════════════════════════════════════════════════════════════════
 function buildSim(_yearOverride){
 const _simYear=_yearOverride!==undefined?_yearOverride:year;
@@ -1383,6 +1384,7 @@ mobilityLimited,
 outdoorWorker,
 scheduleType,
 acDisconnected:false,
+disconnectDaysLeft:0,
 ageBand,
 hasCVD,
 hasMedBurden,
@@ -1637,13 +1639,32 @@ const _cE=hillEfficacy(_cC,HILL.cooling),_hE=hillEfficacy(_hC,HILL.hydration),_o
 const policyMortMult=(1-_cE)*(1-_hE)*(1-_oE);
 agents.forEach(a=>{
 if(a.state==="dead"||a.state==="saved"||a.state==="recovering") return;
-// === UTILITY STRESS: per-tick AC disconnection risk ===
-// Agents with utility stress may lose AC due to inability to pay bills.
-// Roll once per tick during hot season (May–Sep). If disconnected, agent is
-// effectively precarious for this tick (loses AC cooling for indoor temp model).
-if(a.utilityStress>0&&month>=4&&month<=8){
-a.acDisconnected=_rng.random()<a.utilityStress;
-} else { a.acDisconnected=false; }
+// === UTILITY STRESS: Two-state Markov AC disconnection model ===
+// Replaces per-tick independent roll with persistent disconnection episodes.
+// When connected: daily onset probability = utilityStress × 0.33 (May–Sep only).
+// When disconnected: stays off until geometric reconnection roll succeeds.
+// Reconnection rate is housing-dependent: precarious p=0.07 (mean ~14 days),
+// sheltered-vulnerable p=0.14 (mean ~7 days), sheltered p=0.20 (mean ~5 days).
+// Literature: APS/SRP disconnection data; NEADA; ACC moratorium rules [38,39,40].
+if(month>=4&&month<=8){
+if(!a.acDisconnected){
+// CONNECTED state: roll for new disconnection onset
+if(a.utilityStress>0&&_rng.random()<a.utilityStress*0.33){
+a.acDisconnected=true;
+a.disconnectDaysLeft=1; // will decrement below; first day is today
+}
+} else {
+// DISCONNECTED state: roll for reconnection each tick
+const _reconnProb=a.housing==="precarious"?0.07:(a.vulnerable?0.14:0.20);
+if(_rng.random()<_reconnProb){
+a.acDisconnected=false;
+a.disconnectDaysLeft=0;
+}
+}
+} else {
+// Outside hot season: all agents reconnected (off-season billing resolution)
+if(a.acDisconnected){a.acDisconnected=false;a.disconnectDaysLeft=0;}
+}
 // Determine movement target based on phase and health state
 // === RISK-AWARE INFRASTRUCTURE SEEKING ===
 // High-awareness agents seek cooling/hydration earlier (at stressed, Q≥0.65).
@@ -2465,7 +2486,7 @@ style:{background:running?"rgba(239,68,68,0.2)":"rgba(16,185,129,0.2)",border:`1
 },running?"⏸ Pause":multiYearEnabled?"▶ Run "+year+"→2100":"▶ Run Simulation"),
 React.createElement('div',{style:{display:"flex",alignItems:"center",gap:8,marginLeft:"auto"}},
 React.createElement('span',{style:{color:"#7A3045",fontSize:15}},"Speed:"),
-...[1,2,4,8,16].map(v=>React.createElement('button',{key:v,onClick:()=>setSpeed(v),style:{width:28,height:24,borderRadius:4,border:`1px solid ${speed===v?"#FFD966":"#A05070"}`,background:speed===v?"rgba(255,217,102,0.15)":"transparent",color:speed===v?"#FFD966":"#7A3045",cursor:"pointer",fontSize:14,fontFamily:"inherit"}},v+"x"))
+...[1,2,4,8,16,32].map(v=>React.createElement('button',{key:v,onClick:()=>setSpeed(v),style:{width:v>9?34:28,height:24,borderRadius:4,border:`1px solid ${speed===v?"#FFD966":"#A05070"}`,background:speed===v?"rgba(255,217,102,0.15)":"transparent",color:speed===v?"#FFD966":"#7A3045",cursor:"pointer",fontSize:v>9?12:14,fontFamily:"inherit"}},v+"x"))
 )
 ),
 React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marginBottom:8}},
@@ -2669,7 +2690,7 @@ React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}}
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 ~35% of vulnerable agents are socially isolated \u2014 halving help-seeking, outreach contact, and rescue probabilities.",React.createElement(Ref,{n:44})),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"2. Behavioral Heterogeneity & Susceptibility"),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Five behavioral traits create intersectional risk profiles: (1) Vehicle access (walk-only agents limited to 60px range), (2) Utility stress (per-tick AC disconnection, May\u2013Sep), (3) Risk awareness (0\u20131; high>0.7 seeks at Q\u22650.65, low<0.4 delays to Q\u22650.95), (4) Mobility limitations (reduced speed + 40% reduced rescue), (5) Outdoor worker (full outdoor exposure).",React.createElement(Ref,{n:[6,9,39,44]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Five behavioral traits create intersectional risk profiles: (1) Vehicle access (walk-only agents limited to 60px range), (2) Utility stress (persistent Markov AC disconnection, May\u2013Sep: onset rate = utilityStress\u00d70.33/day, reconnection housing-dependent), (3) Risk awareness (0\u20131; high>0.7 seeks at Q\u22650.65, low<0.4 delays to Q\u22650.95), (4) Mobility limitations (reduced speed + 40% reduced rescue), (5) Outdoor worker (full outdoor exposure).",React.createElement(Ref,{n:[6,9,39,44]})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Physiological susceptibility (0\u20131): composite of three additive components: (1) static base = age band (0/0.15/0.40) + CVD (+0.25) + medications (+0.15) + substance use (+0.20); (2) prior-day heat load (Q\u00D70.3, dynamic each tick); (3) rescueSuscBonus (post-rescue thermoregulatory impairment, +0.15 to +0.20, exponential decay over ~60 days; see Rescue Recovery formula). Formula: susceptibility = min(1.0, staticSusc + priorHeatLoad + rescueSuscBonus). Modifies: heat accumulation \u00D7(1+susc\u00D70.6), recovery \u00D7(1/(1+susc\u00D70.8)), mortality \u00D7(1+susc\u00D71.5).",React.createElement(Ref,{n:[5,9,50,52]})),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"3. Daily Schedule Archetypes"),
@@ -3922,8 +3943,9 @@ React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",g
 {name:"THERMAL.sheltered.coupling",val:"0.08",note:"Low thermal coupling for well-insulated sheltered homes — indoor temp changes slowly in response to outdoor temperature. [40]"},
 {name:"THERMAL.precarious.baseCoupling",val:"0.18 × (1 + precRate×0.5)",note:"Higher thermal coupling for precarious housing; district-dependent building quality modifier increases coupling in districts with older/poorly-insulated housing stock. [40]"},
 {name:"AC cooling",val:"min(3.0, max(0, T_indoor−72) × 0.4) × (1 − acStrain×0.7)",note:"AC cooling rate proportional to indoor-setpoint differential (setpoint=72°F), capped at 3.0°F/tick. AC capacity degrades above 115°F outdoor via a linear ramp: strain = min(1.0, (T−115)×0.08), giving AC_cool = max_cool×(1−strain×0.7). At 120°F strain=0.40 (28% reduction); at 127.5°F strain=1.0 (70% maximum, then capped). The 70% maximum is only reached at T≥127.5°F — not per-degree. During blackout, AC cooling = 0. [40]"},
-{name:"utilityStress",val:"per-agent, 0–0.045 per tick (May–Sep)",note:"Per-tick probability of AC disconnection due to utility service disruption. Precarious agents: 0.015 + precRate×0.03 (district-dependent, ~1.5–4.5%/tick). Vulnerable sheltered agents: 0.005 (0.5%/tick). Non-vulnerable sheltered agents: 0.001 (0.1%/tick). Unsheltered agents: 0 (no AC to lose). Active only during hot season (months 4–8, May–Sep). Each tick, a fresh roll determines whether AC is available that day; disconnected agents are treated as precarious for that tick. [38,40]"},
-{name:"acDisconnected",val:"boolean, per-agent per-tick",note:"Flag set each tick during hot season when random() < utilityStress. When true, the agent loses AC cooling in the indoor temperature model and is treated as effectively precarious for housing thermal dynamics. Combined with isBlackout via: acLost = isBlackout || acDisconnected. Represents daily probability of AC service disruption from any cause (non-payment, equipment failure, voluntary conservation). [40]"},
+{name:"utilityStress",val:"per-agent, 0–0.045 (Markov onset rate)",note:"Base utility disconnection risk used to compute daily onset probability in a two-state Markov model. During hot season (May–Sep), daily onset probability = utilityStress × 0.33. Precarious agents: 0.015 + precRate×0.03 (district-dependent, ~1.5–4.5%). Vulnerable sheltered agents: 0.005. Non-vulnerable sheltered agents: 0.001. Unsheltered agents: 0 (no AC to lose). Once disconnected, agents stay off until a geometric reconnection roll succeeds (precarious: p=0.07, mean ~14 days; sheltered-vulnerable: p=0.14, mean ~7 days; sheltered: p=0.20, mean ~5 days). Produces 1–2 concentrated multi-week episodes per summer for precarious agents, matching real-world persistent disconnection dynamics. [38,40]"},
+{name:"acDisconnected",val:"boolean, per-agent (persistent Markov state)",note:"Flag managed by a two-state Markov chain. Transitions: connected→disconnected at rate utilityStress×0.33/tick (May–Sep); disconnected→connected at housing-dependent reconnection rate (precarious p=0.07/tick, sheltered-vulnerable p=0.14, sheltered p=0.20). When true, the agent loses AC cooling and is treated as effectively precarious for housing thermal dynamics. Combined with isBlackout via: acLost = isBlackout || acDisconnected. Outside hot season (Oct–Apr), all agents auto-reconnect (off-season billing resolution). Produces persistent multi-day episodes rather than daily independent flicker. [40]"},
+{name:"disconnectDaysLeft",val:"0+ (per agent, Markov internal)",note:"Internal state for the two-state Markov utility disconnection model. Set to 1 on disconnection onset; the agent remains disconnected until a geometric reconnection roll succeeds (housing-dependent: precarious p=0.07, sheltered-vulnerable p=0.14, sheltered p=0.20). Reset to 0 on reconnection or at end of hot season. Not directly used for duration — the geometric reconnection roll each tick implicitly determines episode length."},
 {name:"housingVulnMult",val:"unsheltered=3.0×, precarious+vuln=1.6×, sheltered+vuln=1.3×",note:"Housing-aware vulnerability multiplier applied to heat accumulation rate. Unsheltered agents face 3.0× heat sensitivity reflecting continuous outdoor exposure. Precarious-housing vulnerable agents retain the original 1.6× multiplier. Sheltered vulnerable agents get a reduced 1.3× (AC provides partial protection)."},
 {name:"housingHeatMult",val:"unsheltered=1.5×, precarious=1.15×, sheltered=1.0×",note:"Additional heat accumulation multiplier reflecting 24/7 outdoor exposure (unsheltered) vs. partial indoor relief (precarious) vs. full AC (sheltered). During blackout, sheltered agents become functionally precarious (lose AC). [38]"},
 {name:"recoveryRate",val:"sheltered=0.003, precarious=0.001, unsheltered=0.0005 (base; degraded by AC strain)",note:"Heat recovery rate per cool-day tick. Sheltered agents recover fully via AC; precarious agents recover slowly (inadequate cooling); unsheltered agents barely recover. Above 115°F, AC strain degrades recovery: sheltered loses up to 60% of recovery per degree, precarious up to 80%. Recovery floor = 0.0002/tick (never zero). [25,27]"},
