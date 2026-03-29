@@ -2312,54 +2312,62 @@ sim.baseTemp=dailyTemp;sim.nightTemp=nightTemp;sim.avgIndoorTemp=avgIndoorTemp;
 sim.tick=sim.tick+1;sim.stats={healthy,stressed,critical,dead,recovering};
 return sim;
 }
-function drawFrame(ctx,sim){
-ctx.clearRect(0,0,W,H);
-// Draw neighborhood micro-grid cells (color = heatBias intensity)
+// === OFFSCREEN CANVAS: static background (micro-grid, districts, streets) ===
+// Drawn once, composited every frame via drawImage. Eliminates ~275 static
+// draw ops per frame (96 cells + 10 districts + 169 edges + labels).
+let _bgCanvas=null;
+function _ensureBgCanvas(ctx){
+if(_bgCanvas) return;
+_bgCanvas=document.createElement('canvas');
+_bgCanvas.width=W;_bgCanvas.height=H;
+const bg=_bgCanvas.getContext('2d');
+// Micro-grid cells
 MICRO_GRID.forEach(cell=>{
 const intensity=Math.max(0,Math.min(1,(cell.heatBias-0.75)/0.65));
 const r=Math.round(40+200*intensity),g=Math.round(180-140*intensity),b=Math.round(130-80*intensity);
-ctx.fillStyle=`rgba(${r},${g},${b},0.15)`;
-ctx.fillRect(cell.x,cell.y,cell.w,cell.h);
-ctx.strokeStyle="rgba(140,29,64,0.10)";
-ctx.lineWidth=0.5;
-ctx.strokeRect(cell.x,cell.y,cell.w,cell.h);
+bg.fillStyle=`rgba(${r},${g},${b},0.15)`;
+bg.fillRect(cell.x,cell.y,cell.w,cell.h);
+bg.strokeStyle="rgba(140,29,64,0.10)";
+bg.lineWidth=0.5;
+bg.strokeRect(cell.x,cell.y,cell.w,cell.h);
 });
-// District overlays — geographically positioned, adaptive label size
+// District overlays
 DISTRICTS.forEach(d=>{
-// Fill with district heat-tinted color
-ctx.fillStyle=d.color;
-ctx.fillRect(d.x,d.y,d.w,d.h);
-// Border
-ctx.strokeStyle="rgba(140,29,64,0.40)";
-ctx.lineWidth=1.5;
-ctx.strokeRect(d.x,d.y,d.w,d.h);
-// Adaptive label: scale font to fit box width
+bg.fillStyle=d.color;
+bg.fillRect(d.x,d.y,d.w,d.h);
+bg.strokeStyle="rgba(140,29,64,0.40)";
+bg.lineWidth=1.5;
+bg.strokeRect(d.x,d.y,d.w,d.h);
 const _maxFontPx=Math.max(7,Math.min(11,Math.floor(d.w/d.name.length*1.55)));
-ctx.font="bold "+_maxFontPx+"px Arial";
-const _tw=ctx.measureText(d.name).width;
+bg.font="bold "+_maxFontPx+"px Arial";
+const _tw=bg.measureText(d.name).width;
 const _lx=d.x+d.w/2;
 const _ly=d.y+d.h/2;
-// Semi-transparent pill background
 const _pad=3;
-ctx.fillStyle="rgba(255,255,255,0.82)";
-ctx.beginPath();
-ctx.roundRect(_lx-_tw/2-_pad,_ly-_maxFontPx/2-_pad,_tw+_pad*2,_maxFontPx+_pad*2,3);
-ctx.fill();
-// Label text centered in box
-ctx.fillStyle="rgba(60,10,30,0.95)";
-ctx.textAlign="center";
-ctx.textBaseline="middle";
-ctx.fillText(d.name,_lx,_ly);
-ctx.textAlign="left";
-ctx.textBaseline="alphabetic";
+bg.fillStyle="rgba(255,255,255,0.82)";
+bg.beginPath();
+bg.roundRect(_lx-_tw/2-_pad,_ly-_maxFontPx/2-_pad,_tw+_pad*2,_maxFontPx+_pad*2,3);
+bg.fill();
+bg.fillStyle="rgba(60,10,30,0.95)";
+bg.textAlign="center";
+bg.textBaseline="middle";
+bg.fillText(d.name,_lx,_ly);
+bg.textAlign="left";
+bg.textBaseline="alphabetic";
 });
-// Draw street network overlay
-ctx.strokeStyle="rgba(255,198,39,0.18)";
-ctx.lineWidth=1.5;
+// Street network
+bg.strokeStyle="rgba(255,198,39,0.18)";
+bg.lineWidth=1.5;
 STREET_EDGES.forEach(([a,b])=>{
 const na=STREET_NODES[a],nb=STREET_NODES[b];
-ctx.beginPath();ctx.moveTo(na[0],na[1]);ctx.lineTo(nb[0],nb[1]);ctx.stroke();
+bg.beginPath();bg.moveTo(na[0],na[1]);bg.lineTo(nb[0],nb[1]);bg.stroke();
 });
+}
+function drawFrame(ctx,sim){
+ctx.clearRect(0,0,W,H);
+// Blit cached static background (micro-grid + districts + streets)
+_ensureBgCanvas(ctx);
+ctx.drawImage(_bgCanvas,0,0);
 const temp=sim.baseTemp||105;
 const heatAlpha=Math.min(0.35,Math.max(0,(temp-100)/80));
 const grad=ctx.createRadialGradient(300,220,20,300,220,260);
