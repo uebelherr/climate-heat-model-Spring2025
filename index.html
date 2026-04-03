@@ -870,7 +870,7 @@ const[multiYearRunning,setMultiYearRunning]=useState(false);
 const multiYearResultsRef=React.useRef([]);
 const multiYearBatchRef=React.useRef(false);
 const _statics=React.useMemo(()=>{
-const GRID_STEPS=(()=>{const s=[0,0.001,0.01,0.1];for(let v=0.25;v<=1.0;v+=0.25)s.push(+(v.toFixed(2)));s.sort((a,b)=>a-b);return[...new Set(s)];})();
+const GRID_STEPS=(()=>{const s=[0,0.001,0.01,0.1];for(let v=0.25;v<=10.0;v+=0.25)s.push(+(v.toFixed(2)));s.sort((a,b)=>a-b);return[...new Set(s)];})();
 const GRID_STEPS_IDX=new Map(GRID_STEPS.map((v,i)=>[v,i]));
 const W=640, H=440;
 // Geographically-calibrated districts — centroids projected from real lat/lng
@@ -2501,7 +2501,7 @@ const _scaledDeaths=Math.round(_sim.fractionalDeaths); // already population-sca
 console.log('═══ ABM RUN COMPLETE ═══');
 console.log('Scenario:',scenario,'Year:',year,'Agents:',numAgents);
 console.log('Policy tiers — Cooling:',coolingCenters,'Hydration:',hydrationStations,'Outreach:',outreach);
-console.log('Grid failure base:',gridFailure+'%',({0.001:'(1×)',0.01:'(10×)',0.1:'(100×)',0.5:'(500×)',1:'(1000×)'})[gridFailure]||'');
+console.log('Grid failure base:',gridFailure+'%',({0.001:'(1×)',0.01:'(10×)',0.1:'(100×)',0.25:'(250×)',0.5:'(500×)',0.75:'(750×)',1:'(1000×)'})[gridFailure]||'');
 console.log('───────────────────────');
 console.log('Fractional deaths:',_sim.fractionalDeaths.toFixed(6));
 console.log('Population-scaled deaths:',_scaledDeaths,'(heterogeneous popWeight)');
@@ -2692,9 +2692,9 @@ React.createElement('span',{style:{color:"#7A3045",fontSize:13,marginLeft:6}},"(
 React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marginBottom:8}},
 React.createElement('span',{style:{color:gridFailure>0?"#ef4444":"#7A3045",fontSize:15,whiteSpace:"nowrap"}},"⚡ Electric Grid Failure:"),
 React.createElement('input',{type:"range",min:"0",max:String(GRID_STEPS.length-1),step:"1",value:GRID_STEPS_IDX.get(gridFailure)??1,disabled:multiYearRunning,onChange:e=>{if(!multiYearRunning){setGridFailure(GRID_STEPS[+e.target.value]);setRunning(false);}},style:{flex:1,accentColor:"#ef4444",opacity:multiYearRunning?0.4:1}}),
-React.createElement('span',{style:{color:gridFailure>0?"#ef4444":"#7A3045",fontWeight:700,minWidth:110,fontSize:17,textAlign:"right"}},(function(g){var m={0.001:"1×",0.01:"10×",0.1:"100×",0.5:"500×",1:"1000×"};return m[g]?(g+"% ("+m[g]+")"):g+"%"})(gridFailure))
+React.createElement('span',{style:{color:gridFailure>0?"#ef4444":"#7A3045",fontWeight:700,minWidth:110,fontSize:17,textAlign:"right"}},(function(g){var m={0.001:"1×",0.01:"10×",0.1:"100×",0.25:"250×",0.5:"500×",0.75:"750×",1:"1000×"};return m[g]?(g+"% ("+m[g]+")"):g+"%"})(gridFailure))
 ),
-gridFailure>0?React.createElement('div',{style:{fontSize:14,fontWeight:700,color:"#ef4444",marginBottom:6,padding:"6px 10px",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:6}},"⚠ Grid failure model active: ",gridFailure,"% base probability"+(function(g){var m={0.001:" (1× NERC baseline)",0.01:" (10× current degraded grid)",0.1:" (100× mid-century climate stress)",0.5:" (500× severe compound event)",1:" (1000× cascading infrastructure failure)"};return m[g]||""})(gridFailure)+", dynamically scaled by a logistic function of daily max/min temperature, heatwave duration, and cumulative grid strain (×1–10). When triggered, blackout persists 1–7 days (strain-dependent floor + geometric tail). Cooling centers disabled during blackout, heat accumulation ×2.5, mortality ×2+ per Stone et al. (2023) [17]"):null,
+gridFailure>0?React.createElement('div',{style:{fontSize:14,fontWeight:700,color:"#ef4444",marginBottom:6,padding:"6px 10px",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:6}},"⚠ Grid failure model active: ",gridFailure,"% base probability"+(function(g){var m={0.001:" (1× NERC baseline)",0.01:" (10× current degraded grid)",0.1:" (100× mid-century climate stress)",0.25:" (250× elevated compound risk)",0.5:" (500× severe compound event)",0.75:" (750× extreme infrastructure stress)",1:" (1000× cascading infrastructure failure)"};return m[g]||""})(gridFailure)+", dynamically scaled by a logistic function of daily max/min temperature, heatwave duration, and cumulative grid strain (×1–10). When triggered, blackout persists 1–7 days (strain-dependent floor + geometric tail). Cooling centers disabled during blackout, heat accumulation ×2.5, mortality ×2+ per Stone et al. (2023) [17]"):null,
 // ═══ MULTI-YEAR PROJECTION CONTROLS ═══
 React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marginBottom:8,padding:"8px 12px",background:multiYearEnabled?"rgba(140,29,64,0.08)":"rgba(140,29,64,0.03)",border:"1px solid "+(multiYearEnabled?"#8C1D40":"#8C1D4033"),borderRadius:8,transition:"all 0.2s"}},
 React.createElement('label',{style:{display:"flex",alignItems:"center",gap:8,cursor:multiYearRunning?"default":"pointer",flex:1}},
@@ -2731,6 +2731,11 @@ curYear++;
 // Iterative approach: process one year per frame for UI updates
 // Uses buildSim(_yearOverride) to bypass stale React closure
 const batchNext=(yr)=>{
+if(!multiYearBatchRef.current){
+// Paused/stopped by user
+setMultiYearRunning(false);
+return;
+}
 if(yr>2100){
 setYear(2100);
 setMultiYearResults([...multiYearResultsRef.current]);
@@ -2759,6 +2764,9 @@ requestAnimationFrame(()=>batchNext(yr+1));
 batchNext(curYear);
 },100);
 },style:{padding:"5px 12px",borderRadius:6,border:"1px solid #FFC627",background:"rgba(255,198,39,0.15)",color:"#8C1D40",cursor:"pointer",fontFamily:"inherit",fontSize:13,fontWeight:700}},"⏩ Fast Forward"):null,
+multiYearEnabled&&multiYearRunning&&multiYearBatchRef.current?React.createElement('button',{onClick:()=>{
+multiYearBatchRef.current=false;
+},style:{padding:"5px 12px",borderRadius:6,border:"1px solid #ef4444",background:"rgba(239,68,68,0.15)",color:"#ef4444",cursor:"pointer",fontFamily:"inherit",fontSize:13,fontWeight:700}},"⏸ Stop Fast Forward"):null,
 multiYearEnabled&&multiYearResults.length>0?React.createElement('span',{style:{color:"#8C1D40",fontSize:13,fontWeight:700}},multiYearResults.length," / ",2100-multiYearResults[0].year+1," years"):null
 ),
 React.createElement('div',{style:{display:"flex",gap:14,flexWrap:"wrap",fontSize:15,color:"#7A3045",marginTop:6}},
@@ -2831,7 +2839,7 @@ React.createElement('div',{style:{fontSize:14,color:"#A05070",lineHeight:1.6,mar
 multiYearResults.length>1?React.createElement('div',{style:{marginTop:16,padding:"14px 18px",background:"rgba(140,29,64,0.04)",border:"1px solid #8C1D4033",borderRadius:12}},
 React.createElement('div',{style:{fontSize:14,color:"#7A3045",letterSpacing:"2px",textTransform:"uppercase",fontWeight:700,marginBottom:4}},"Multi-Year Projection: Population-Scaled Deaths & Rescued"),
 React.createElement('div',{style:{fontSize:12,color:"#A05070",marginBottom:10}},
-SCENARIOS[scenario].label," · ",SCENARIOS[scenario].emoji," · Cooling: ",coolingCenters," · Hydration: ",hydrationStations," · Outreach: ",outreach," · Grid: ",gridFailure,"%"+(function(g){var m={0.001:" (1×)",0.01:" (10×)",0.1:" (100×)",0.5:" (500×)",1:" (1000×)"};return m[g]||""})(gridFailure)+" · N=",numAgents," agents"
+SCENARIOS[scenario].label," · ",SCENARIOS[scenario].emoji," · Cooling: ",coolingCenters," · Hydration: ",hydrationStations," · Outreach: ",outreach," · Grid: ",gridFailure,"%"+(function(g){var m={0.001:" (1×)",0.01:" (10×)",0.1:" (100×)",0.25:" (250×)",0.5:" (500×)",0.75:" (750×)",1:" (1000×)"};return m[g]||""})(gridFailure)+" · N=",numAgents," agents"
 ),
 React.createElement(ResponsiveContainer,{width:"100%",height:220},
 React.createElement(LineChart,{data:multiYearResults,margin:{top:5,right:30,left:20,bottom:5}},
@@ -4635,10 +4643,10 @@ const parentActive=l.parent&&(lesson===l.parent||LESSONS.find(x=>x.id===lesson)&
 const btn=React.createElement('button',{key:l.id,onClick:()=>navLesson(l.id),style:{background:active?"rgba(140,29,64,0.15)":"transparent",border:"none",borderLeft:`3px solid ${active?"#8C1D40":isSub?"rgba(140,29,64,0.3)":"transparent"}`,padding:isSub?"9px 20px 9px 36px":"14px 20px",cursor:"pointer",textAlign:"left",fontFamily:"inherit",transition:"all 0.2s",opacity:isSub&&!parentActive&&!active?0.6:1,width:"100%"}},
 React.createElement('div',{style:{display:"flex",alignItems:"center",gap:8}},
 isSub&&React.createElement('div',{style:{width:1,height:16,background:active?"#8C1D40":"rgba(140,29,64,0.4)",marginRight:2,flexShrink:0}}),
-React.createElement('span',{style:{fontSize:isSub?14:18}},l.icon),
+React.createElement('span',{style:{fontSize:isSub?14:18,display:"inline-flex",alignItems:"center",justifyContent:"center",width:isSub?20:26,flexShrink:0}},l.icon),
 React.createElement('div',null,
 React.createElement('div',{style:{fontSize:isSub?12:15,color:active?"#3D0A20":"#5C1130",fontWeight:active?800:700,marginBottom:1,display:"flex",alignItems:"baseline",gap:2}},
-!isSub&&React.createElement('span',{style:{minWidth:22,flexShrink:0,display:"inline-block"}},
+!isSub&&React.createElement('span',{style:{minWidth:26,flexShrink:0,display:"inline-block",textAlign:"right"}},
 String(LESSONS.filter(x=>!x.parent).findIndex(x=>x.id===l.id)+1),". "
 ),
 isSub&&React.createElement('span',null,"↳ "),
