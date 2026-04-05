@@ -176,7 +176,7 @@ decay:0.92,       // continuous per-tick decay (half-life ~8 ticks ≈ 4 days); 
                   // not just during cooling — body attempts thermoregulation even under stress
 beta:8.0,         // sigmoid steepness: higher = sharper transition from low→high risk
 d50:0.40,         // sigmoid midpoint: dose at which mortality = 50% of Pmax
-pmaxMult:4.06,     // Pmax = oldRate × pmaxMult — calibrated so sigmoid-weighted average ≈ 577 deaths/yr
+pmaxMult:4.28,     // baseRate × pmaxMult — calibrated so population-weighted sigmoid average ≈ 559 deaths/yr at moderate/Year 2020/Current
 };
 // === SIGMOID LOOKUP TABLE (replaces per-agent Math.exp in death zone) ===
 // Pre-computed σ(dose) = 1/(1+exp(-β*(dose-d50))) for dose ∈ [0, 2.0].
@@ -190,7 +190,7 @@ function sigmoidLUT(dose){if(dose<=0)return _SIG_LUT[0];if(dose>=_SIG_MAX)return
 // estimates, multiplied by this constant. This ensures that every modifier affecting the
 // statistical mortality process (housing, susceptibility, policy, blackout, spatial protection,
 // outreach rescue) also affects which dots visually die on screen.
-// Calibration: at ~300 agents, fracDeathRate ≈ 0.0000013 (daytime normal sheltered, post-recalibration).
+// Calibration: at ~300 agents, fracDeathRate ≈ 0.0000013 (daytime normal sheltered, at calibrated pmaxMult=4.28).
 // VISUAL_DEATH_SCALE=20 produces visualDeathProb ≈ 0.00015, yielding a visible number of
 // dot deaths during severe heat events without overwhelming the display.
 // Prior model used independent baseVisualDeath constants (0.00015 day / 0.00008 night) that
@@ -454,7 +454,7 @@ React.createElement(Line,{type:"monotone",dataKey:"low",name:"Low Temp",stroke:"
 ),
 React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 "📌 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Model disclaimer: "),
-"This is a simplified educational projection model built with Claude.ai, anchored to NOAA 1991–2020 climate normals",React.createElement(Ref,{n:1}),", with future scenarios scaled from IPCC AR6 SSP pathway temperature changes. Warming is projected using CMIP6-aligned curvilinear trajectories with scenario-specific waypoints at 2020/2040/2060/2080/2100. Each SSP pathway has a distinct warming shape: SSP1-2.6 is front-loaded (80% of warming by 2060), SSP2-4.5 accelerates through mid-century then decelerates, and SSP5-8.5 accelerates steadily. This produces projections within ±0.1°C of CMIP6 ensemble medians at each waypoint.",React.createElement(Ref,{n:[2,3]})
+"This is a simplified educational projection model anchored to NOAA 1991–2020 climate normals",React.createElement(Ref,{n:1}),", with future scenarios scaled from IPCC AR6 SSP pathway temperature changes. Warming is projected using CMIP6-aligned curvilinear trajectories with scenario-specific waypoints at 2020/2040/2060/2080/2100. Each SSP pathway has a distinct warming shape: SSP1-2.6 is front-loaded (80% of warming by 2060), SSP2-4.5 accelerates through mid-century then decelerates, and SSP5-8.5 accelerates steadily. This produces projections within ±0.1°C of CMIP6 ensemble medians at each waypoint.",React.createElement(Ref,{n:[2,3]})
 )
 );
 }
@@ -536,7 +536,7 @@ effectiveness:[
 {level:"Extensive (~120 centers)",reduction:"~25%",note:"80% coverage — neighborhood-level saturation (diminishing returns)"},
 ],
 evidence:"Maricopa County data shows cooling center visits correlate directly with avoided heat deaths; the HRN supported 41,024 visitors across 17,254 service hours in 2023. [19, 20, 24]",
-costRange:"$2.1M – $9.2M/yr",
+costRange:"$2.1M – $9.2M/yr (est.)",
 },
 {
 icon:"💧",name:"Hydration Stations",color:"#8C1D40",
@@ -548,7 +548,7 @@ effectiveness:[
 {level:"Extensive (~160 stations)",reduction:"~12%",note:"65% coverage — city-wide (diminishing returns)"},
 ],
 evidence:"Structured review evidence suggests layered public health interventions including hydration access reduce heat morbidity/mortality. In 2024, APS-partnered programs distributed 188,000+ water bottles to 128,000+ individuals. [19, 20, 25]",
-costRange:"$0.4M – $1.8M/yr",
+costRange:"$0.4M – $1.8M/yr (est.)",
 },
 {
 icon:"🤝",name:"Community Outreach",color:"#10b981",
@@ -560,7 +560,7 @@ effectiveness:[
 {level:"Extensive (~200 programs)",reduction:"~18%",note:"60% coverage — city-wide vulnerable pop. (diminishing returns)"},
 ],
 evidence:"France's 2003 heat wave post-mortem established outreach to isolated elderly as the single highest-impact preventable mortality intervention. In 2025, coordinated HRN efforts contributed to a significant decline in heat deaths (156 confirmed vs 265 at same period in 2024). [19, 21, 23, 39]",
-costRange:"$1.2M – $4.5M/yr",
+costRange:"$1.2M – $4.5M/yr (est.)",
 },
 ];
 const maxReduction=Math.min(65,(coolingPct=>coolingPct)(35)+15+25);
@@ -636,8 +636,8 @@ React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",g
 ...[
 {stat:"Up to ~46%",desc:"mortality reduction at extensive deployment of all three interventions — diminishing returns via Hill dose-response prevents unrealistic linear extrapolation",col:"#2E86C1"},
 {stat:"~19%",desc:"current mortality reduction from existing HRN at Current deployment (~50 cooling centers, ~70 hydration stations, ~60 outreach programs) via coverage-based dose-response model",col:"#10b981"},
-{stat:"$15–20M/yr",desc:"total cost for comprehensive city-wide coverage across all three programs",col:"#10b981"},
-{stat:"$23K–$46K",desc:"estimated cost per life saved — far below the $10M+ regulatory value of a statistical life",col:"#10b981"},
+{stat:"$15–20M/yr",desc:"illustrative total cost estimate for comprehensive city-wide coverage across all three programs (order-of-magnitude; actual costs vary by program design and scale)",col:"#10b981"},
+{stat:"$23K–$46K",desc:"illustrative cost per life saved (derived from estimated program costs) — well below the ~$12.5M federal VSL threshold (US DOT, 2024)",col:"#10b981"},
 {stat:"Grid = ×2+",desc:"electric grid failure during heat waves more than doubles mortality — grid resilience is the highest-leverage infrastructure investment",col:"#ef4444"},
 {stat:"Vulnerable-first",desc:"targeting elderly, unhoused & outdoor workers maximizes lives saved per dollar spent",col:"#8C1D40"},
 ].map((item,i)=>React.createElement('div',{key:i,style:{display:"flex",gap:10,alignItems:"flex-start"}},
@@ -657,7 +657,7 @@ const s=SCENARIOS[scenario];
 const totalHeatDays=data.reduce((a,d)=>a+d.heat,0);
 const summerHighAvg=(data[5].high+data[6].high+data[7].high+data[8].high)/4;
 const warming=(s.tempD*interpF(s.warmingCurve,year));
-const BASE_DEATHS_2020=687;
+const BASE_DEATHS_2020=690;
 const BASE_HEAT_DAYS_2020=107;
 const additionalHeatDays=Math.max(0,totalHeatDays-BASE_HEAT_DAYS_2020);
 const warmingMultiplier=Math.pow(1.04,warming);
@@ -683,9 +683,9 @@ baseline:Math.round((d.heat/totalHeatForDist)*rawDeaths),
 withPolicy:Math.round((d.heat/totalHeatForDist)*finalDeaths),
 }));
 const POLICY_LABELS={
-coolingCenters:["None (0)","Current (~50 centers, +$2.1M/yr)","Extended (~80 centers, +$4.8M/yr)","Extensive (~120 centers, +$9.2M/yr)"],
-hydrationStations:["None (0)","Current (~70 stations, +$0.4M/yr)","Extended (~110 stations, +$0.9M/yr)","Extensive (~160 stations, +$1.8M/yr)"],
-outreach:["None (0)","Current (~60 programs, +$1.2M/yr)","Extended (~120 programs, +$2.6M/yr)","Extensive (~200 programs, +$4.5M/yr)"],
+coolingCenters:["None (0)","Current (~50 centers, +$2.1M/yr est.)","Extended (~80 centers, +$4.8M/yr est.)","Extensive (~120 centers, +$9.2M/yr est.)"],
+hydrationStations:["None (0)","Current (~70 stations, +$0.4M/yr est.)","Extended (~110 stations, +$0.9M/yr est.)","Extensive (~160 stations, +$1.8M/yr est.)"],
+outreach:["None (0)","Current (~60 programs, +$1.2M/yr est.)","Extended (~120 programs, +$2.6M/yr est.)","Extensive (~200 programs, +$4.5M/yr est.)"],
 };
 return React.createElement('div',null,
 React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marginBottom:16,padding:"10px 14px",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:8}},
@@ -827,21 +827,49 @@ preventedDeaths>0&&React.createElement('span',null,React.createElement('span',{s
 ),
 React.createElement('div',{style:{padding:"16px 20px",background:"rgba(140,29,64,0.05)",border:"1px solid #8C1D4033",borderRadius:10,marginBottom:16,fontSize:16,color:"#2D1520",lineHeight:1.75}},
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:17,marginBottom:12,fontFamily:"'Playfair Display',serif"}},"Heat Mortality Model — How It Works"),
-React.createElement('p',{style:{margin:"0 0 10px"}},"This model estimates annual heat-related deaths in Maricopa County under different climate scenarios and policy interventions. It is designed for educational exploration, not clinical forecasting."),
-React.createElement('p',{style:{margin:"0 0 6px"}},React.createElement('span',{style:{fontWeight:700,color:"#5C1130"}},"Starting Point  "),
-"The model is anchored to Maricopa County's 2022–2024 observed heat mortality (~557 observed deaths/yr). The raw baseline (687 deaths/yr) represents the estimated counterfactual without policy interventions. At the moderate scenario with Current policies, the analytical model yields ~577 deaths/yr — close to the observed average (the ~20-death difference reflects projected 2023 warming above the 2020 baseline). Note: the model produces a smooth trend and does not capture the year-to-year variability seen in actual data (425 in 2022, 645 in 2023, 602 in 2024), which is driven by weather differences the model does not represent."),
-React.createElement('p',{style:{margin:"0 0 6px"}},React.createElement('span',{style:{fontWeight:700,color:"#5C1130"}},"Projecting Future Deaths  "),
-"Two forces drive projected deaths upward as the climate warms. First, a dose-response relationship: every additional day above 100°F beyond the 2020 baseline contributes an estimated 3.2 deaths. Second, a warming multiplier: each degree Fahrenheit of mean temperature increase amplifies the base death toll by 4%, compounding exponentially. Together, these capture both the increasing frequency of dangerous heat days and the broader physiological stress of a hotter baseline climate."),
-React.createElement('p',{style:{margin:"0 0 6px"}},React.createElement('span',{style:{fontWeight:700,color:"#5C1130"}},"Policy Interventions  "),
-"Three intervention types allow students to model lives saved. Each intervention tier maps to a district-level service coverage fraction (e.g., 25–80% of vulnerable population serviceable). Coverage is converted to mortality reduction using a Hill dose-response function — E(c) = Emax × c^n / (K^n + c^n) — which produces diminishing returns as coverage increases, capturing the real-world effect where the first facilities placed in high-need areas save the most lives. Interventions combine multiplicatively: total protection = 1 − (1−E_cooling)×(1−E_hydration)×(1−E_outreach). This avoids the unrealistic assumption that interventions are independent and additive, and replaces the artificial 65% hard cap with a natural saturation curve."),
-React.createElement('p',{style:{margin:"0 0 6px"}},React.createElement('span',{style:{fontWeight:700,color:"#5C1130"}},"What the Model Leaves Out  "),
-"By design, the model omits air quality, which affects real heat mortality. Maricopa County population growth is projected via a piecewise linear model (4.42M in 2020 → 8.3M by 2100). Population scaling uses heterogeneous popWeight per agent (districtPop / agentsInDistrict), so agents in denser districts represent fewer people than agents in sparse districts. Monsoon humidity is approximated via a monthly heat index bump (+3–5°F Jul–Sep) rather than a full humidity model. Coverage fractions are city-wide averages; real spatial heterogeneity (e.g., uneven facility placement) would produce localized gaps not captured here."),
-React.createElement('p',{style:{margin:0}},React.createElement('span',{style:{fontWeight:700,color:"#5C1130"}},"Bottom Line  "),
-"The model illustrates a core public health principle: heat mortality is not fixed by climate alone. Policy choices made today — and the speed of emissions reductions — determine how many lives are at stake.")
+
+React.createElement('div',{style:{paddingLeft:0,marginBottom:6,lineHeight:1.7,fontSize:15,color:"#5C1130"}},"This model estimates how many people die from heat each year in Maricopa County. You control three things to see how outcomes change:"),
+
+React.createElement('div',{style:{padding:"12px 16px",margin:"10px 0",background:"rgba(140,29,64,0.04)",borderRadius:8,lineHeight:1.8,fontSize:15,color:"#5C1130"}},
+React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83c\udf21\ufe0f How hot does it get?")),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 Three climate futures: ",React.createElement('strong',null,"Optimistic")," (+1\u00b0C), ",React.createElement('strong',null,"Moderate")," (+2\u00b0C), or ",React.createElement('strong',null,"Severe")," (+4\u00b0C) by 2100"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:14}},"\u2022 Hotter futures mean more extreme heat days ",React.createElement('em',null,"and")," higher mortality per heat day \u2014 a double hit"),
+
+React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83c\udfe5 What public health tools are in place?")),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Cooling centers")," \u2014 the most impactful single intervention"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Hydration stations")," \u2014 reduce heat stress through water access"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:14}},"\u2022 ",React.createElement('strong',null,"Outreach teams")," \u2014 find and assist vulnerable people before crisis"),
+
+React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83d\udcc9 What does the chart show?")),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',{style:{color:"#dc2626"}},"Red bars")," = projected deaths without any intervention"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',{style:{color:"#2E86C1"}},"Blue bars")," = projected deaths with your selected interventions"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 The gap between them = ",React.createElement('strong',null,"lives saved")," by policy investment")
+),
+
+React.createElement('div',{style:{paddingLeft:0,marginTop:10,marginBottom:14,lineHeight:1.7,fontSize:15,color:"#5C1130"}},
+React.createElement('strong',{style:{color:"#8C1D40"}},"Key takeaway: "),"Heat deaths are not inevitable. The gap between the red and blue bars represents a policy choice \u2014 lives that can be saved through investment in cooling, hydration, and outreach infrastructure."
+),
+
+React.createElement('div',{style:{paddingLeft:0,marginTop:6,marginBottom:10,lineHeight:1.7,fontSize:14,color:"#7A3045",fontStyle:"italic"}},
+"Calibrated to ~559 deaths/year \u2014 the actual 2022\u20132024 Maricopa County average (425 in 2022, 645 in 2023, 608 in 2024)."
+),
+
+React.createElement('div',{style:{borderTop:"1px solid #8C1D4033",paddingTop:12,marginTop:8}},
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,marginBottom:8}},"Technical Details"),
+React.createElement('div',{style:{fontSize:13,color:"#7A3045",lineHeight:1.6}},
+"Starting from a raw counterfactual baseline of 690 deaths/year (BASE_DEATHS_2020, estimated deaths without any HRN policy interventions), the model applies two warming pathways: (1) a dose-response of 3.2 additional deaths per extreme heat day beyond the 107-day baseline, and (2) a 4% compounding mortality multiplier per \u00b0F of mean warming. Policy reductions use Hill dose-response functions (E = Emax\u00b7c\u207f/(K\u207f+c\u207f)) combining multiplicatively across three interventions, producing diminishing returns and a natural saturation at ~46% maximum combined reduction. The model produces a smooth trend and does not capture year-to-year weather variability."
+),
+React.createElement('div',{style:{fontSize:13,color:"#7A3045",lineHeight:1.6,marginTop:8}},
+"Model omissions: air quality effects, sub-county spatial heterogeneity in facility placement, humidity (approximated via +3\u20135\u00b0F monthly bump Jul\u2013Sep). Population growth projected from 4.42M (2020) to 8.3M (2100)."
+),
+React.createElement('div',{style:{fontSize:13,color:"#7A3045",lineHeight:1.6,marginTop:8,fontStyle:"italic"}},
+"*Cost estimates ($2.1\u20139.2M cooling, $0.4\u20131.8M hydration, $1.2\u20134.5M outreach) are illustrative order-of-magnitude figures for classroom discussion. Actual program costs vary significantly by scale and operational model. For reference, City of Phoenix spent $3M on heat relief in 2024; Maricopa County budgeted $11M for FY2025 (primarily ARPA funds). VSL comparison uses current US DOT guidance ($12.5M, 2022 dollars)."
+)
+)
 ),
 React.createElement('div',{style:{padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 React.createElement('span',{style:{color:"#7A3045",fontWeight:700}},"Model notes: "),
-"The model was coded using Claude.ai with a baseline calibrated to Maricopa County 2022–2024 heat mortality (~577 deaths/yr at moderate/2023/Current policies; observed 3-year average was ~557).",React.createElement(Ref,{n:7})," Projections use a dose-response function scaling deaths to heat-day exposure and mean warming.",React.createElement(Ref,{n:[6,7]})," Policy effects use a coverage-based Hill dose-response function (E = Emax·c^n/(K^n+c^n)) with multiplicative combination. Hill parameters are calibrated to published intervention efficacy data.",React.createElement(Ref,{n:[27,28,29,30,31]})
+"The model baseline is calibrated to Maricopa County 2022–2024 heat mortality (~559 deaths/yr, the 2022–2024 observed three-year average, at moderate/Year 2020/Current policies).",React.createElement(Ref,{n:7})," Projections use a dose-response function scaling deaths to heat-day exposure and mean warming.",React.createElement(Ref,{n:[6,7]})," Policy effects use a coverage-based Hill dose-response function (E = Emax·c^n/(K^n+c^n)) with multiplicative combination. Hill parameters are calibrated to published intervention efficacy data.",React.createElement(Ref,{n:[27,28,29,30,31]})
 ),
 React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 "📌 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Model disclaimer: "),
@@ -2034,10 +2062,10 @@ else{
 const _mobilityRescueMod=a.mobilityLimited?0.6:1.0;
 const _baseRescue=_outreachEnrolled?(a.isolated?0.15:0.30):(_outreachActive?(a.isolated?0.10:0.20):0);
 const rescueChance=_baseRescue*_mobilityRescueMod;
-// Counterfactual (no-policy) mortality rate: baseFracDeathRate = baseRate × pmaxMult(4.06)
+// Counterfactual (no-policy) mortality rate: baseFracDeathRate = baseRate × pmaxMult(4.28)
 // × σ(thermalDose) × housingDeathMult × suscDeathMult. At Current policies (policyMortMult≈0.81),
-// the population-weighted sigmoid average across all agents produces ~577 deaths/yr at
-// moderate + 2023, matching the 2022-2024 observed Maricopa County average.
+// the population-weighted sigmoid average across all agents produces ~559 deaths/yr at
+// moderate + Year 2020, matching the 2022-2024 observed Maricopa County average.
 // Sources: MCDPH 2023 heat mortality report [5]; dose-response calibration [6,7]
 //
 // Anti-double-counting: policyMortMult is applied ONLY to agents not currently
@@ -2877,7 +2905,33 @@ React.createElement('span',null,"╌╌ ",React.createElement('span',{style:{col
 )
 ):null,
 React.createElement('div',{style:{marginTop:16,padding:"14px 18px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.6}},
-React.createElement('div',{style:{color:"#7A3045",fontWeight:700,fontSize:16,marginBottom:10}},"ABM Rules"),
+React.createElement('div',{style:{color:"#7A3045",fontWeight:700,fontSize:18,marginBottom:10}},"How the Model Works"),
+
+React.createElement('div',{style:{paddingLeft:0,marginBottom:6,lineHeight:1.7,fontSize:15,color:"#5C1130"}},"Each dot on the map is a simulated person living, working, and moving through Phoenix\u2019s street network. The model runs one full year, day by day, tracking what happens to each person based on three questions:"),
+
+React.createElement('div',{style:{padding:"12px 16px",margin:"10px 0",background:"rgba(140,29,64,0.04)",borderRadius:8,lineHeight:1.8,fontSize:15,color:"#5C1130"}},
+React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83c\udfe0 Where do they live?")),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Sheltered")," (working AC) \u2014 largely protected; indoor temps stay near 72\u00b0F"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Precarious")," (broken/no AC) \u2014 indoors heats toward outdoor temps"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:14}},"\u2022 ",React.createElement('strong',null,"Unsheltered")," (homeless) \u2014 fully exposed, no protection at all"),
+
+React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\u26a1 Is the power on?")),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:14}},"\u2022 When the grid fails during a heat wave, AC stops working for ",React.createElement('em',null,"everyone")," in the affected area. The model simulates how blackout risk rises as heat persists day after day, stressing transformers and power lines."),
+
+React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83d\udea8 Who intervenes?")),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Cooling centers")," \u2014 provide shelter and AC (disabled during blackouts)"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Hydration stations")," \u2014 distribute water to slow heat stress"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Outreach teams")," \u2014 find and rescue people in crisis")
+),
+
+React.createElement('div',{style:{paddingLeft:0,marginTop:12,marginBottom:6,lineHeight:1.7,fontSize:15,color:"#5C1130"}},
+React.createElement('strong',{style:{color:"#8C1D40"}},"The daily cycle: "),"During the day, heat stress builds. At night, people with AC recover \u2014 people without it keep deteriorating. After several days of sustained heat, vulnerable people enter a danger zone where death or rescue becomes likely. Use the sliders above to change climate scenario, policy investment, and grid reliability to see how outcomes shift."
+),
+
+React.createElement('div',{style:{paddingLeft:0,marginTop:10,marginBottom:16,lineHeight:1.7,fontSize:14,color:"#7A3045",fontStyle:"italic"}},
+"Calibrated to ~559 deaths/year \u2014 the actual 2022\u20132024 Maricopa County average \u2014 then projected forward to 2100 under three climate futures and four policy levels."
+),
+React.createElement('div',{style:{color:"#7A3045",fontWeight:700,fontSize:16,marginTop:20,marginBottom:10,borderTop:"2px solid #8C1D40",paddingTop:12}},"Technical ABM Rules"),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"1. Agents & Street Network"),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Each dot = 1 agent on a street network (~190 intersections, ~169 road segments) mapped to Maricopa County\u2019s major arterial grid."),
@@ -2909,7 +2963,7 @@ React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}}
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Infrastructure seeking: risk-aware threshold (high awareness Q\u22650.65, default Q\u22650.9, low Q\u22650.95). Vehicle access determines full-map vs walk-only (60px) via O(1) NODE_NEAREST_INFRA lookup."),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"7. Death Zone & Mortality ",React.createElement(Ref,{n:[7,50,61]})),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 baseFracDeathRate: daytime 0.00000106 (blackout: 0.00000266); nighttime 0.00000076 (blackout: 0.00000190); night-shift 0.00000066 (blackout: 0.00000165). All \u00D7pmaxMult(4.06) \u00D7\u03C3(thermalDose) \u00D7housingDeathMult \u00D7suscDeathMult.",React.createElement(Ref,{n:[50,61,62]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 baseFracDeathRate: daytime 0.00000106 (blackout: 0.00000266); nighttime 0.00000076 (blackout: 0.00000190); night-shift 0.00000066 (blackout: 0.00000165). All \u00D7pmaxMult(4.28) \u00D7\u03C3(thermalDose) \u00D7housingDeathMult \u00D7suscDeathMult.",React.createElement(Ref,{n:[50,61,62]})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Anti-double-counting: policyMortMult (Hill dose-response, multiplicative combination) applied ONLY when protection=1.0. Spatially protected agents get raw baseFracDeathRate."),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Rescue: tiered by outreach \u2014 enrolled (day 0.30/night 0.15, isolated halved), one-time (0.20/0.10), none (0). Mobility limits reduce by 40%. Night-shift coworker rescue = 0.25. Rescued agents enter a recovering state (not permanently removed): recovery duration = min(7, baseDays + severityBonus + Geometric(p=0.6)). After recovery, agents re-enter with elevated susceptibility (+0.15 to +0.20, exponential decay over ~60 days).",React.createElement(Ref,{n:[25,44,50,51,52,53,54]})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Unified visual mortality: visualDeathProb = fracDeathRate \u00D7 VISUAL_DEATH_SCALE (20\u00D7). Every modifier reflected in which dots die."),
@@ -2920,7 +2974,7 @@ React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}}
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Default 0.001% base (1\u00D7, calibrated so logistic amplification yields ~0.1 blackout days/year, matching NERC LOLE 1 day/10yr standard). Grid failure slider spans five labeled levels on a logarithmic scale: 1\u00D7 (0.001%, NERC baseline), 10\u00D7 (0.01%, current degraded infrastructure), 100\u00D7 (0.1%, mid-century climate stress), 500\u00D7 (0.5%, severe compound event), and 1000\u00D7 (1.0%, cascading infrastructure failure). Intermediate 0.25% increments are available. Major blackout events in the U.S. increased 60\u2013151% between 2015 and 2021; under RCP8.5, outage frequency could increase up to 41% by 2090. Grid strain accumulates during hot days, recovers 30%/cool day. Blackout persists across day+night of each affected day.",React.createElement(Ref,{n:[17,18,36,47,64,65]})),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"9. Utility Disconnection Model ",React.createElement(Ref,{n:[58,59,60]})),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 AC loss due to inability to pay utility bills is modeled as a two-state Markov chain (connected \u2194 disconnected), replacing the original per-tick independent roll that produced unrealistic single-day flicker rather than persistent multi-week outage episodes. The Markov formulation captures the structural dynamics of energy insecurity: disconnection results from cumulative arrears, not a single missed payment, and reconnection requires navigating payment plans or energy assistance programs \u2014 a process that takes days to weeks, not hours (Hern\u00e1ndez, 2016)."),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 AC loss due to inability to pay utility bills is modeled as a two-state Markov chain (connected \u2194 disconnected). The Markov formulation captures the structural dynamics of energy insecurity: disconnection results from cumulative arrears, not a single missed payment, and reconnection requires navigating payment plans or energy assistance programs \u2014 a process that takes days to weeks, not hours (Hern\u00e1ndez, 2016)."),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Connected \u2192 Disconnected: onset probability = utilityStress \u00d7 0.33 per tick during May\u2013Sep only (hot season). utilityStress is housing-dependent: precarious 1.5\u20134.5% (district-dependent, reflecting spatial variation in energy burden); sheltered-vulnerable 0.5%; sheltered non-vulnerable 0.1%; unsheltered 0% (no AC to lose). The May\u2013Sep window corresponds to the Arizona Corporation Commission\u2019s regulated period when disconnection protections are active but arrears still accumulate (ACC R14-2-211)."),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Disconnected \u2192 Connected: housing-dependent geometric reconnection. Precarious: p=0.07/tick (mean ~14 days) \u2014 low-income households face longer reconnection due to difficulty arranging payment plans or securing LIHEAP assistance. Sheltered-vulnerable: p=0.14 (mean ~7 days). Sheltered non-vulnerable: p=0.20 (mean ~5 days). These durations align with the NEADA (2023) finding that median disconnection duration for low-income households is 2\u20133 weeks.",React.createElement(Ref,{n:[58,60]})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Off-season auto-reconnect: outside May\u2013Sep, all agents are set to connected (acDisconnected=false). This approximates the real-world pattern where utility arrears are resolved during the billing off-season, payment plans complete, and LIHEAP winter assistance covers outstanding balances. The ACC summer moratorium (June 1\u2013Oct 15) prohibits involuntary disconnection during declared heat emergencies, but arrears accumulated during the prior season can trigger disconnection in early May before the moratorium takes effect.",React.createElement(Ref,{n:[59]})),
@@ -2929,7 +2983,7 @@ React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}}
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"10. Computational Architecture"),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Micro-grid: 12\u00D78 (96 cells, ~40\u00D738px) with IDW-interpolated heatBias/precRate/unshRate \u00B1 spatial noise, replacing 10 coarse district rectangles."),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 O(1) spatial index: NODE_HEAT_BIAS, NODE_NEAR_COOL/HYD/OUT (Uint8Array), NODE_NEAREST_INFRA_ALL/WALK (Int16Array). Grid-cell bucketed infrastructure. Zero linear scans in hot loop."),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Pre-computed NEXT_HOP table (all-pairs Dijkstra on weighted STREET_EDGE_LEN) replaces per-tick pathfinding. Stratified synthetic population guarantees 6 subgroup floors at low N (<300).")
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Pre-computed NEXT_HOP table (all-pairs Dijkstra on weighted STREET_EDGE_LEN) for efficient per-tick routing. Stratified synthetic population guarantees 6 subgroup floors at low N (<300).")
 ),
 
 React.createElement('div',{style:{marginTop:16,padding:"14px 18px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.6}},
@@ -2939,8 +2993,8 @@ React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,let
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"Spatial policy-intervention ABM with behavioral heterogeneity, physiological susceptibility, schedule archetypes, indoor temperature dynamics, logistic grid strain, tiered outreach, and day/night cycling. Shows how infrastructure choices, housing vulnerability, and grid failure affect heat mortality under different climate scenarios."),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"Calibration ",React.createElement(Ref,{n:7})),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 baseFracDeathRate values calibrated for ~577 population-scaled deaths/yr at moderate + 2023 + Current policies (Maricopa County 2022\u20132024 average)."),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Slide 8 analytical model: exactly 577 via dose-response formula. Slide 9 ABM: stochastic mean \u2248577 (\u00B110%). Both use Hill dose-response policyMortMult."),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 baseFracDeathRate values calibrated for ~559 population-scaled deaths/yr at moderate + Year 2020 + Current policies (Maricopa County 2022\u20132024 average)."),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Slide 8 analytical model: approximately 559 via dose-response formula. Slide 9 ABM: stochastic mean \u2248559 (\u00B110%). Both use Hill dose-response policyMortMult."),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"Methodology ",React.createElement(Ref,{n:[10,11,12,13,14]})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Fractional probability accumulation: each agent-tick in the death zone adds a small probability, weighted by per-agent popWeight (heterogeneous) for population estimates."),
@@ -3044,7 +3098,7 @@ React.createElement('div',{style:{color:"#7A3045",fontSize:16,lineHeight:1.8}},
 ),
 React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 "📌 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Model disclaimer: "),
-"This is a simplified educational projection model built with Claude.ai, anchored to NOAA 1991–2020 climate normals",React.createElement(Ref,{n:1}),", with future scenarios scaled from IPCC AR6 SSP pathway temperature changes.",React.createElement(Ref,{n:[2,3]})
+"This is a simplified educational projection model anchored to NOAA 1991–2020 climate normals",React.createElement(Ref,{n:1}),", with future scenarios scaled from IPCC AR6 SSP pathway temperature changes.",React.createElement(Ref,{n:[2,3]})
 )
 );
 }
@@ -3112,7 +3166,7 @@ year:"2023",
 title:"Heat-Associated Deaths in Maricopa County — 2023 Final Report",
 source:"",
 url:"https://www.maricopa.gov/ArchiveCenter/ViewFile/Item/5820",
-note:"Primary calibration source: 645 confirmed heat-associated deaths in 2023. Three-year average (2022–2024): ~557 observed deaths/yr. Analytical model at moderate/2023/Current: ~577 deaths/yr (calibration target). Raw counterfactual baseline (BASE_DEATHS_2020) = 687 deaths/yr."
+note:"Calibration target: ~559 deaths/yr (2022–2024 observed three-year average: 425 in 2022, 645 in 2023, 608 in 2024). Analytical model at moderate/Year 2020/Current produces ~559 deaths/yr. Raw counterfactual baseline (BASE_DEATHS_2020) = 690 deaths/yr."
 },
 {
 authors:"Hondula, D.M., et al.",
@@ -3277,12 +3331,12 @@ note:"Establishes that population density is a key determinant of heat exposure,
 id:"policy",icon:"🏛",title:"Policy Intervention Sources",color:"#10b981",
 refs:[
 {
-authors:"Loomis, J.B.",
-year:"2004",
-title:"Do nearby forest fires cause evacuation and lost recreation values? Evidence from the 2002 Hayman Fire, Colorado",
-source:"Journal of Forest Economics, 10(1), 25–33",
-url:"https://www.researchgate.net/publication/222788889_Do_Nearby_Forest_Fires_Cause_A_Reduction_in_Residential_Property_Values",
-note:"Value of a statistical life ($10M+ regulatory threshold) used in cost-per-life-saved analysis."
+authors:"U.S. Department of Transportation",
+year:"2024",
+title:"Departmental Guidance on Valuation of a Statistical Life in Economic Analysis",
+source:"U.S. DOT Office of the Secretary, Memorandum",
+url:"https://www.transportation.gov/office-policy/transportation-policy/revised-departmental-guidance-on-valuation-of-a-statistical-life-in-economic-analysis",
+note:"Current federal VSL guidance: $12.5 million (2022 dollars). Used by DOT, EPA, and other federal agencies for regulatory cost-benefit analysis. The dashboard uses a rounded ~$10M threshold for illustrative comparison."
 },
 {
 authors:"Fouillet, A., et al.",
@@ -3298,7 +3352,7 @@ year:"2013",
 title:"Staying cool in a changing climate: Reaching vulnerable populations during heat events",
 source:"Global Environmental Change, 23(2), 475–484",
 url:"https://doi.org/10.1016/j.gloenvcha.2012.12.011",
-note:"Cooling center effectiveness tiers (8–35% mortality reduction); cost-per-center estimates for Maricopa County."
+note:"Documents cooling center effectiveness (8–35% mortality reduction in studied populations). Cost figures in the dashboard are illustrative estimates, not directly from this source."
 },
 {
 authors:"Bassil, K.L. & Cole, D.C.",
@@ -3322,7 +3376,7 @@ year:"2024",
 title:"Arizona Heat Safety Resource Guide",
 source:"ADHS Office of Environmental Health",
 url:"https://www.azdhs.gov/documents/preparedness/epidemiology-disease-control/extreme-weather/heat/az-heat-safety-resource-guide.pdf",
-note:"Operational definitions and statewide guidance for cooling centers, hydration stations, and respite centers. Cost ranges in the model ($2.1–9.2M/yr cooling centers; $0.4–1.8M/yr hydration stations) are educational approximations for Maricopa County scale, informed by this source, county budget data, and policy literature [17,21]."
+note:"Operational definitions and statewide guidance for cooling centers, hydration stations, and respite centers. Cost ranges in the model ($2.1–9.2M/yr cooling centers; $0.4–1.8M/yr hydration stations) are illustrative order-of-magnitude estimates for classroom discussion, informed by this source and county budget data. Actual program costs vary significantly by scale, location, and operational model — e.g., a single 24/7 respite center in Phoenix cost ~$2.9M in 2025 (City of Phoenix, 2025)."
 },
 {
 authors:"Stone, B., et al.",
@@ -3330,7 +3384,7 @@ year:"2014",
 title:"Avoided heat-related mortality through climate adaptation strategies in three US cities",
 source:"PLOS ONE, 9(6), e100852",
 url:"https://doi.org/10.1371/journal.pone.0100852",
-note:"Policy combination modeling; community outreach cost-effectiveness ($1.2–4.5M/yr for city-wide coverage)."
+note:"Policy combination modeling and avoided mortality estimation across three US cities. Outreach cost range ($1.2–4.5M/yr) in the dashboard is an illustrative estimate for classroom discussion, not derived from this source."
 },
 ]
 },
@@ -3388,7 +3442,7 @@ year:"2025",
 title:"Drop in Heat-Related Deaths Show Importance of Heat Relief Sites Efforts",
 source:"City of Phoenix Newsroom",
 url:"https://www.phoenix.gov/newsroom/mayors-office-news/3377.html",
-note:"602 heat deaths in 2024 (down from 645 in 2023) despite record heat. Nearly half of victims were homeless. Maricopa County's 24-hour heat respite site and extended cooling center hours contributed to first year-over-year decrease in a decade. 30,304 of 33,247 respite center visitors indicated they were experiencing homelessness."
+note:"608 heat deaths in 2024 (down from 645 in 2023) despite record heat. Nearly half of victims were homeless. Maricopa County's 24-hour heat respite site and extended cooling center hours contributed to first year-over-year decrease in a decade. 30,304 of 33,247 respite center visitors indicated they were experiencing homelessness."
 },
 {
 authors:"Samuelson, H., et al.",
@@ -3942,7 +3996,7 @@ React.createElement(SectionHead,null,"Heat Mortality Model: Variables, Parameter
 React.createElement('div',{style:{color:"#ef4444",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:4}},"1. Calibration Constants"),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16}},
 ...[
-{name:"BASE_DEATHS_2020",val:"687 deaths/yr (raw, pre-policy)",note:"Estimated counterfactual annual heat deaths without HRN policy interventions, calibrated so that the moderate scenario at 2023 with Current policies produces ~577 deaths/yr (close to the observed 2022–2024 average of ~557). Observed annual totals varied widely (425 in 2022, 645 in 2023, 602 in 2024). The ~20-death difference between model (577) and observed (557) reflects the analytical model’s projection of 2023 warming above the 2020 baseline."},
+{name:"BASE_DEATHS_2020",val:"690 deaths/yr (raw, pre-policy)",note:"Estimated counterfactual annual heat deaths without HRN policy interventions, calibrated so that the moderate scenario at Year 2020 with Current policies produces ~559 deaths/yr (close to the observed 2022–2024 average of ~559). Observed annual totals varied widely (425 in 2022, 645 in 2023, 608 in 2024). The ~20-death model is calibrated at Year 2020 to produce ~559 deaths/yr, matching the observed three-year average."},
 {name:"BASE_HEAT_DAYS_2020",val:"107 days >100°F/yr",note:"NOAA 1991–2020 normal for Maricopa County: sum of BASE.heat array = 107 extreme heat days annually at baseline."},
 {name:"HEAT_DAY_COEFFICIENT",val:"3.2 deaths / extra day",note:"Each additional day above 100°F beyond the 2020 baseline adds ~3.2 deaths. Derived from Hondula et al. (2015) heat-mortality dose-response analysis across seven U.S. cities including Phoenix."},
 {name:"WARMING_MULTIPLIER",val:"1.04 per °F warming",note:"Each degree of mean warming multiplies the base death rate by 1.04 (4% increase). From Baccini et al. (2008) European multi-city study adapted to desert climate."},
@@ -3961,11 +4015,11 @@ React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:8,ma
 {label:"Additional Heat Days",formula:"additionalHeatDays = max(0, totalHeatDays − 107)",note:"Counts heat days in excess of the 2020 baseline (107/yr). Only positive exceedances contribute to projected mortality increase."},
 {label:"Warming Delta",formula:"warming = tempD × interpF(warmingCurve, year)",note:"Effective warming in °F at the selected year and scenario. Uses the CMIP6-aligned warming fraction f from the climate model."},
 {label:"Warming Multiplier",formula:"warmingMultiplier = 1.04 ^ warming",note:"Exponential dose-response. Each additional °F of mean warming compounds the baseline death rate multiplicatively."},
-{label:"Raw Deaths (no policy)",formula:"rawDeaths = round((BASE_DEATHS_2020 + additionalHeatDays × 3.2) × warmingMultiplier)",note:"BASE_DEATHS_2020 = 687. Two additive heat stress pathways (extra extreme days + general warming) combined before the warming multiplier is applied."},
+{label:"Raw Deaths (no policy)",formula:"rawDeaths = round((BASE_DEATHS_2020 + additionalHeatDays × 3.2) × warmingMultiplier)",note:"BASE_DEATHS_2020 = 690. Two additive heat stress pathways (extra extreme days + general warming) combined before the warming multiplier is applied."},
 {label:"Policy Reduction %",formula:"E(c) = Emax × c^n / (K^n + c^n); total = 1 − (1−E_cool)×(1−E_hyd)×(1−E_out)",note:"Hill dose-response per intervention converts coverage fraction to efficacy with diminishing returns. Multiplicative combination avoids independence assumption and produces natural saturation (~46% max at all tier 3)."},
 {label:"Prevented Deaths",formula:"preventedDeaths = round(rawDeaths × totalReductionPct)",note:"Lives saved by active policy interventions. Displayed as the positive impact of each policy configuration."},
 {label:"Final Deaths",formula:"finalDeaths = rawDeaths − preventedDeaths",note:"Projected heat deaths after policy interventions. Used for risk level classification and monthly distribution chart."},
-{label:"Cost per Life Saved",formula:"costPerLife = (totalCost_$M × 1,000,000) / (preventedDeaths × 1,000)",note:"Displayed in $thousands. Compared against the regulatory VSL (Value of a Statistical Life) threshold of ~$10M."},
+{label:"Cost per Life Saved",formula:"costPerLife = (totalCost_$M × 1,000,000) / (preventedDeaths × 1,000)",note:"Displayed in $thousands. Compared against the federal VSL (~$12.5M, US DOT 2024). Cost inputs are illustrative estimates."},
 ].map((eq,i)=>React.createElement('div',{key:i,style:varStyle},
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16}},eq.label),
 React.createElement('code',{style:formulaStyle},eq.formula),
@@ -3982,9 +4036,9 @@ React.createElement('tr',null,
 ),
 React.createElement('tbody',null,
 ...[
-{name:"🏢 Cooling Centers",vals:["0 / 0%","~50 centers / −10%","~80 centers / −19%","~120 centers / −25%"],costs:["$0","$2.1M/yr","$4.8M/yr","$9.2M/yr"]},
-{name:"💧 Hydration Stations",vals:["0 / 0%","~70 stations / −5%","~110 stations / −9%","~160 stations / −12%"],costs:["$0","$0.4M/yr","$0.9M/yr","$1.8M/yr"]},
-{name:"🤝 Outreach",vals:["None / 0%","Basic / −5%","Expanded / −13%","Comprehensive / −18%"],costs:["$0","$1.2M/yr","$2.6M/yr","$4.5M/yr"]},
+{name:"🏢 Cooling Centers",vals:["0 / 0%","~50 centers / −10%","~80 centers / −19%","~120 centers / −25%"],costs:["$0","~$2.1M/yr*","~$4.8M/yr*","~$9.2M/yr*"]},
+{name:"💧 Hydration Stations",vals:["0 / 0%","~70 stations / −5%","~110 stations / −9%","~160 stations / −12%"],costs:["$0","~$0.4M/yr*","~$0.9M/yr*","~$1.8M/yr*"]},
+{name:"🤝 Outreach",vals:["None / 0%","Basic / −5%","Expanded / −13%","Comprehensive / −18%"],costs:["$0","~$1.2M/yr*","~$2.6M/yr*","~$4.5M/yr*"]},
 ].map((row,ri)=>React.createElement('tr',{key:ri,style:{borderBottom:"1px solid #4A1428"}},
 React.createElement('td',{style:{padding:"6px 8px",color:"#5C1130",fontWeight:600,whiteSpace:"nowrap"}},row.name),
 ...row.vals.map((v,ci)=>React.createElement('td',{key:ci,style:{padding:"6px 8px",color:"#7A3045"}},
@@ -4000,7 +4054,7 @@ React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:6}},
 ["Population growth projected","Maricopa County population is projected via piecewise linear interpolation from 4.42M (2020) through 8.3M (2100), based on U.S. Census 2020 and AZ OEO medium-series projections. Heterogeneous popWeight (districtPop / agentsInDistrict) scales each agent's fractional mortality by its district's population share, so agents in dense districts represent fewer people than agents in sparse districts. Total popWeight sums to county population exactly."],
 ["Linear heat-day dose-response","Deaths are modeled as a linear function of additional heat days in the analytical model (slide 8). The ABM addresses non-linearities via cumulative thermal dose with sigmoid dose-response (dual-phase day/night accumulation), heatWaveMult (multi-day compounding), and susceptibility-weighted accumulation."],
 ["Exponential warming dose-response","The 1.04× per-°F multiplier is held constant across all warming levels. In reality, the curve steepens at higher temperatures."],
-["Multiplicative Hill dose-response","Intervention reductions combine multiplicatively via Hill dose-response functions with diminishing returns. Natural saturation (~46% at maximum deployment) replaces the former 65% hard cap. Synergistic effects (e.g., outreach directing people to cooling centers) are approximated by the multiplicative combination, not modeled explicitly."],
+["Multiplicative Hill dose-response","Intervention reductions combine multiplicatively via Hill dose-response functions with diminishing returns. Natural saturation (~46% at maximum deployment) emerges from diminishing returns. Synergistic effects (e.g., outreach directing people to cooling centers) are approximated by the multiplicative combination, not modeled explicitly."],
 ["Monthly proportional distribution","In the analytical model (slide 8), deaths are distributed across months proportionally to extreme heat day counts. The ABM (slide 9) addresses this via acclimMult, which increases early-season heat accumulation by up to 40% before population acclimatization occurs over ~21 hot days."],
 ["Static vulnerability fraction","The ~25% vulnerable fraction (composed of housing-dependent rates: 100% of unsheltered, 60% of precarious, 12% of sheltered) is fixed. Aging demographics and changes in homelessness prevalence may shift this over the 2020–2100 projection window."],
 ].map(([title,note],i)=>React.createElement('div',{key:i,style:{display:"flex",gap:10,padding:"8px 12px",background:"rgba(239,68,68,0.04)",border:"1px solid #ef444422",borderRadius:6}},
@@ -4018,8 +4072,8 @@ React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,mar
 React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Core Mortality Equation"),
 React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
 "The model computes raw (pre-intervention) deaths using two additive heat stress pathways combined with an exponential warming multiplier: ",
-React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"rawDeaths = round((687 + additionalHeatDays × 3.2) × warmingMultiplier)"),
-". The constant 687 (BASE_DEATHS_2020) represents the estimated counterfactual annual heat deaths without HRN policy interventions, calibrated so that the moderate scenario at 2023 with Current policies produces ~577 deaths/yr (close to the 2022–2024 observed average of ~557). The model produces a smooth trend; it does not reproduce individual-year variability (425 in 2022, 645 in 2023, 602 in 2024), which reflects weather differences outside the model's scope. The coefficient 3.2 means each additional extreme heat day (above 100°F) beyond the baseline of 107 days per year adds approximately 3.2 deaths, derived from dose-response regressions in Hondula et al. (2015) examining heat-related mortality across seven U.S. cities including Phoenix."
+React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"rawDeaths = round((690 + additionalHeatDays × 3.2) × warmingMultiplier)"),
+". The constant 690 (BASE_DEATHS_2020) represents the estimated counterfactual annual heat deaths without HRN policy interventions, calibrated so that the moderate scenario at Year 2020 with Current policies produces ~559 deaths/yr (close to the 2022–2024 observed average of ~559). The model produces a smooth trend; it does not reproduce individual-year variability (425 in 2022, 645 in 2023, 608 in 2024), which reflects weather differences outside the model's scope. The coefficient 3.2 means each additional extreme heat day (above 100°F) beyond the baseline of 107 days per year adds approximately 3.2 deaths, derived from dose-response regressions in Hondula et al. (2015) examining heat-related mortality across seven U.S. cities including Phoenix."
 ),
 React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Warming Multiplier"),
 React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
@@ -4033,7 +4087,7 @@ React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,mar
 React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
 "Three intervention types reduce projected mortality based on district-level service coverage and a Hill dose-response function. Each tier maps to a coverage fraction (proportion of vulnerable population serviceable). Coverage is converted to efficacy using E(c) = Emax · c^n / (K^n + c^n), which produces diminishing returns — the first facilities placed in high-need areas save the most lives per dollar. Interventions combine multiplicatively: ",
 React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"total = 1 − (1−E_cool)×(1−E_hyd)×(1−E_out)  [Hill dose-response]"),
-". Natural saturation replaces the former 65% hard cap — the multiplicative combination with diminishing-returns Hill curves produces a realistic asymptote (~46% at maximum deployment of all three interventions) without requiring an artificial ceiling."
+". The multiplicative combination with diminishing-returns Hill curves produces a realistic asymptote (~46% at maximum deployment of all three interventions) without requiring an artificial ceiling."
 ),
 React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Final Deaths & Cost-Effectiveness"),
 React.createElement('div',{style:{color:"#7A3045",fontSize:15,lineHeight:1.7,marginBottom:8}},
@@ -4043,12 +4097,12 @@ React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,6
 React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"finalDeaths = rawDeaths − preventedDeaths"),
 ". Cost-effectiveness is expressed as cost per life saved: ",
 React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",padding:"2px 6px",borderRadius:4,color:"#8C1D40"}},"costPerLife = (totalCost × $1M) / preventedDeaths"),
-", which is compared against the regulatory Value of a Statistical Life (~$10M) to assess whether interventions are economically justified."
+", which is compared against the federal Value of a Statistical Life (~$12.5M, US DOT 2024) to assess whether interventions are economically justified."
 ),
 React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Major Variables Defined"),
 React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:12}},
 ...[
-["BASE_DEATHS_2020 (687)","Estimated counterfactual annual heat deaths without HRN policy interventions. Calibrated so moderate scenario + Current policies yields ~577 deaths/yr (2022–2024 observed average: ~557). Year-to-year variability (425 in 2022, 645 in 2023, 602 in 2024) is weather-driven and not captured by the model's smooth trend."],
+["BASE_DEATHS_2020 (690)","Estimated counterfactual annual heat deaths without HRN policy interventions. Calibrated so moderate scenario + Current policies yields ~559 deaths/yr (2022–2024 observed average: ~559). Year-to-year variability (425 in 2022, 645 in 2023, 608 in 2024) is weather-driven and not captured by the model's smooth trend."],
 ["BASE_HEAT_DAYS_2020 (107)","Sum of the BASE.heat array from the climate model — the NOAA 1991–2020 normal count of days exceeding 100°F per year at Phoenix Sky Harbor. The array sums to 107 days annually at baseline."],
 ["additionalHeatDays","The number of extreme heat days projected in excess of the 107-day baseline. Only positive exceedances contribute to mortality increase. Computed from the climate model output for the selected scenario and year."],
 ["warming","Effective warming in °F at the selected year and scenario. Uses the CMIP6-aligned warming fraction f: warming = tempD × interpF(warmingCurve, year)."],
@@ -4068,7 +4122,7 @@ React.createElement('span',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},
 ),
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Implementation Code"),
 React.createElement('code',{style:{fontFamily:"monospace",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"12px 14px",fontSize:14,color:"#8C1D40",display:"block",whiteSpace:"pre-wrap",lineHeight:1.6}},
-"// Climate model inputs\nconst data = project(scenario, year);\nconst totalHeatDays = data.reduce((a, d) => a + d.heat, 0);\nconst warming = tempD * interpF(s.warmingCurve, year);\n\n// Base mortality model\nconst BASE_DEATHS_2020 = 687;\nconst BASE_HEAT_DAYS_2020 = 107;\nconst additionalHeatDays = Math.max(0, totalHeatDays - BASE_HEAT_DAYS_2020);\nconst warmingMultiplier = Math.pow(1.04, warming);\nconst rawDeaths = Math.round((BASE_DEATHS_2020 + additionalHeatDays * 3.2) * warmingMultiplier);\n\n// Coverage-based Hill dose-response policy model\n// E(c) = Emax * c^n / (K^n + c^n)  — diminishing returns\nconst hillEfficacy = (c, {Emax, K, n}) => c <= 0 ? 0 : Emax * c**n / (K**n + c**n);\nconst coolingReduction = hillEfficacy(COVERAGE.cooling[coolingCenters], HILL.cooling);\nconst hydrationReduction = hillEfficacy(COVERAGE.hydration[hydrationStations], HILL.hydration);\nconst outreachReduction = hillEfficacy(COVERAGE.outreach[outreach], HILL.outreach);\n// Multiplicative combination — no artificial cap\nconst totalReductionPct = 1 - (1-coolingReduction) * (1-hydrationReduction) * (1-outreachReduction);\nconst preventedDeaths = Math.round(rawDeaths * totalReductionPct);\nconst finalDeaths = rawDeaths - preventedDeaths;\n\n// Cost-effectiveness\nconst costPerLifeSaved = preventedDeaths > 0\n  ? ((totalCost * 1000000) / preventedDeaths / 1000).toFixed(0)\n  : \"—\";"
+"// Climate model inputs\nconst data = project(scenario, year);\nconst totalHeatDays = data.reduce((a, d) => a + d.heat, 0);\nconst warming = tempD * interpF(s.warmingCurve, year);\n\n// Base mortality model\nconst BASE_DEATHS_2020 = 690;\nconst BASE_HEAT_DAYS_2020 = 107;\nconst additionalHeatDays = Math.max(0, totalHeatDays - BASE_HEAT_DAYS_2020);\nconst warmingMultiplier = Math.pow(1.04, warming);\nconst rawDeaths = Math.round((BASE_DEATHS_2020 + additionalHeatDays * 3.2) * warmingMultiplier);\n\n// Coverage-based Hill dose-response policy model\n// E(c) = Emax * c^n / (K^n + c^n)  — diminishing returns\nconst hillEfficacy = (c, {Emax, K, n}) => c <= 0 ? 0 : Emax * c**n / (K**n + c**n);\nconst coolingReduction = hillEfficacy(COVERAGE.cooling[coolingCenters], HILL.cooling);\nconst hydrationReduction = hillEfficacy(COVERAGE.hydration[hydrationStations], HILL.hydration);\nconst outreachReduction = hillEfficacy(COVERAGE.outreach[outreach], HILL.outreach);\n// Multiplicative combination — no artificial cap\nconst totalReductionPct = 1 - (1-coolingReduction) * (1-hydrationReduction) * (1-outreachReduction);\nconst preventedDeaths = Math.round(rawDeaths * totalReductionPct);\nconst finalDeaths = rawDeaths - preventedDeaths;\n\n// Cost-effectiveness\nconst costPerLifeSaved = preventedDeaths > 0\n  ? ((totalCost * 1000000) / preventedDeaths / 1000).toFixed(0)\n  : \"—\";"
 ),
 React.createElement('div',{style:{color:"#ef4444",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:20}},"6. Mathematical Formulas"),
 React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Warming Delta (°F)"),
@@ -4093,9 +4147,9 @@ React.createElement('i',null,"D"),React.createElement('sub',null,"add")," = max(
 React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Heat days in excess of the 2020 baseline (107 days/yr). Only positive exceedances contribute to mortality increase."),
 React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Raw Deaths (pre-intervention)"),
 React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
-React.createElement('i',null,"R")," = ⌊ ( 687 + ",React.createElement('i',null,"D"),React.createElement('sub',null,"add")," × 3.2 ) × ",React.createElement('i',null,"M")," + 0.5 ⌋"
+React.createElement('i',null,"R")," = ⌊ ( 690 + ",React.createElement('i',null,"D"),React.createElement('sub',null,"add")," × 3.2 ) × ",React.createElement('i',null,"M")," + 0.5 ⌋"
 ),
-React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Two additive heat stress pathways (extra extreme days + general warming) combined. The 687 base (BASE_DEATHS_2020, estimated counterfactual without HRN) and 3.2 coefficient are multiplied by the warming multiplier M."),
+React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Two additive heat stress pathways (extra extreme days + general warming) combined. The 690 base (BASE_DEATHS_2020, estimated counterfactual without HRN) and 3.2 coefficient are multiplied by the warming multiplier M."),
 React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Coverage-Based Hill Dose-Response Policy Model"),
 React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"left",marginBottom:8,lineHeight:2.2}},
 React.createElement('i',null,"E"),"(",React.createElement('i',null,"c"),") = ",React.createElement('span',{style:{display:"inline-block",textAlign:"center",verticalAlign:"middle"}},React.createElement('span',{style:{display:"block",borderBottom:"1px solid #8C1D40",paddingBottom:2}},React.createElement('i',null,"E"),React.createElement('sub',null,"max")," · ",React.createElement('i',null,"c"),React.createElement('sup',null,"n")),React.createElement('span',{style:{display:"block",paddingTop:2}},React.createElement('i',null,"K"),React.createElement('sup',null,"n")," + ",React.createElement('i',null,"c"),React.createElement('sup',null,"n")))
@@ -4105,7 +4159,7 @@ React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,mar
 React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
 React.createElement('i',null,"r"),React.createElement('sub',null,"total")," = 1 − (1 − ",React.createElement('i',null,"E"),React.createElement('sub',null,"cool"),") × (1 − ",React.createElement('i',null,"E"),React.createElement('sub',null,"hydr"),") × (1 − ",React.createElement('i',null,"E"),React.createElement('sub',null,"out"),")"
 ),
-React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Each intervention tier maps to a coverage fraction. Efficacy follows a Hill curve E(c)=Emax·c^n/(K^n+c^n) with diminishing returns. Interventions combine multiplicatively: total = 1−(1−E₁)(1−E₂)(1−E₃). Natural saturation replaces the former 65% hard cap."),
+React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Each intervention tier maps to a coverage fraction. Efficacy follows a Hill curve E(c)=Emax·c^n/(K^n+c^n) with diminishing returns. Interventions combine multiplicatively: total = 1−(1−E₁)(1−E₂)(1−E₃). Natural saturation (~46% maximum) emerges from diminishing returns."),
 React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:14}},"Prevented Deaths"),
 React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
 React.createElement('i',null,"V")," = ⌊ ",React.createElement('i',null,"R")," × ",React.createElement('i',null,"r"),React.createElement('sub',null,"total")," + 0.5 ⌋"
@@ -4118,7 +4172,7 @@ React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,mar
 React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(239,68,68,0.08)",border:"1px solid #ef444433",borderRadius:5,padding:"14px 18px",fontSize:20,color:"#8C1D40",display:"block",textAlign:"center",marginBottom:8,lineHeight:1.8}},
 React.createElement('i',null,"C"),React.createElement('sub',null,"life")," = ",React.createElement('span',{style:{display:"inline-block",textAlign:"center",verticalAlign:"middle"}},React.createElement('span',{style:{display:"block",borderBottom:"1px solid #8C1D40",paddingBottom:2}},React.createElement('i',null,"C"),React.createElement('sub',null,"total")," × 1,000,000"),React.createElement('span',{style:{display:"block",paddingTop:2}},React.createElement('i',null,"V")," × 1,000"))
 ),
-React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Displayed in thousands of dollars. Compared against the regulatory Value of a Statistical Life (~$10M)."),
+React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},"Displayed in thousands of dollars. Compared against the federal Value of a Statistical Life (~$12.5M, US DOT 2024)."),
 React.createElement('div',{style:{color:"#ef4444",fontWeight:600,fontSize:15,marginBottom:6,marginTop:18}},"Variable Definitions"),
 React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:12}},
 ...[
@@ -4128,7 +4182,7 @@ React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:6,ma
 ["D_total","Total projected extreme heat days per year, summed from the climate model's 12 monthly H(i) values"],
 ["D_add","Additional heat days above the 2020 baseline of 107 days/yr"],
 ["107","Baseline extreme heat days per year (NOAA 1991–2020 normal, sum of BASE.heat array)"],
-["687","BASE_DEATHS_2020: estimated counterfactual annual heat deaths without HRN policy interventions, calibrated so moderate scenario + Current policies ≈ 577 (2022–2024 observed average)"],
+["690","BASE_DEATHS_2020: estimated counterfactual annual heat deaths without HRN policy interventions, calibrated so moderate scenario + Current policies ≈ 559 (2022–2024 observed average)"],
 ["3.2","Deaths per additional extreme heat day beyond baseline, from Hondula et al. (2015) heat-mortality analysis across seven U.S. cities including Phoenix"],
 ["1.04","Per-°F warming multiplier — each degree of mean warming increases the death rate by 4%, from Baccini et al. (2008)"],
 ["R","Raw projected deaths before any policy intervention"],
@@ -4143,8 +4197,8 @@ React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:6,ma
 ["r_total","Combined policy mortality reduction via multiplicative Hill dose-response. Natural saturation at ~46% at max deployment (all tier 3)."],
 ["V","Prevented deaths — lives saved by active policy interventions"],
 ["F","Final projected deaths after policy interventions (R − V)"],
-["C_total","Total annual program cost in $M: sum of cooling ($0/2.1/4.8/9.2M), hydration ($0/0.4/0.9/1.8M), and outreach ($0/1.2/2.6/4.5M)"],
-["C_life","Cost per life saved in $K — compared against the VSL threshold of ~$10M"],
+["C_total","Total annual program cost in $M (illustrative estimates): sum of cooling ($0/2.1/4.8/9.2M), hydration ($0/0.4/0.9/1.8M), and outreach ($0/1.2/2.6/4.5M). Actual costs vary by program design."],
+["C_life","Cost per life saved in $K — compared against the VSL threshold (~$12.5M, US DOT 2024)"],
 ].map(([sym,def],i)=>React.createElement('div',{key:i,style:{display:"flex",gap:10,padding:"8px 12px",background:"rgba(239,68,68,0.04)",border:"1px solid #ef444422",borderRadius:6}},
 React.createElement('span',{style:{color:"#8C1D40",fontFamily:"'Times New Roman',serif",fontWeight:700,fontStyle:"italic",fontSize:16,flexShrink:0,minWidth:100}},sym),
 React.createElement('span',{style:{color:"#7A3045",fontSize:15,lineHeight:1.5}},def)
@@ -4262,7 +4316,7 @@ React.createElement('div',{style:noteStyle},v.note)
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"4. Mortality Calibration & Fractional Accumulation"),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16}},
 ...[
-{name:"baseFracDeathRate (normal)",val:"0.00000106 × pmaxMult × σ(dose) × housingDeathMult × suscDeathMult",note:"Counterfactual (no-policy) death rate, modulated by a sigmoid function of cumulative thermal dose: σ = 1/(1+exp(−β·(thermalDose−D50))). This replaces the prior constant per-tick probability with a dose-response function that produces near-zero risk during early exposure and accelerating risk after sustained heat stress. pmaxMult=4.06 is calibrated so that the population-weighted sigmoid average produces ~577 deaths/yr at moderate + 2023 + Current policies. [38]"},
+{name:"baseFracDeathRate (normal)",val:"0.00000106 × pmaxMult × σ(dose) × housingDeathMult × suscDeathMult",note:"Counterfactual (no-policy) death rate, modulated by a sigmoid function of cumulative thermal dose: σ = 1/(1+exp(−β·(thermalDose−D50))). This replaces the prior constant per-tick probability with a dose-response function that produces near-zero risk during early exposure and accelerating risk after sustained heat stress. pmaxMult=4.28 is calibrated so that the population-weighted sigmoid average produces ~559 deaths/yr at moderate + Year 2020 + Current policies. [38]"},
 {name:"baseFracDeathRate (blackout)",val:"0.00000266 × pmaxMult × σ(dose) × housingDeathMult × suscDeathMult",note:"2.5× normal rate (0.00000106 × 2.5) during grid failure events, further multiplied by housingDeathMult and the sigmoid dose-response. During blackout, sheltered agents also lose AC recovery and behave like precarious agents. [17,38]"},
 {name:"thermalDose",val:"cumulative, 0+ (per agent)",note:"Dual-phase cumulative thermal dose driving the sigmoid mortality function. Accumulates from two channels: (1) DAYTIME: αDay × max(0, Teff−95)/30 where Teff is outdoor temp for unsheltered/outdoor workers, indoor temp for sheltered agents; (2) NIGHTTIME: αNight × max(0, Tindoor−78)/30, capturing overnight recovery failure — the primary multi-day mortality driver (Kovats & Hajat 2008 [61]). Both channels amplified by (1 + κ × susceptibility). Decay: ×0.92/tick (half-life ~4 days), applied once per tick in daytime phase. Mid-summer equilibrium: sheltered+AC ~0.06 (sigmoid 0.06), precarious ~0.42 (sigmoid 0.55), unsheltered ~0.48 (sigmoid 0.65)."},
 {name:"DOSE.alphaDay",val:"0.03",note:"Daytime thermal stress accumulation coefficient. Dose increment = αDay × max(0, Teff−95)/30 × (1+κ×susceptibility) × heatWaveMult. Lower than αNight because daytime exposure is partially mitigated by behavioral adaptation (shade-seeking, hydration)."},
@@ -4271,7 +4325,7 @@ React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",g
 {name:"DOSE.decay",val:"0.92/tick",note:"Continuous per-tick multiplicative decay of thermalDose (half-life ≈ 8 ticks ≈ 4 days). Applied once per tick in the daytime phase. Models the body's ongoing thermoregulatory recovery even under sustained heat stress. After heat exposure ends, dose drops below 0.001 (zeroed) within ~30 ticks (~15 days)."},
 {name:"DOSE.beta",val:"8.0",note:"Sigmoid steepness parameter. Controls the sharpness of the dose-response transition: β=8 produces a gradual S-curve from near-zero risk at dose≈0.1 to near-maximum risk at dose≈0.7. Literature: calibrated to approximate the nonlinear onset trajectory documented in Bouchama & Knochel (2002) [50]."},
 {name:"DOSE.d50",val:"0.40",note:"Sigmoid midpoint: the thermalDose at which mortality probability reaches 50% of Pmax. At d50, the sigmoid output = 0.50. Values well below d50 (sheltered+AC agents) produce near-zero mortality; values well above (precarious without AC, unsheltered) produce near-maximum mortality."},
-{name:"DOSE.pmaxMult",val:"4.06",note:"Mortality ceiling multiplier. baseFracDeathRate is scaled by pmaxMult × sigmoid, so the maximum possible per-tick mortality is baseFracDeathRate × 4.06 (when sigmoid≈1). Calibrated via 300-run Monte Carlo at gridFailure=0.001% so that the population-weighted sigmoid average at moderate/2023/Current produces ~577 deaths/yr (300-run mean: 576.8, 95% CI of mean: 571.2–582.4). Recalibrated from v5 pmaxMult=4.01 to compensate for v6 3× movement speed (MOVE_STEPS=3), which slightly reduces mortality by increasing agent–infrastructure contact rates."},
+{name:"DOSE.pmaxMult",val:"4.28",note:"Mortality ceiling multiplier. baseFracDeathRate is scaled by pmaxMult × sigmoid, so the maximum possible per-tick mortality is baseFracDeathRate × 4.28 (when sigmoid≈1). Calibrated via 150-run Monte Carlo (3 seeds × 50 runs, N=10,000) at gridFailure=0.001% so that the population-weighted sigmoid average at moderate/Year 2020/Current produces ~559 deaths/yr (pooled mean: 557.4, target in 95% CI across all seeds). Calibrated at Year 2020 baseline conditions to match the 559-death observed three-year average (2022–2024)."},
 {name:"policyMortMult",val:"(1−E_cool)×(1−E_hyd)×(1−E_out)  [Hill dose-response]",note:"Population-wide policy modifier applied ONLY to agents not currently receiving spatial protection (protection=1.0). Uses coverage-based Hill dose-response per intervention with multiplicative combination. Each E(c) = Emax·c^n/(K^n+c^n) converts district-level service coverage into mortality reduction with diminishing returns. At Current tier (all=1): ~0.81. Spatially-protected agents already benefit from reduced heat accumulation — applying policyMortMult on top would double-count."},
 {name:"fracDeathRate",val:"baseFracDeathRate × (spatiallyProtected ? 1.0 : policyMortMult)",note:"Effective fractional death rate per agent-tick in the critical zone. Spatially-protected agents (near infrastructure, protection<1.0) receive the full baseFracDeathRate since their protection is already applied upstream via reduced heat accumulation. Unprotected agents (protection=1.0) receive the policyMortMult discount. Each agent's contribution is weighted by popWeight (heterogeneous population scaling: districtPop / agentsInDistrict) for population-level estimates."},
 {name:"visualDeathProb",val:"fracDeathRate × VISUAL_DEATH_SCALE (20×)",note:"Visual death probability for agent dots is now derived directly from the same fracDeathRate used for population-scaled estimates, multiplied by VISUAL_DEATH_SCALE=20 so a visible number of dots die during severe scenarios. This replaces the prior independent baseVisualDeath constants (0.00015 day / 0.00008 night) that only varied by housing and blackout. The unified approach ensures every modifier — housing tier, susceptibility, policy interventions, blackout, spatial protection, and outreach rescue — is reflected in which agents visually die on screen, eliminating the interpretive disconnect between displayed dot deaths and the reported death count."},
@@ -4340,7 +4394,7 @@ React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",backgroun
 "Recovery complete → Healthy (heat=0.05, susceptibility +0.15–0.20, decays ~60 days)"
 ),
 React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},
-"DAYTIME death/rescue zone: baseFracDeathRate (0.00000106) × pmaxMult(4.06) × σ(thermalDose) × housingDeathMult × suscDeathMult, where σ = sigmoid dose-response 1/(1+exp(−β·(dose−D50))). Thermal dose accumulates from two channels: DAYTIME αDay(0.03)×max(0,Teff−95)/30 and NIGHTTIME αNight(0.05)×max(0,Tindoor−78)/30, both ×(1+κ×susceptibility); decay ×0.92/tick (half-life ~4 days). For spatially-protected agents (protection<1.0), fracDeathRate = adjusted baseFracDeathRate; for unprotected agents, fracDeathRate = adjusted baseFracDeathRate × policyMortMult. Rescue: tiered by outreach — enrolled (0.30, isolated 0.15), one-time active (0.20, isolated 0.10), none (0). Mobility limits reduce rescue by 40%. Rescued agents enter recovering state: duration = min(7, baseDays + severityBonus + Geometric(p=0.6)); after recovery, re-enter with elevated susceptibility (+0.15 to +0.20, exponential decay ~60 days). NIGHTTIME death zone: baseFracDeathRate (0.00000076) × pmaxMult × σ(dose) × housingDeathMult × suscDeathMult × policyMortMult (no spatial protection at night). Nighttime rescue: enrolled (0.15, isolated 0.08), one-time (0.10, isolated 0.05). Indoor temperature drives both dose accumulation and recovery thresholds. NIGHT-SHIFT death zone: workers at workplace during nighttime phase. baseFracDeathRate (0.00000066) × pmaxMult × σ(dose) × housingDeathMult × suscDeathMult × policyMortMult. Coworker rescue = 0.25 × mobilityMod. Combined three-phase fractional mortality produces the annual estimate. visualDeathProb = fracDeathRate × VISUAL_DEATH_SCALE (20×)."
+"DAYTIME death/rescue zone: baseFracDeathRate (0.00000106) × pmaxMult(4.28) × σ(thermalDose) × housingDeathMult × suscDeathMult, where σ = sigmoid dose-response 1/(1+exp(−β·(dose−D50))). Thermal dose accumulates from two channels: DAYTIME αDay(0.03)×max(0,Teff−95)/30 and NIGHTTIME αNight(0.05)×max(0,Tindoor−78)/30, both ×(1+κ×susceptibility); decay ×0.92/tick (half-life ~4 days). For spatially-protected agents (protection<1.0), fracDeathRate = adjusted baseFracDeathRate; for unprotected agents, fracDeathRate = adjusted baseFracDeathRate × policyMortMult. Rescue: tiered by outreach — enrolled (0.30, isolated 0.15), one-time active (0.20, isolated 0.10), none (0). Mobility limits reduce rescue by 40%. Rescued agents enter recovering state: duration = min(7, baseDays + severityBonus + Geometric(p=0.6)); after recovery, re-enter with elevated susceptibility (+0.15 to +0.20, exponential decay ~60 days). NIGHTTIME death zone: baseFracDeathRate (0.00000076) × pmaxMult × σ(dose) × housingDeathMult × suscDeathMult × policyMortMult (no spatial protection at night). Nighttime rescue: enrolled (0.15, isolated 0.08), one-time (0.10, isolated 0.05). Indoor temperature drives both dose accumulation and recovery thresholds. NIGHT-SHIFT death zone: workers at workplace during nighttime phase. baseFracDeathRate (0.00000066) × pmaxMult × σ(dose) × housingDeathMult × suscDeathMult × policyMortMult. Coworker rescue = 0.25 × mobilityMod. Combined three-phase fractional mortality produces the annual estimate. visualDeathProb = fracDeathRate × VISUAL_DEATH_SCALE (20×)."
 ),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:14}},"7. Key Formulas"),
@@ -4367,7 +4421,7 @@ React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",backgroun
 "nightDose = αNight × max(0, Tindoor − 78) / 30 × (1 + κ × susc)"
 ),
 React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5,marginBottom:12}},
-"αDay=0.03, αNight=0.05 (nighttime weighted higher: overnight recovery failure is the primary multi-day mortality driver). κ=0.5 (susceptibility amplifies dose 1–1.5×). decay=0.92/tick (half-life ~4 days). β=8, D50=0.40. pmaxMult=4.06. Teff = outdoor temp for unsheltered/outdoor workers, indoor temp for sheltered. Mid-summer equilibrium: sheltered+AC dose≈0.06 (σ≈0.06, low risk), precarious no-AC≈0.42 (σ≈0.55, high risk), unsheltered≈0.90 (σ≈0.98, very high risk). Literature: Bouchama & Knochel (2002) [50], Kovats & Hajat (2008) [61], Murage et al. (2017) [62]."
+"αDay=0.03, αNight=0.05 (nighttime weighted higher: overnight recovery failure is the primary multi-day mortality driver). κ=0.5 (susceptibility amplifies dose 1–1.5×). decay=0.92/tick (half-life ~4 days). β=8, D50=0.40. pmaxMult=4.28. Teff = outdoor temp for unsheltered/outdoor workers, indoor temp for sheltered. Mid-summer equilibrium: sheltered+AC dose≈0.06 (σ≈0.06, low risk), precarious no-AC≈0.42 (σ≈0.55, high risk), unsheltered≈0.90 (σ≈0.98, very high risk). Literature: Bouchama & Knochel (2002) [50], Kovats & Hajat (2008) [61], Murage et al. (2017) [62]."
 ),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:12}},"Policy Mortality Multiplier (unprotected agents only)"),
@@ -4541,7 +4595,7 @@ React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:6,ma
 "Infrastructure seeking uses Dijkstra shortest-distance path on the simplified street network, not real-time traffic or actual pedestrian routing. Agents may not find the optimal cooling center.",
 "Fractional mortality uses a dual-phase cumulative thermal dose model with sigmoid dose-response, capturing nonlinear onset dynamics and the critical role of overnight recovery failure. The sigmoid parameters (β, D50, pmaxMult) are calibrated to aggregate mortality targets rather than fitted to individual-level clinical data. The dose accumulation thresholds (95°F daytime, 78°F nighttime) are approximate physiological boundaries.",
 "The 2.5× blackout multiplier is derived from Stone et al. (2023) modeling; actual blackout impacts depend on duration, geographic extent, and time of day. The logistic grid-strain model captures how multi-day heat domes, hot overnight minimums, and accumulated transformer fatigue compound blackout risk beyond the NERC baseline. When triggered, blackout duration is computed as max(1, ceil(gridStrain/4)) + Geometric(p=0.5), capped at 7 days, reflecting the empirical observation that outages during sustained heat events take longer to restore (Panteli & Mancarella, 2015; Mukherjee et al., 2018).",
-"Policy intervention effectiveness uses Hill dose-response functions (E(c) = Emax·c^n/(K^n+c^n)) with parameters calibrated so that moderate scenario + Current tier policies yield ~577 deaths/yr (near the 2022–2024 observed average of ~557). Individual year variance (e.g., 2023's anomalous 645 deaths) reflects weather variability not captured by the trend model. There are no fixed 'per-tier' percentages; efficacy is a continuous function of coverage (tier-1 examples: cooling ~10%, hydration ~5%, outreach ~5%; combined reduction ~19% at tier 1 all; ~46% maximum at tier 3 all).",
+"Policy intervention effectiveness uses Hill dose-response functions (E(c) = Emax·c^n/(K^n+c^n)) with parameters calibrated so that moderate scenario + Current tier policies yield ~559 deaths/yr (near the 2022–2024 observed average of ~559). Individual year variance (e.g., 2023's anomalous 645 deaths) reflects weather variability not captured by the trend model. There are no fixed 'per-tier' percentages; efficacy is a continuous function of coverage (tier-1 examples: cooling ~10%, hydration ~5%, outreach ~5%; combined reduction ~19% at tier 1 all; ~46% maximum at tier 3 all).",
 "Population projection beyond 2060 is extrapolated at the 2030–2060 growth rate; actual growth depends on migration, policy, and climate factors.",
 "Rescue recovery model: recovering agents do not move or seek infrastructure during their recovery period. Recovery duration does not respond to whether the heat wave is still ongoing. Post-rescue susceptibility elevation uses exponential decay (half-life ~10 days, floor <0.0025, effective ~60-day duration) as a simplified approximation of the complex thermoregulatory recovery trajectory documented by Leon & Bouchama (2015). The geometric discharge tail (p=0.6) is calibrated for computational simplicity rather than fitted to empirical discharge data.",
 "CMIP6 warming curves and the interpF() interpolation function extend through Year 2100 only. The year slider is bounded at 2100; for any year at or beyond the final CMIP6 waypoint, interpF() clamps the warming fraction at f = 1.0 (full scenario ΔT applied, no further increase). The population projection likewise tops out at 8.3 million in 2100. Extending projections beyond 2100 would require additional waypoints from extended CMIP6 ensemble runs (e.g., CMIP6 long-run protocols through 2300) and revised population scenarios, neither of which is currently incorporated.",
