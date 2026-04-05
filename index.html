@@ -692,6 +692,29 @@ React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marg
 React.createElement('span',{style:{fontSize:20}},"📉"),
 React.createElement('span',{style:{color:"#ef4444",fontSize:16,letterSpacing:"2px",textTransform:"uppercase",fontWeight:600}},"Heat Mortality Estimator · Maricopa County, AZ")
 ),
+React.createElement('div',{style:{padding:"16px 20px",background:"rgba(140,29,64,0.05)",border:"1px solid #8C1D4033",borderRadius:10,marginBottom:16,fontSize:16,color:"#2D1520",lineHeight:1.75}},
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:17,marginBottom:12,fontFamily:"'Playfair Display',serif"}},"Heat Mortality Model \u2014 How It Works"),
+React.createElement('div',{style:{paddingLeft:0,marginBottom:6,lineHeight:1.7,fontSize:15,color:"#5C1130"}},"This model estimates how many people die from heat each year in Maricopa County. You control three things to see how outcomes change:"),
+React.createElement('div',{style:{padding:"12px 16px",margin:"10px 0",background:"rgba(140,29,64,0.04)",borderRadius:8,lineHeight:1.8,fontSize:15,color:"#5C1130"}},
+React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83c\udf21\ufe0f How hot does it get?")),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 Three climate futures: ",React.createElement('strong',null,"Optimistic")," (+1\u00b0C), ",React.createElement('strong',null,"Moderate")," (+2\u00b0C), or ",React.createElement('strong',null,"Severe")," (+4\u00b0C) by 2100"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:14}},"\u2022 Hotter futures mean more extreme heat days ",React.createElement('em',null,"and")," higher mortality per heat day \u2014 a double hit"),
+React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83c\udfe5 What public health tools are in place?")),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Cooling centers")," \u2014 the most impactful single intervention"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Hydration stations")," \u2014 reduce heat stress through water access"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:14}},"\u2022 ",React.createElement('strong',null,"Outreach teams")," \u2014 find and assist vulnerable people before crisis"),
+React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83d\udcc9 What does the chart show?")),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',{style:{color:"#dc2626"}},"Red bars")," = projected deaths without any intervention"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',{style:{color:"#2E86C1"}},"Blue bars")," = projected deaths with your selected interventions"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 The gap between them = ",React.createElement('strong',null,"lives saved")," by policy investment")
+),
+React.createElement('div',{style:{paddingLeft:0,marginTop:10,marginBottom:6,lineHeight:1.7,fontSize:15,color:"#5C1130"}},
+React.createElement('strong',{style:{color:"#8C1D40"}},"Key takeaway: "),"Heat deaths are not inevitable. The gap between the red and blue bars represents a policy choice \u2014 lives that can be saved through investment in cooling, hydration, and outreach infrastructure."
+),
+React.createElement('div',{style:{paddingLeft:0,marginTop:4,lineHeight:1.7,fontSize:14,color:"#7A3045",fontStyle:"italic"}},
+"Calibrated to ~559 deaths/year \u2014 the actual 2022\u20132024 Maricopa County average (425 in 2022, 645 in 2023, 608 in 2024)."
+)
+),
 React.createElement('div',{style:{marginBottom:22,padding:"16px 18px",background:"rgba(140,29,64,0.06)",border:"1px solid #8C1D4033",borderRadius:12}},
 React.createElement('div',{style:{fontSize:13,color:"#7A3045",letterSpacing:"3px",textTransform:"uppercase",fontWeight:700,marginBottom:10}},"Climate Scenario — drives temperature & heat-day inputs below"),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:14}},
@@ -825,46 +848,16 @@ React.createElement('span',null,React.createElement('span',{style:{display:"inli
 preventedDeaths>0&&React.createElement('span',null,React.createElement('span',{style:{display:"inline-block",width:10,height:10,background:"#2E86C1",borderRadius:2,marginRight:5}}),"With interventions")
 )
 ),
-React.createElement('div',{style:{padding:"16px 20px",background:"rgba(140,29,64,0.05)",border:"1px solid #8C1D4033",borderRadius:10,marginBottom:16,fontSize:16,color:"#2D1520",lineHeight:1.75}},
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:17,marginBottom:12,fontFamily:"'Playfair Display',serif"}},"Heat Mortality Model — How It Works"),
-
-React.createElement('div',{style:{paddingLeft:0,marginBottom:6,lineHeight:1.7,fontSize:15,color:"#5C1130"}},"This model estimates how many people die from heat each year in Maricopa County. You control three things to see how outcomes change:"),
-
-React.createElement('div',{style:{padding:"12px 16px",margin:"10px 0",background:"rgba(140,29,64,0.04)",borderRadius:8,lineHeight:1.8,fontSize:15,color:"#5C1130"}},
-React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83c\udf21\ufe0f How hot does it get?")),
-React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 Three climate futures: ",React.createElement('strong',null,"Optimistic")," (+1\u00b0C), ",React.createElement('strong',null,"Moderate")," (+2\u00b0C), or ",React.createElement('strong',null,"Severe")," (+4\u00b0C) by 2100"),
-React.createElement('div',{style:{paddingLeft:8,marginBottom:14}},"\u2022 Hotter futures mean more extreme heat days ",React.createElement('em',null,"and")," higher mortality per heat day \u2014 a double hit"),
-
-React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83c\udfe5 What public health tools are in place?")),
-React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Cooling centers")," \u2014 the most impactful single intervention"),
-React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Hydration stations")," \u2014 reduce heat stress through water access"),
-React.createElement('div',{style:{paddingLeft:8,marginBottom:14}},"\u2022 ",React.createElement('strong',null,"Outreach teams")," \u2014 find and assist vulnerable people before crisis"),
-
-React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83d\udcc9 What does the chart show?")),
-React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',{style:{color:"#dc2626"}},"Red bars")," = projected deaths without any intervention"),
-React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',{style:{color:"#2E86C1"}},"Blue bars")," = projected deaths with your selected interventions"),
-React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 The gap between them = ",React.createElement('strong',null,"lives saved")," by policy investment")
-),
-
-React.createElement('div',{style:{paddingLeft:0,marginTop:10,marginBottom:14,lineHeight:1.7,fontSize:15,color:"#5C1130"}},
-React.createElement('strong',{style:{color:"#8C1D40"}},"Key takeaway: "),"Heat deaths are not inevitable. The gap between the red and blue bars represents a policy choice \u2014 lives that can be saved through investment in cooling, hydration, and outreach infrastructure."
-),
-
-React.createElement('div',{style:{paddingLeft:0,marginTop:6,marginBottom:10,lineHeight:1.7,fontSize:14,color:"#7A3045",fontStyle:"italic"}},
-"Calibrated to ~559 deaths/year \u2014 the actual 2022\u20132024 Maricopa County average (425 in 2022, 645 in 2023, 608 in 2024)."
-),
-
-React.createElement('div',{style:{borderTop:"1px solid #8C1D4033",paddingTop:12,marginTop:8}},
+React.createElement('div',{style:{padding:"14px 18px",background:"rgba(140,29,64,0.03)",border:"1px solid #8C1D4022",borderRadius:10,marginBottom:16}},
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,marginBottom:8}},"Technical Details"),
 React.createElement('div',{style:{fontSize:13,color:"#7A3045",lineHeight:1.6}},
 "Starting from a raw counterfactual baseline of 690 deaths/year (BASE_DEATHS_2020, estimated deaths without any HRN policy interventions), the model applies two warming pathways: (1) a dose-response of 3.2 additional deaths per extreme heat day beyond the 107-day baseline, and (2) a 4% compounding mortality multiplier per \u00b0F of mean warming. Policy reductions use Hill dose-response functions (E = Emax\u00b7c\u207f/(K\u207f+c\u207f)) combining multiplicatively across three interventions, producing diminishing returns and a natural saturation at ~46% maximum combined reduction. The model produces a smooth trend and does not capture year-to-year weather variability."
 ),
 React.createElement('div',{style:{fontSize:13,color:"#7A3045",lineHeight:1.6,marginTop:8}},
-"Model omissions: air quality effects, sub-county spatial heterogeneity in facility placement, humidity (approximated via +3\u20135\u00b0F monthly bump Jul\u2013Sep). Population growth projected from 4.42M (2020) to 8.3M (2100)."
+"Model omissions: air quality effects, humidity (this analytical model uses dry-bulb temperature only; the ABM on Slide 9 approximates humidity via a +3\u20135\u00b0F monsoon bump Jul\u2013Sep), and sub-county spatial variation in facility placement. Population growth projected from 4.42M (2020) to 8.3M (2100)."
 ),
 React.createElement('div',{style:{fontSize:13,color:"#7A3045",lineHeight:1.6,marginTop:8,fontStyle:"italic"}},
 "*Cost estimates ($2.1\u20139.2M cooling, $0.4\u20131.8M hydration, $1.2\u20134.5M outreach) are illustrative order-of-magnitude figures for classroom discussion. Actual program costs vary significantly by scale and operational model. For reference, City of Phoenix spent $3M on heat relief in 2024; Maricopa County budgeted $11M for FY2025 (primarily ARPA funds). VSL comparison uses current US DOT guidance ($12.5M, 2022 dollars)."
-)
 )
 ),
 React.createElement('div',{style:{padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
@@ -2596,6 +2589,28 @@ React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marg
 React.createElement('span',{style:{fontSize:20}},"🗺"),
 React.createElement('span',{style:{color:"#8C1D40",fontSize:16,letterSpacing:"2px",textTransform:"uppercase",fontWeight:600}},"Agent-Based Model · Heat Deaths, Policy Intervention & Grid Failure")
 ),
+React.createElement('div',{style:{padding:"16px 20px",background:"rgba(140,29,64,0.05)",border:"1px solid #8C1D4033",borderRadius:10,marginBottom:16,fontSize:16,color:"#2D1520",lineHeight:1.75}},
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:17,marginBottom:12,fontFamily:"'Playfair Display',serif"}},"Agent-Based Model \u2014 How It Works"),
+React.createElement('div',{style:{paddingLeft:0,marginBottom:6,lineHeight:1.7,fontSize:15,color:"#5C1130"}},"Each dot on the map is a simulated person living, working, and moving through Phoenix\u2019s street network. The model runs one full year, day by day, tracking what happens to each person based on three questions:"),
+React.createElement('div',{style:{padding:"12px 16px",margin:"10px 0",background:"rgba(140,29,64,0.04)",borderRadius:8,lineHeight:1.8,fontSize:15,color:"#5C1130"}},
+React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83c\udfe0 Where do they live?")),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Sheltered")," (working AC) \u2014 largely protected; indoor temps stay near 72\u00b0F"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Precarious")," (broken/no AC) \u2014 indoors heats toward outdoor temps"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:14}},"\u2022 ",React.createElement('strong',null,"Unsheltered")," (homeless) \u2014 fully exposed, no protection at all"),
+React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\u26a1 Is the power on?")),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:14}},"\u2022 When the grid fails during a heat wave, AC stops working for ",React.createElement('em',null,"everyone")," in the affected area. The model simulates how blackout risk rises as heat persists day after day, stressing transformers and power lines."),
+React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83d\udea8 Who intervenes?")),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Cooling centers")," \u2014 provide shelter and AC (disabled during blackouts)"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Hydration stations")," \u2014 distribute water to slow heat stress"),
+React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Outreach teams")," \u2014 find and rescue people in crisis")
+),
+React.createElement('div',{style:{paddingLeft:0,marginTop:12,marginBottom:6,lineHeight:1.7,fontSize:15,color:"#5C1130"}},
+React.createElement('strong',{style:{color:"#8C1D40"}},"The daily cycle: "),"During the day, heat stress builds. At night, people with AC recover \u2014 people without it keep deteriorating. After several days of sustained heat, vulnerable people enter a danger zone where death or rescue becomes likely. Use the controls below to change climate scenario, policy investment, and grid reliability to see how outcomes shift."
+),
+React.createElement('div',{style:{paddingLeft:0,marginTop:4,lineHeight:1.7,fontSize:14,color:"#7A3045",fontStyle:"italic"}},
+"Calibrated to ~559 deaths/year \u2014 the actual 2022\u20132024 Maricopa County average \u2014 then projected forward to 2100 under three climate futures and four policy levels."
+)
+),
 React.createElement('div',{style:{marginBottom:16,padding:"16px 18px",background:"rgba(140,29,64,0.06)",border:"1px solid #8C1D4033",borderRadius:12}},
 React.createElement('div',{style:{fontSize:13,color:"#7A3045",letterSpacing:"3px",textTransform:"uppercase",fontWeight:700,marginBottom:10}},"Climate Scenario — sets seasonal daily temperature from climate model"),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:12}},
@@ -2905,33 +2920,7 @@ React.createElement('span',null,"╌╌ ",React.createElement('span',{style:{col
 )
 ):null,
 React.createElement('div',{style:{marginTop:16,padding:"14px 18px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.6}},
-React.createElement('div',{style:{color:"#7A3045",fontWeight:700,fontSize:18,marginBottom:10}},"How the Model Works"),
-
-React.createElement('div',{style:{paddingLeft:0,marginBottom:6,lineHeight:1.7,fontSize:15,color:"#5C1130"}},"Each dot on the map is a simulated person living, working, and moving through Phoenix\u2019s street network. The model runs one full year, day by day, tracking what happens to each person based on three questions:"),
-
-React.createElement('div',{style:{padding:"12px 16px",margin:"10px 0",background:"rgba(140,29,64,0.04)",borderRadius:8,lineHeight:1.8,fontSize:15,color:"#5C1130"}},
-React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83c\udfe0 Where do they live?")),
-React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Sheltered")," (working AC) \u2014 largely protected; indoor temps stay near 72\u00b0F"),
-React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Precarious")," (broken/no AC) \u2014 indoors heats toward outdoor temps"),
-React.createElement('div',{style:{paddingLeft:8,marginBottom:14}},"\u2022 ",React.createElement('strong',null,"Unsheltered")," (homeless) \u2014 fully exposed, no protection at all"),
-
-React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\u26a1 Is the power on?")),
-React.createElement('div',{style:{paddingLeft:8,marginBottom:14}},"\u2022 When the grid fails during a heat wave, AC stops working for ",React.createElement('em',null,"everyone")," in the affected area. The model simulates how blackout risk rises as heat persists day after day, stressing transformers and power lines."),
-
-React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83d\udea8 Who intervenes?")),
-React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Cooling centers")," \u2014 provide shelter and AC (disabled during blackouts)"),
-React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Hydration stations")," \u2014 distribute water to slow heat stress"),
-React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Outreach teams")," \u2014 find and rescue people in crisis")
-),
-
-React.createElement('div',{style:{paddingLeft:0,marginTop:12,marginBottom:6,lineHeight:1.7,fontSize:15,color:"#5C1130"}},
-React.createElement('strong',{style:{color:"#8C1D40"}},"The daily cycle: "),"During the day, heat stress builds. At night, people with AC recover \u2014 people without it keep deteriorating. After several days of sustained heat, vulnerable people enter a danger zone where death or rescue becomes likely. Use the sliders above to change climate scenario, policy investment, and grid reliability to see how outcomes shift."
-),
-
-React.createElement('div',{style:{paddingLeft:0,marginTop:10,marginBottom:16,lineHeight:1.7,fontSize:14,color:"#7A3045",fontStyle:"italic"}},
-"Calibrated to ~559 deaths/year \u2014 the actual 2022\u20132024 Maricopa County average \u2014 then projected forward to 2100 under three climate futures and four policy levels."
-),
-React.createElement('div',{style:{color:"#7A3045",fontWeight:700,fontSize:16,marginTop:20,marginBottom:10,borderTop:"2px solid #8C1D40",paddingTop:12}},"Technical ABM Rules"),
+React.createElement('div',{style:{color:"#7A3045",fontWeight:700,fontSize:16,marginBottom:10}},"Technical ABM Rules"),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"1. Agents & Street Network"),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Each dot = 1 agent on a street network (~190 intersections, ~169 road segments) mapped to Maricopa County\u2019s major arterial grid."),
