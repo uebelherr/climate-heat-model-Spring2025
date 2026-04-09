@@ -213,7 +213,7 @@ return pts[pts.length-1][1];
 const SCENARIOS={
 baseline:{label:"Baseline (2000s)",emoji:"🌡",tempD:0,precipD:0,color:"#2E86C1",desc:"Historical average. Maricopa County already averages 299 sunny days/year and 107 days above 100°F.",warmingCurve:[[2020,0],[2040,0],[2060,0],[2080,0],[2100,0]]},
 optimistic:{label:"+1°C Optimistic",emoji:"🌿",tempD:1.8,precipD:-0.03,color:"#10b981",desc:"Aspirational pathway now effectively out of reach. Global temperature exceeded 1.5°C in 2024; this scenario would require immediate global net-zero emissions and large-scale carbon dioxide removal. Shown for comparison to illustrate the cost of delayed action. IPCC AR6 analysis indicates <5% probability of this outcome under current policy trajectories.",warmingCurve:[[2020,0],[2040,0.55],[2060,0.80],[2080,0.93],[2100,1.0]]},
-moderate:{label:"+2°C Moderate",emoji:"⚡",tempD:3.6,precipD:-0.08,color:"#B8860B",desc:"Now the conservative baseline scenario. Since global average temperature exceeded 1.5°C in 2024, this pathway (requiring significant emissions reductions but without relying on speculative net-negative technologies) represents the most realistic and educationally appropriate target for mid-century climate planning. IPCC AR6 SSP2-4.5 pathway with ~67% probability of limiting warming below 2°C by 2100 if strong mitigation begins immediately.",warmingCurve:[[2020,0],[2040,0.40],[2060,0.65],[2080,0.85],[2100,1.0]]},
+moderate:{label:"+2°C Moderate",emoji:"⚡",tempD:3.6,precipD:-0.08,color:"#B8860B",desc:"Now the conservative baseline scenario. Since global average temperature exceeded 1.5°C in 2024, this pathway (requiring significant emissions reductions but without relying on speculative net-negative technologies) represents the most realistic and appropriate target for mid-century climate planning. IPCC AR6 Shared Socioeconomic Pathway (SSP) 2-4.5 pathway with ~67% probability of limiting warming below 2°C by 2100 if strong mitigation begins immediately.",warmingCurve:[[2020,0],[2040,0.40],[2060,0.65],[2080,0.85],[2100,1.0]]},
 severe:{label:"+4°C Severe",emoji:"🔥",tempD:7.2,precipD:-0.15,color:"#ef4444",desc:"Business-as-usual by 2100. Maricopa County summers become physiologically dangerous for outdoor activity.",warmingCurve:[[2020,0],[2040,0.30],[2060,0.55],[2080,0.80],[2100,1.0]]},
 };
 // === CMIP6-ALIGNED WARMING TRAJECTORY INTERPOLATION ===
@@ -319,16 +319,16 @@ React.createElement('div',{style:{fontWeight:700,color:"#8C1D40",fontSize:16,mar
 React.createElement('div',{style:{fontSize:15,lineHeight:1.8,color:"#2D1520"}},children));}
 function LearningObjectivesBox({children}){
 return React.createElement('div',{style:{margin:"20px 0 8px",padding:"18px 20px",background:"rgba(79,129,189,0.06)",borderLeft:"4px solid #4F81BD",borderRadius:"0 10px 10px 0"}},
-React.createElement('div',{style:{fontWeight:700,color:"#4F81BD",fontSize:17,marginBottom:12}},"\ud83c\udfaf After this lesson, you will be able to:"),
-React.createElement('ol',{style:{margin:0,paddingLeft:22,fontSize:15,lineHeight:1.9,color:"#2D1520"}},children));}
+React.createElement('div',{style:{fontWeight:700,color:"#4F81BD",fontSize:20,marginBottom:12}},"\ud83c\udfaf After this lesson, you will be able to:"),
+React.createElement('ol',{style:{margin:0,paddingLeft:22,fontSize:18,lineHeight:2.0,color:"#2D1520"}},children));}
 function FollowAlongPanel(){
-return React.createElement('div',{style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"55vh",textAlign:"center",padding:"0 16px"}},
-React.createElement('h2',{style:{fontSize:"clamp(24px,3.5vw,36px)",fontFamily:"'Playfair Display',serif",fontWeight:700,color:"#8C1D40",marginBottom:10,lineHeight:1.2}},"Follow Along and",React.createElement('br'),"Use the Models"),
-React.createElement('div',{style:{width:80,height:4,background:"linear-gradient(90deg,#FFC627,#8C1D40)",borderRadius:2,margin:"0 auto 16px"}}),
-React.createElement('div',{style:{display:"flex",alignItems:"center",justifyContent:"center",width:"100%",maxWidth:288,margin:"0 auto",padding:"8px 0"}},
+return React.createElement('div',{style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"38vh",textAlign:"center",padding:"0 16px"}},
+React.createElement('h2',{style:{fontSize:"clamp(24px,3.5vw,36px)",fontFamily:"'Playfair Display',serif",fontWeight:700,color:"#8C1D40",marginBottom:6,lineHeight:1.2}},"Follow Along and",React.createElement('br'),"Use the Models"),
+React.createElement('div',{style:{width:80,height:4,background:"linear-gradient(90deg,#FFC627,#8C1D40)",borderRadius:2,margin:"0 auto 10px"}}),
+React.createElement('div',{style:{display:"flex",alignItems:"center",justifyContent:"center",width:"100%",maxWidth:288,margin:"0 auto",padding:"4px 0"}},
 React.createElement('img',{src:QR_IMG,alt:"QR Code to lesson",style:{width:"100%",maxWidth:396,height:"auto",borderRadius:12}})
 ),
-React.createElement('p',{style:{fontSize:"clamp(16px,2.2vw,21px)",color:"#2D1520",lineHeight:1.6,marginTop:14,maxWidth:640,fontFamily:"'Georgia','Times New Roman',serif"}},"Scan QR code to view the educational dashboard, or go to",
+React.createElement('p',{style:{fontSize:"clamp(16px,2.2vw,21px)",color:"#2D1520",lineHeight:1.6,marginTop:8,maxWidth:640,fontFamily:"'Georgia','Times New Roman',serif"}},"Scan QR code to view the educational dashboard, or go to",
 React.createElement('br'),
 React.createElement('a',{href:"https://uebelherr.net",target:"_blank",rel:"noopener noreferrer",style:{color:"#8C1D40",fontWeight:700,textDecoration:"underline"}},"uebelherr.net"),
 React.createElement('br'),
@@ -337,15 +337,15 @@ React.createElement('br'),
 );
 }
 function QuestionsPanel(){
-return React.createElement('div',{style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",minHeight:"55vh",textAlign:"center",padding:"20px 16px"}},
-React.createElement('div',{style:{marginBottom:14}},
-React.createElement('h2',{style:{fontSize:"clamp(30px,5vw,46px)",fontFamily:"'Playfair Display',serif",fontWeight:700,color:"#8C1D40",marginBottom:10,lineHeight:1.2}},"Questions?"),
+return React.createElement('div',{style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",minHeight:"38vh",textAlign:"center",padding:"12px 16px"}},
+React.createElement('div',{style:{marginBottom:8}},
+React.createElement('h2',{style:{fontSize:"clamp(30px,5vw,46px)",fontFamily:"'Playfair Display',serif",fontWeight:700,color:"#8C1D40",marginBottom:6,lineHeight:1.2}},"Questions?"),
 React.createElement('div',{style:{width:80,height:4,background:"linear-gradient(90deg,#FFC627,#8C1D40)",borderRadius:2,margin:"0 auto"}})
 ),
-React.createElement('div',{style:{display:"flex",alignItems:"center",justifyContent:"center",width:"100%",maxWidth:288,margin:"0 auto",padding:"8px 0"}},
+React.createElement('div',{style:{display:"flex",alignItems:"center",justifyContent:"center",width:"100%",maxWidth:288,margin:"0 auto",padding:"4px 0"}},
 React.createElement('img',{src:QR_IMG,alt:"QR Code to lesson",style:{width:"100%",maxWidth:396,height:"auto",borderRadius:12}})
 ),
-React.createElement('p',{style:{fontSize:"clamp(16px,2.2vw,21px)",color:"#2D1520",lineHeight:1.6,marginTop:14,maxWidth:640,fontFamily:"'Georgia','Times New Roman',serif"}},"Scan QR code to view the educational dashboard, or go to",
+React.createElement('p',{style:{fontSize:"clamp(16px,2.2vw,21px)",color:"#2D1520",lineHeight:1.6,marginTop:8,maxWidth:640,fontFamily:"'Georgia','Times New Roman',serif"}},"Scan QR code to view the educational dashboard, or go to",
 React.createElement('br'),
 React.createElement('a',{href:"https://uebelherr.net",target:"_blank",rel:"noopener noreferrer",style:{color:"#8C1D40",fontWeight:700,textDecoration:"underline"}},"uebelherr.net"),
 React.createElement('br'),
@@ -366,7 +366,7 @@ React.createElement('div',{style:{fontSize:15,letterSpacing:"3px",color:"#ffffff
 )
 )
 ),
-React.createElement('div',{style:{color:"#8C1D40",fontSize:15,letterSpacing:"3px",textTransform:"uppercase",fontWeight:800,marginBottom:16,marginTop:8}},"Lesson Chapters"),
+React.createElement('div',{style:{color:"#8C1D40",fontSize:18,letterSpacing:"3px",textTransform:"uppercase",fontWeight:800,marginBottom:16,marginTop:8}},"Lesson Chapters"),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gridTemplateRows:"auto auto auto",gap:10,marginBottom:10}},
 ...[
 "Climate Drivers",
@@ -377,16 +377,16 @@ React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",g
 "Agent-Based Heat Risk Policy Model",
 ].map((item,i)=>React.createElement('div',{key:i,style:{display:"flex",alignItems:"center",gap:12,padding:"10px 16px",background:"rgba(140,29,64,0.05)",border:"1px solid #C4849A44",borderRadius:8}},
 React.createElement('div',{style:{width:8,height:8,borderRadius:"50%",background:"#8C1D40",flexShrink:0}}),
-React.createElement('span',{style:{fontSize:17,color:"#2D1520"}},item)
+React.createElement('span',{style:{fontSize:20,color:"#2D1520"}},item)
 ))
 ),
 React.createElement('div',{style:{display:"flex",alignItems:"center",gap:12,padding:"10px 16px",background:"rgba(140,29,64,0.05)",border:"1px solid #C4849A44",borderRadius:8}},
 React.createElement('div',{style:{width:8,height:8,borderRadius:"50%",background:"#8C1D40",flexShrink:0}}),
-React.createElement('span',{style:{fontSize:17,color:"#2D1520"}},"Policy Summary")
+React.createElement('span',{style:{fontSize:20,color:"#2D1520"}},"Policy Summary")
 ),
 React.createElement(LearningObjectivesBox,null,
-React.createElement('li',null,React.createElement('strong',null,"Describe "),"the three SSP climate pathways and how they translate to local temperature, precipitation, and extreme heat projections for Maricopa County."),
-React.createElement('li',null,React.createElement('strong',null,"Analyze "),"the dose-response relationship between policy investment and mortality reduction using the Hill function model."),
+React.createElement('li',null,React.createElement('strong',null,"Describe "),"the three climate Shared Socioeconomic Pathways (SSP) and how they translate to local temperature, precipitation, and extreme heat projections for Maricopa County."),
+React.createElement('li',null,React.createElement('strong',null,"Analyze "),"the dose-response relationship between policy investment and mortality reduction."),
 React.createElement('li',null,React.createElement('strong',null,"Predict "),"how electric grid failure interacts with climate warming to produce super-multiplicative mortality outcomes."),
 React.createElement('li',null,React.createElement('strong',null,"Evaluate "),"policy trade-offs between cooling infrastructure, hydration access, and community outreach using cost-effectiveness metrics."),
 React.createElement('li',null,React.createElement('strong',null,"Critique "),"the assumptions and limitations of agent-based modeling as a policy analysis tool, including the housing convergence effect and climate-invariant policy scaling.")
@@ -410,7 +410,7 @@ React.createElement(SectionHead,null,"The Urban Heat Island"),
 React.createElement('p',{style:prose},"Maricopa County's asphalt, concrete, and sprawling development trap heat long after sunset. Nighttime temperatures rarely drop below 90°F in summer — a phenomenon called the urban heat island effect — which prevents the body's natural overnight recovery from heat stress.",React.createElement(Ref,{n:[1,14]})),
 React.createElement(KeyConcept,{term:"Urban Heat Island",color:"#8C1D40"},"When cities replace natural land cover with heat-absorbing surfaces, they create localized warming zones 2–8°F hotter than surrounding rural areas.",React.createElement(Ref,{n:14}))
 ,
-React.createElement(TakeawayBox,null,"Maricopa County\u2019s combination of extreme heat, rapid population growth, and aging infrastructure makes it the most important U.S. test case for climate adaptation policy.")
+React.createElement(TakeawayBox,null,"Maricopa County\u2019s combination of extreme heat, rapid population growth, and aging infrastructure makes it one of the most important U.S. test cases for climate adaptation policy.")
 );
 }
 function DriversPanel(){
@@ -434,8 +434,6 @@ React.createElement('div',{style:{background:`linear-gradient(90deg,${d.color},$
 React.createElement('p',{style:{...prose,fontSize:18,margin:0,color:"#7A3045"}},d.desc)
 )),
 React.createElement(KeyConcept,{term:"Feedback Loops",color:"#ef4444"},"As Maricopa County warms, more A/C is used → more electricity is burned → more heat & CO₂ is released → further warming. This is a positive feedback loop.",React.createElement(Ref,{n:[2,36]}))
-,
-React.createElement(TakeawayBox,null,"Every degree of warming produces a compounding\u2014not linear\u2014increase in dangerous heat days, because warming shifts the entire temperature distribution.")
 );
 }
 function ScenariosPanel({scenario,setScenario,year,setYear}){
@@ -443,7 +441,7 @@ const data=project(scenario,year);
 const s=SCENARIOS[scenario];
 return React.createElement('div',null,
 React.createElement(SectionHead,null,"IPCC Climate Pathways"),
-React.createElement('p',{style:prose},"Scientists use Representative Concentration Pathways (RCPs) and Shared Socioeconomic Pathways (SSPs) to model how different emission futures will affect global temperature. ",React.createElement('strong',{style:{color:"#ef4444"}},"Critically: global temperature exceeded 1.5°C above pre-industrial levels for the first time in 2024 (1.6°C annual mean).")," The once-aspirational 1°C target is no longer realistic. The ",React.createElement('strong',{style:{color:"#B8860B"}},"2°C Moderate scenario is now the educationally appropriate conservative baseline")," for mid-century planning, representing a pathway that requires significant immediate emissions reductions but without relying on speculative large-scale carbon dioxide removal.",React.createElement(Ref,{n:[2,3,5,6]})),
+React.createElement('p',{style:prose},"Scientists use Representative Concentration Pathways (RCPs) and Shared Socioeconomic Pathways (SSPs) to model how different emission futures will affect global temperature. ",React.createElement('strong',{style:{color:"#ef4444"}},"Critically: global temperature exceeded 1.5°C above pre-industrial levels for the first time in 2024 (1.6°C annual mean).")," The once-aspirational 1°C target is no longer realistic. The ",React.createElement('strong',{style:{color:"#B8860B"}},"2°C Moderate scenario is now the appropriate conservative baseline")," for mid-century planning, representing a pathway that requires significant immediate emissions reductions but without relying on speculative large-scale carbon dioxide removal.",React.createElement(Ref,{n:[2,3,5,6]})),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}},
 ...Object.entries(SCENARIOS).map(([key,val])=>
 React.createElement('button',{key,onClick:()=>setScenario(key),style:{background:scenario===key?`${val.color}22`:"rgba(140,29,64,0.04)",border:`2px solid ${scenario===key?val.color:val.color+"44"}`,borderRadius:10,padding:"14px 16px",cursor:"pointer",color:scenario===key?val.color:"#7A3045",textAlign:"left",fontFamily:"inherit",transition:"all 0.2s"}},
@@ -476,7 +474,7 @@ React.createElement(Line,{type:"monotone",dataKey:"low",name:"Low Temp",stroke:"
 ),
 React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 "📌 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Model disclaimer: "),
-"This is a simplified educational projection model anchored to NOAA 1991–2020 climate normals",React.createElement(Ref,{n:1}),", with future scenarios scaled from IPCC AR6 SSP pathway temperature changes. Warming is projected using CMIP6-aligned curvilinear trajectories with scenario-specific waypoints at 2020/2040/2060/2080/2100. Each SSP pathway has a distinct warming shape: SSP1-2.6 is front-loaded (80% of warming by 2060), SSP2-4.5 accelerates through mid-century then decelerates, and SSP5-8.5 accelerates steadily. This produces projections within ±0.1°C of CMIP6 ensemble medians at each waypoint.",React.createElement(Ref,{n:[2,3]})
+"This is a simplified educational projection model anchored to NOAA 1991–2020 climate normals",React.createElement(Ref,{n:1}),", with future scenarios scaled from IPCC AR6 Shared Socioeconomic Pathway (SSP) temperature changes. Warming is projected using CMIP6-aligned curvilinear trajectories with scenario-specific waypoints at 2020/2040/2060/2080/2100. Each SSP pathway has a distinct warming shape: SSP1-2.6 is front-loaded (80% of warming by 2060), SSP2-4.5 accelerates through mid-century then decelerates, and SSP5-8.5 accelerates steadily. This produces projections within ±0.1°C of CMIP6 ensemble medians at each waypoint.",React.createElement(Ref,{n:[2,3]})
 )
 ,
 React.createElement(TakeawayBox,null,"The difference between optimistic and severe pathways is not just temperature\u2014it\u2019s whether outdoor life in Phoenix remains viable.")
@@ -535,8 +533,6 @@ React.createElement('span',{style:{color:imp.color,marginTop:2,flexShrink:0}},"�
 React.createElement('span',null,item)
 ))
 ))
-,
-React.createElement(TakeawayBox,null,"Heat mortality is not an abstract future risk\u2014645 people died in Maricopa County in 2023 alone, most of them preventably.")
 );
 }
 function PolicyPanel({scenario,year}){
@@ -684,6 +680,7 @@ React.createElement('li',{style:{marginBottom:6}},"The model shows that policy e
 React.createElement('li',{style:{marginBottom:6}},"The housing convergence effect shows that sheltered and unsheltered populations face similar risk during blackouts. What equity implications does this have for emergency management planning?"),
 React.createElement('li',null,"(Graduate) What assumptions does this model make that might lead it to overestimate or underestimate real-world mortality? Consider behavioral adaptation, population migration, and technological change.")
 )),
+React.createElement(TakeawayBox,null,"In this model, policy investment reduces heat mortality by a near-constant fraction across climate pathways\u2014a structural property of the multiplicative dose-response design that I call climate-invariant policy scaling. Real-world effectiveness may degrade under extreme scenarios."),
 React.createElement(TakeawayBox,null,"Climate adaptation requires three interdependent pillars\u2014emissions mitigation, cooling infrastructure, and grid resilience\u2014whose super-multiplicative interaction means neglecting any one disproportionately undermines the other two.")
 );
 }
@@ -885,7 +882,7 @@ preventedDeaths>0&&React.createElement('span',null,React.createElement('span',{s
 )
 ),
 React.createElement('div',{style:{padding:"14px 18px",background:"rgba(140,29,64,0.03)",border:"1px solid #8C1D4022",borderRadius:10,marginBottom:16}},
-React.createElement(TakeawayBox,null,"Policy investment reduces heat mortality by a near-constant fraction regardless of which climate pathway materializes\u2014a property we call climate-invariant policy scaling."),
+React.createElement(TakeawayBox,null,"In this model, policy investment reduces heat mortality by a near-constant fraction across climate pathways\u2014a structural property of the multiplicative dose-response design that I call climate-invariant policy scaling. Real-world effectiveness may degrade under extreme scenarios."),
 React.createElement(TryThisBox,{title:"\ud83d\udd2c Guided Exploration:"},
 React.createElement('div',null,
 React.createElement('div',{style:{marginBottom:8}},"1. Set the scenario to Severe and slide the year from 2030 to 2100. How does the death count change? Is the growth linear or accelerating?"),
@@ -2442,6 +2439,32 @@ grad.addColorStop(0.5,`rgba(249,115,22,${heatAlpha*0.5})`);
 grad.addColorStop(1,"rgba(239,68,68,0)");
 ctx.fillStyle=grad;
 ctx.fillRect(80,50,W-100,H-80);
+const COLORS={healthy:"#10b981",stressed:"#B8960B",critical:"#ef4444",dead:"#7A3045",recovering:"#60A5FA"};
+sim.agents&&sim.agents.forEach(a=>{
+const col=COLORS[a.state]||"#10b981";
+const r=a.vulnerable?4:3;
+ctx.beginPath();ctx.arc(a.x,a.y,r,0,Math.PI*2);
+ctx.fillStyle=col;ctx.fill();
+if(a.vulnerable&&a.state!=="dead"){
+ctx.strokeStyle=col;ctx.lineWidth=a.housing==="unsheltered"?2:1;
+ctx.beginPath();ctx.arc(a.x,a.y,r+2,0,Math.PI*2);ctx.stroke();
+// Unsheltered agents: second outer ring for visual distinction
+if(a.housing==="unsheltered"){
+ctx.strokeStyle=col;ctx.lineWidth=1;
+ctx.beginPath();ctx.arc(a.x,a.y,r+4,0,Math.PI*2);ctx.stroke();
+}
+}
+if(a.state==="dead"){
+ctx.strokeStyle="#7A3045";ctx.lineWidth=1;
+ctx.beginPath();ctx.moveTo(a.x-2,a.y-2);ctx.lineTo(a.x+2,a.y+2);ctx.stroke();
+ctx.beginPath();ctx.moveTo(a.x+2,a.y-2);ctx.lineTo(a.x-2,a.y+2);ctx.stroke();
+}
+if(a.state==="recovering"){
+ctx.strokeStyle="#60A5FA";ctx.lineWidth=1.5;
+ctx.beginPath();ctx.moveTo(a.x,a.y-3);ctx.lineTo(a.x,a.y+3);ctx.stroke();
+ctx.beginPath();ctx.moveTo(a.x-3,a.y);ctx.lineTo(a.x+3,a.y);ctx.stroke();
+}
+});
 sim.hydLocs&&sim.hydLocs.forEach(h=>{
 ctx.beginPath();ctx.arc(h.x,h.y,h.r,0,Math.PI*2);
 ctx.strokeStyle="rgba(255,198,39,0.4)";ctx.lineWidth=1;ctx.stroke();
@@ -2469,32 +2492,6 @@ ctx.fillStyle="#10b981";ctx.font="bold 9px Georgia";
 ctx.fillText("🤝",on[0]-6,on[1]+3);
 });
 }
-const COLORS={healthy:"#10b981",stressed:"#B8960B",critical:"#ef4444",dead:"#7A3045",recovering:"#60A5FA"};
-sim.agents&&sim.agents.forEach(a=>{
-const col=COLORS[a.state]||"#10b981";
-const r=a.vulnerable?4:3;
-ctx.beginPath();ctx.arc(a.x,a.y,r,0,Math.PI*2);
-ctx.fillStyle=col;ctx.fill();
-if(a.vulnerable&&a.state!=="dead"){
-ctx.strokeStyle=col;ctx.lineWidth=a.housing==="unsheltered"?2:1;
-ctx.beginPath();ctx.arc(a.x,a.y,r+2,0,Math.PI*2);ctx.stroke();
-// Unsheltered agents: second outer ring for visual distinction
-if(a.housing==="unsheltered"){
-ctx.strokeStyle=col;ctx.lineWidth=1;
-ctx.beginPath();ctx.arc(a.x,a.y,r+4,0,Math.PI*2);ctx.stroke();
-}
-}
-if(a.state==="dead"){
-ctx.strokeStyle="#7A3045";ctx.lineWidth=1;
-ctx.beginPath();ctx.moveTo(a.x-2,a.y-2);ctx.lineTo(a.x+2,a.y+2);ctx.stroke();
-ctx.beginPath();ctx.moveTo(a.x+2,a.y-2);ctx.lineTo(a.x-2,a.y+2);ctx.stroke();
-}
-if(a.state==="recovering"){
-ctx.strokeStyle="#60A5FA";ctx.lineWidth=1.5;
-ctx.beginPath();ctx.moveTo(a.x,a.y-3);ctx.lineTo(a.x,a.y+3);ctx.stroke();
-ctx.beginPath();ctx.moveTo(a.x-3,a.y);ctx.lineTo(a.x+3,a.y);ctx.stroke();
-}
-});
 ctx.fillStyle="rgba(100,116,139,0.6)";ctx.font="9px Georgia";
 ctx.fillText("N↑",W-30,75);ctx.fillText("Maricopa County AZ",W-90,H-15);
 // Stats overlay — measure text first, then draw background to fit
@@ -2635,7 +2632,7 @@ React.createElement('span',{style:{color:"#8C1D40",fontSize:16,letterSpacing:"2p
 ),
 React.createElement('div',{style:{padding:"16px 20px",background:"rgba(140,29,64,0.05)",border:"1px solid #8C1D4033",borderRadius:10,marginBottom:16,fontSize:16,color:"#2D1520",lineHeight:1.75}},
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:17,marginBottom:12,fontFamily:"'Playfair Display',serif"}},"Agent-Based Model \u2014 How It Works"),
-React.createElement('div',{style:{paddingLeft:0,marginBottom:6,lineHeight:1.7,fontSize:15,color:"#5C1130"}},"Each dot on the map is a simulated person living, working, and moving through Phoenix\u2019s street network. The model runs one full year, day by day, tracking what happens to each person based on three questions:"),
+React.createElement('div',{style:{paddingLeft:0,marginBottom:6,lineHeight:1.7,fontSize:15,color:"#5C1130"}},"Each dot on the map is a simulated person living, working, and moving through Maricopa County\u2019s street network. The model runs one full year, day by day, tracking what happens to each person based on three questions:"),
 React.createElement('div',{style:{padding:"12px 16px",margin:"10px 0",background:"rgba(140,29,64,0.04)",borderRadius:8,lineHeight:1.8,fontSize:15,color:"#5C1130"}},
 React.createElement('div',{style:{marginBottom:10}},React.createElement('strong',{style:{color:"#8C1D40",fontSize:16}},"\ud83c\udfe0 Where do they live?")),
 React.createElement('div',{style:{paddingLeft:8,marginBottom:4}},"\u2022 ",React.createElement('strong',null,"Sheltered")," (working AC) \u2014 largely protected; indoor temps stay near 72\u00b0F"),
@@ -3069,7 +3066,7 @@ const comparison=data.map((d,i)=>({month:d.month,projected:d.high,baseline:baseD
 const precipComparison=data.map((d,i)=>({month:d.month,projected:d.precip,baseline:baseData[i].precip}));
 return React.createElement('div',null,
 React.createElement(SectionHead,null,"Interactive Data Lab"),
-React.createElement('p',{style:prose},"Use these controls to explore how Maricopa County's climate changes across different scenarios and years.",React.createElement(Ref,{n:[1,2,3]})," ",React.createElement('strong',{style:{color:"#8C1D40"}},"Discussion question:")," At what year does the severe scenario make outdoor midday activity dangerous year-round?"),
+React.createElement('p',{style:prose},"Use these controls to explore how Maricopa County's climate changes across different scenarios and years.",React.createElement(Ref,{n:[1,2,3]})),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:20}},
 React.createElement('div',null,
 React.createElement('label',{style:{fontSize:15,color:"#7A3045",letterSpacing:"2px",display:"block",marginBottom:8}},"SCENARIO"),
