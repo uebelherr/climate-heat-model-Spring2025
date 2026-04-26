@@ -475,7 +475,7 @@ React.createElement(TakeawayBox,null,"Every degree of warming produces a compoun
 );
 }
 function ScenariosPanel({scenario,setScenario,year,setYear}){
-const[view,setView]=useState("temp");
+const[view,setView]=useState("compare");
 const data=project(scenario,year);
 const s=SCENARIOS[scenario];
 const baseData=project("baseline",2024);
@@ -515,7 +515,7 @@ React.createElement('div',{style:{fontSize:14,color:"#5C1130",marginTop:2}},x.l)
 )
 ),
 React.createElement('div',{style:{display:"flex",gap:6,marginBottom:12}},
-...[["temp","Temperature"],["precip","Precipitation"],["compare","Temp. vs.\nBaseline"],["precipCompare","Precip. vs.\nBaseline"]].map(([k,l])=>
+...[["compare","Temp. vs.\nBaseline"],["precipCompare","Precip. vs.\nBaseline"],["temp","Temperature"],["precip","Precipitation"]].map(([k,l])=>
 React.createElement('button',{key:k,onClick:()=>setView(k),style:{flex:1,background:view===k?"#A05070":"transparent",border:`1px solid ${view===k?"#FFC627":"#A05070"}`,borderRadius:6,padding:"10px 14px",cursor:"pointer",color:view===k?"#FFD966":"#5C1130",fontFamily:"inherit",fontSize:16,minHeight:52,display:"flex",alignItems:"center",justifyContent:"center",whiteSpace:"pre-line",textAlign:"center",lineHeight:1.2}},l)
 )
 ),
@@ -574,6 +574,7 @@ const year=2100;
 const data=project(scenario,year);
 const s=SCENARIOS[scenario];
 const totalHeat=data.reduce((a,d)=>a+d.heat,0);
+const days110=data.reduce((a,d)=>a+Math.round(d.heat*Math.max(0,Math.min(1,(d.high-104)/8))),0);
 const annualPrecip=data.reduce((a,d)=>a+d.precip,0).toFixed(2);
 const warming=(s.tempD*interpF(s.warmingCurve,year)).toFixed(1);
 const totalSun=data.reduce((a,d)=>a+d.sun,0);
@@ -610,10 +611,11 @@ s.emoji," ",React.createElement('strong',null,s.label),": ",s.desc
 ),
 React.createElement(SectionHead,null,"Real-World Impacts"),
 React.createElement('p',{style:prose},"Climate projections aren't abstract numbers — they translate directly into human, ecological, and infrastructural impacts. Here's what the ",React.createElement('strong',{style:{color:s.color}},s.label)," scenario means for Maricopa County in ",year,":"),
-React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginBottom:24}},
+React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:14,marginBottom:24}},
 React.createElement(StatCard,{label:"Days >100°F",value:totalHeat,unit:"days",color:"#ef4444",accent:true}),
-React.createElement(StatCard,{label:"Annual Rainfall",value:annualPrecip,unit:'"',color:"#2E86C1",accent:true}),
-React.createElement(StatCard,{label:"Projected Warming",value:"+"+warming,unit:"°F",color:s.color,accent:true})
+React.createElement(StatCard,{label:"Days >110°F",value:days110,unit:"days",color:"#dc2626",accent:true}),
+React.createElement(StatCard,{label:"Projected Warming",value:"+"+warming,unit:"°F",color:s.color,accent:true}),
+React.createElement(StatCard,{label:"Annual Rainfall",value:annualPrecip,unit:'"',color:"#2E86C1",accent:true})
 ),
 ...impacts.map((imp,i)=>React.createElement('div',{key:i,style:{marginBottom:18,padding:"14px 18px",background:"rgba(140,29,64,0.04)",border:`1px solid ${imp.color}33`,borderRadius:10}},
 React.createElement('div',{style:{color:imp.color,fontWeight:700,fontSize:17,marginBottom:10}},imp.cat," ",React.createElement(Ref,{n:imp.refs})),
@@ -4928,15 +4930,25 @@ AppendixBPanel=React.memo(AppendixBPanel);
 AppendixCPanel=React.memo(AppendixCPanel);
 function App(){
 const[lesson,setLesson]=useState(function(){try{var s=history.state;if(s&&s.lesson)return s.lesson;}catch(e){}return"followalong";}());
-const navigateLesson=React.useCallback(function(id){setLesson(id);try{history.pushState({lesson:id},"","#"+id);}catch(e){}},[]);
+const mainRef=React.useRef(null);
+const scrollPos=React.useRef({});
+const pendingScroll=React.useRef(null);
+const LESSON_ORDER=["title","followalong","intro","drivers","scenarios","impacts","policy","synthesis","mortality","abm","questions","bibliography","appendix","appendix-a","appendix-b"];
+const navigateLesson=React.useCallback(function(id){
+if(mainRef.current){scrollPos.current[lesson]=mainRef.current.scrollTop;}
+var ci=LESSON_ORDER.indexOf(lesson),ni=LESSON_ORDER.indexOf(id);
+pendingScroll.current=(ni>=0&&ci>=0&&ni<ci)?"restore:"+id:"top";
+setLesson(id);try{history.pushState({lesson:id},"","#"+id);}catch(e){}
+},[lesson]);
 window._setLesson=navigateLesson;
 React.useEffect(function(){try{history.replaceState({lesson:lesson},"","#"+lesson);}catch(e){}},[]);
 React.useEffect(function(){var handler=function(e){if(e.state&&e.state.lesson){setLesson(e.state.lesson);}};window.addEventListener("popstate",handler);return function(){window.removeEventListener("popstate",handler);};},[]);
+React.useEffect(function(){var el=mainRef.current;if(!el||!pendingScroll.current)return;var cmd=pendingScroll.current;pendingScroll.current=null;if(cmd==="top"){el.scrollTop=0;}else if(cmd.slice(0,8)==="restore:"){el.scrollTop=scrollPos.current[cmd.slice(8)]||0;}},[lesson]);
 const[scenario,setScenario]=useState("moderate");
 const[year,setYear]=useState(2026);
-const[coolingCenters,setCoolingCenters]=useState(1);
-const[hydrationStations,setHydrationStations]=useState(1);
-const[outreach,setOutreach]=useState(1);
+const[coolingCenters,setCoolingCenters]=useState(0);
+const[hydrationStations,setHydrationStations]=useState(0);
+const[outreach,setOutreach]=useState(0);
 const[mounted,setMounted]=useState(false);
 const[sidebarOpen,setSidebarOpen]=useState(false);
 const checkMobile=()=>window.innerWidth<=768||(window.innerHeight<=500&&'ontouchstart' in window);
@@ -5016,7 +5028,7 @@ isMobile&&sidebarOpen&&React.createElement('div',{className:"sidebar-overlay",on
 React.createElement('aside',{style:{background:"#FFC627",borderRight:isMobile?"none":"1px solid #E8A800",padding:"24px 0",display:isMobile?(sidebarOpen?"flex":"none"):"flex",flexDirection:"column",gap:2,overflowY:"auto",position:isMobile?"fixed":"static",top:0,left:0,bottom:0,width:isMobile?"min(300px,85vw)":"auto",zIndex:isMobile?999:undefined,boxShadow:isMobile?"4px 0 24px rgba(0,0,0,0.3)":"none",animation:isMobile&&sidebarOpen?"sidebarSlide 0.25s ease":"none"}},
 sidebarContent
 ),
-React.createElement('main',{style:{overflowY:isMobile?"visible":"auto",padding:isMobile?"20px 16px":"32px 40px",maxWidth:900,background:"#F5F2EF",minHeight:isMobile?"100vh":undefined,width:"100%"}},
+React.createElement('main',{ref:mainRef,style:{overflowY:isMobile?"visible":"auto",padding:isMobile?"20px 16px":"32px 40px",maxWidth:900,background:"#F5F2EF",minHeight:isMobile?"100vh":undefined,width:"100%"}},
 React.createElement('div',{style:{display:"flex",alignItems:isMobile?"flex-start":"center",gap:isMobile?10:16,marginBottom:isMobile?20:28,paddingBottom:isMobile?14:20,borderBottom:"1px solid #4A1428",flexWrap:isMobile?"wrap":"nowrap"}},
 React.createElement('div',{style:{width:isMobile?40:52,height:isMobile?40:52,borderRadius:14,background:"linear-gradient(135deg,#FFC62720,#FFC62708)",border:"1px solid #FFC62744",display:"flex",alignItems:"center",justifyContent:"center",fontSize:isMobile?18:24,flexShrink:0}},current.icon),
 React.createElement('div',{style:{flex:1,minWidth:0}},
