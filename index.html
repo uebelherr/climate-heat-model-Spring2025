@@ -1026,38 +1026,66 @@ React.createElement('div',{style:{margin:"20px 0",padding:"14px 18px",background
 React.createElement('div',{style:{color:"#8C1D40",fontSize:12,letterSpacing:"2px",textTransform:"uppercase",fontWeight:700,marginBottom:6}},"Key takeaway"),
 React.createElement('div',{style:{fontSize:15,color:"#2D1520",lineHeight:1.7}},React.createElement('strong',null,"Heat deaths are not inevitable.")," The gap between the red bars and the blue bars is lives saved by your policy choices.")
 ),
-React.createElement('div',{style:{marginBottom:16,padding:"16px 20px",background:"rgba(79,129,189,0.05)",border:"1px solid #4F81BD55",borderLeft:"4px solid #4F81BD",borderRadius:"0 10px 10px 0"}},
-React.createElement('div',{style:{color:"#4F81BD",fontSize:13,letterSpacing:"2px",textTransform:"uppercase",fontWeight:800,marginBottom:14}},"\ud83d\udcd0 Hill Dose-Response: How Policy Levels Map to Lives Saved"),
-React.createElement('div',{style:{display:"grid",gridTemplateColumns:"minmax(140px, auto) 1fr",gap:24,alignItems:"center",marginBottom:14}},
-React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,fontFamily:"'Georgia', serif",fontSize:22,justifyContent:"center"}},
-React.createElement('span',{style:{fontStyle:"italic",fontSize:26}},"E"),
-React.createElement('span',null,"="),
-React.createElement('div',{style:{display:"inline-flex",flexDirection:"column",alignItems:"center",lineHeight:1.3}},
-React.createElement('span',{style:{padding:"0 14px 4px",borderBottom:"1.5px solid #2D1520",whiteSpace:"nowrap"}},
-React.createElement('span',{style:{fontStyle:"italic"}},"E"),
-React.createElement('sub',{style:{fontSize:13}},"max"),
-" \u00b7 ",
-React.createElement('span',{style:{fontStyle:"italic"}},"c"),
-React.createElement('sup',{style:{fontSize:14,fontStyle:"italic"}},"n")
+React.createElement('div',{style:{marginTop:12,marginBottom:10,padding:"4px 18px 8px",background:"rgba(140,29,64,0.05)",border:"1px solid #8C1D4055",borderRadius:8}},
+React.createElement('details',{style:{marginBottom:4},open:true},
+React.createElement('summary',{style:{cursor:"pointer",color:"#8C1D40",fontWeight:700,fontSize:16,padding:"6px 0",userSelect:"none"}},"\ud83d\udcc8 Smooth Heat Mortality Function (2020\u20132100)",React.createElement('span',{style:{color:"#B86680",fontWeight:400,fontStyle:"italic",marginLeft:8,fontSize:14}}," (click to expand)")),
+React.createElement('div',{style:{padding:"8px 4px 4px"}},
+React.createElement('div',{style:{marginBottom:16,padding:"16px 20px",background:"rgba(140,29,64,0.05)",border:"1px solid #8C1D4055",borderLeft:"4px solid #8C1D40",borderRadius:"0 10px 10px 0"}},
+React.createElement('div',{style:{color:"#8C1D40",fontSize:13,letterSpacing:"2px",textTransform:"uppercase",fontWeight:800,marginBottom:14}},"\ud83d\udcc8 Smooth Heat Mortality: How Climate & Policy Map to Annual Deaths"),
+React.createElement('div',{style:{marginBottom:14}},
+React.createElement('div',{style:{fontSize:12,color:"#8C1D40",letterSpacing:"2px",textTransform:"uppercase",fontWeight:700,marginBottom:10,textAlign:"center"}},"Annual mortality trajectory (2020\u20132100)"),
+React.createElement('div',{style:{height:260,background:"#FFFFFF",border:"1px solid #8C1D4055",borderRadius:6,padding:8}},
+React.createElement(ResponsiveContainer,{width:"100%",height:"100%"},
+React.createElement(LineChart,{data:(function(){var arr=[];for(var y=2020;y<=2100;y+=2){var dd=project(scenario,y);var thd=dd.reduce(function(a,d){return a+d.heat;},0);var ahd=Math.max(0,thd-107);var w=s.tempD*interpF(s.warmingCurve,y);var wm=Math.pow(1.04,w);var rd=Math.round((690+ahd*3.2)*wm);var fd=Math.round(rd*(1-totalReductionPct));arr.push({year:y,raw:rd,withPolicy:fd});}return arr;})(),margin:{top:8,right:16,left:0,bottom:4}},
+React.createElement(CartesianGrid,{strokeDasharray:"3 3",stroke:"#E5D5DA"}),
+React.createElement(XAxis,{dataKey:"year",tick:{fontSize:11,fill:"#5C1130"},tickCount:9}),
+React.createElement(YAxis,{tick:{fontSize:11,fill:"#5C1130"},label:{value:"deaths/yr",angle:-90,position:"insideLeft",style:{fontSize:11,fill:"#5C1130"}}}),
+React.createElement(RechartTooltip,{contentStyle:{fontSize:12}}),
+React.createElement(Line,{type:"monotone",dataKey:"raw",name:"Without policy",stroke:"#ef4444",strokeWidth:2,dot:false}),
+React.createElement(Line,{type:"monotone",dataKey:"withPolicy",name:"With current policy",stroke:"#2E86C1",strokeWidth:2,dot:false}),
+React.createElement(ReferenceLine,{x:year,stroke:"#8C1D40",strokeWidth:2,strokeDasharray:"4 3",label:{value:"now",position:"top",fill:"#8C1D40",fontSize:11,fontWeight:700}}),
+React.createElement(ReferenceLine,{y:559,stroke:"#10b981",strokeDasharray:"3 3",label:{value:"559 calibration",position:"insideTopRight",fill:"#10b981",fontSize:10}})
+))),
+React.createElement('div',{style:{fontSize:12,color:"#7A3045",textAlign:"center",marginTop:8,fontStyle:"italic",lineHeight:1.5}},"Red = raw deaths from climate alone \u00b7 Blue = deaths after multiplicative Hill policy reduction \u00b7 Vertical dashed = year selected on slider \u00b7 Green horizontal = 559 calibration target (Maricopa 2022\u20132024 mean)")
 ),
-React.createElement('span',{style:{padding:"4px 14px 0",whiteSpace:"nowrap"}},
-React.createElement('span',{style:{fontStyle:"italic"}},"K"),
-React.createElement('sup',{style:{fontSize:14,fontStyle:"italic"}},"n"),
-" + ",
-React.createElement('span',{style:{fontStyle:"italic"}},"c"),
-React.createElement('sup',{style:{fontSize:14,fontStyle:"italic"}},"n")
-)
-)
+React.createElement('details',{style:{marginBottom:14,paddingTop:14,borderTop:"1px solid rgba(140,29,64,0.25)"}},
+React.createElement('summary',{style:{cursor:"pointer",color:"#8C1D40",fontWeight:700,fontSize:13,letterSpacing:"1px",textTransform:"uppercase",padding:"4px 0",userSelect:"none",listStyle:"revert"}},"\u03A3 Equation \u0026 Variables",React.createElement('span',{style:{color:"#B86680",fontWeight:400,fontStyle:"italic",letterSpacing:"0",textTransform:"none",marginLeft:8,fontSize:13}}," (click to expand)")),
+React.createElement('div',{style:{paddingTop:10}},
+React.createElement('div',{style:{display:"grid",gridTemplateColumns:"minmax(200px, auto) 1fr",gap:24,alignItems:"center",marginBottom:8}},
+React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,fontFamily:"'Georgia', serif",fontSize:20,justifyContent:"center"}},
+React.createElement('span',{style:{fontStyle:"italic",fontSize:24}},"D"),
+React.createElement('span',{style:{fontStyle:"italic",fontSize:14}},"(y)"),
+React.createElement('span',null,"="),
+React.createElement('span',{style:{fontStyle:"italic"}},"D"),
+React.createElement('sub',{style:{fontSize:12}},"raw"),
+React.createElement('span',{style:{fontStyle:"italic",fontSize:12}},"(y)"),
+React.createElement('span',null," \u00b7 (1 \u2212 "),
+React.createElement('span',{style:{fontStyle:"italic"}},"R"),
+React.createElement('span',null,")")
 ),
 React.createElement('div',{style:{fontSize:14,color:"#2D1520",lineHeight:1.75}},
-React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#4F81BD",marginRight:6}},"E"),"mortality reduction fraction (0 to ",React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic"}},"E"),React.createElement('sub',null,"max"),")"),
-React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#4F81BD",marginRight:6}},"E",React.createElement('sub',null,"max")),"max possible reduction: cooling 35%, hydration 18%, outreach 28%"),
-React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#4F81BD",marginRight:6}},"c"),"coverage fraction, set by the policy-level buttons (0 at ",React.createElement('em',null,"None")," up to 0.60\u20130.80 at ",React.createElement('em',null,"Extensive"),")"),
-React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#4F81BD",marginRight:6}},"K"),"coverage at \u00bd-max effect (~0.40\u20130.45)"),
-React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#4F81BD",marginRight:6}},"n"),"Hill coefficient \u2014 sets curve steepness (1.5)")
+React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#8C1D40",marginRight:6}},"D",React.createElement('sub',null,"raw")),"= (",React.createElement('span',{style:{fontStyle:"italic"}},"D"),React.createElement('sub',null,"0")," + max(0, ",React.createElement('span',{style:{fontStyle:"italic"}},"H(y)")," \u2212 ",React.createElement('span',{style:{fontStyle:"italic"}},"H"),React.createElement('sub',null,"0"),") \u00b7 \u03b1) \u00b7 1.04^",React.createElement('span',{style:{fontStyle:"italic"}},"W(y)")),
+React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#8C1D40",marginRight:6}},"D",React.createElement('sub',null,"0")),"counterfactual baseline = 690 deaths/yr (no HRN policy)"),
+React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#8C1D40",marginRight:6}},"H(y), H",React.createElement('sub',null,"0")),"days >100\u00b0F in year ",React.createElement('em',null,"y"),"; ",React.createElement('span',{style:{fontStyle:"italic"}},"H"),React.createElement('sub',null,"0"),"= 107 (2020)"),
+React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#8C1D40",marginRight:6}},"\u03b1"),"3.2 deaths per extra extreme heat day (Hondula et al. 2015)"),
+React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#8C1D40",marginRight:6}},"W(y)"),"local warming \u00b0F at year ",React.createElement('em',null,"y"),"; 4% compound mortality per \u00b0F"),
+React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#8C1D40",marginRight:6}},"R"),"= 1 \u2212 \u220F",React.createElement('sub',null,"i"),"(1 \u2212 ",React.createElement('span',{style:{fontStyle:"italic"}},"E"),React.createElement('sub',null,"i"),"(",React.createElement('span',{style:{fontStyle:"italic"}},"c"),React.createElement('sub',null,"i"),")) \u2014 multiplicative Hill reduction across cooling, hydration, outreach")
 )
 ),
-React.createElement('div',{style:{marginTop:6,paddingTop:14,borderTop:"1px solid rgba(79,129,189,0.25)"}},
+)
+),
+React.createElement('div',{style:{fontSize:14,color:"#2D1520",lineHeight:1.6,paddingTop:10,borderTop:"1px solid rgba(140,29,64,0.25)",fontStyle:"italic",marginTop:14}},"Calibration anchor: at Year 2020 / Moderate / Current tier policies, this equation produces ",React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#8C1D40"}},"D")," = 559 \u2014 the 2022\u20132024 Maricopa County observed annual heat-death mean. Set the year slider to 2020 and all three policy sliders to Current to verify on screen.")
+)
+)
+)
+),
+React.createElement('div',{style:{marginTop:12,marginBottom:10,padding:"4px 18px 8px",background:"rgba(79,129,189,0.05)",border:"1px solid #4F81BD55",borderRadius:8}},
+React.createElement('details',{style:{marginBottom:4},open:true},
+React.createElement('summary',{style:{cursor:"pointer",color:"#4F81BD",fontWeight:700,fontSize:16,padding:"6px 0",userSelect:"none"}},"📐 Hill Dose-Response Curve",React.createElement('span',{style:{color:"#7AA0CC",fontWeight:400,fontStyle:"italic",marginLeft:8,fontSize:14}}," (click to expand)")),
+React.createElement('div',{style:{padding:"8px 4px 4px"}},
+React.createElement('div',{style:{marginBottom:16,padding:"16px 20px",background:"rgba(79,129,189,0.05)",border:"1px solid #4F81BD55",borderLeft:"4px solid #4F81BD",borderRadius:"0 10px 10px 0"}},
+React.createElement('div',{style:{color:"#4F81BD",fontSize:13,letterSpacing:"2px",textTransform:"uppercase",fontWeight:800,marginBottom:14}},"\ud83d\udcd0 Hill Dose-Response: How Policy Levels Map to Lives Saved"),
+React.createElement('div',{style:{marginBottom:14}},
 React.createElement('div',{style:{fontSize:12,color:"#4F81BD",letterSpacing:"2px",textTransform:"uppercase",fontWeight:700,marginBottom:10,textAlign:"center"}},"Efficacy curves with policy-tier markers"),
 React.createElement('div',{style:{width:"100%",maxWidth:640,margin:"0 auto"},dangerouslySetInnerHTML:{__html:`<svg width="100%" viewBox="0 0 680 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hill dose-response curves for cooling, outreach, and hydration with policy-tier markers" style="font-family:'Segoe UI', Tahoma, sans-serif;">
 <line x1="60" y1="155" x2="640" y2="155" stroke="#D3D1C7" stroke-width="0.5" stroke-dasharray="2 2"/>
@@ -1101,8 +1129,45 @@ React.createElement('div',{style:{width:"100%",maxWidth:640,margin:"0 auto"},dan
 </svg>`}}),
 React.createElement('div',{style:{fontSize:12,color:"#7A3045",textAlign:"center",marginTop:8,fontStyle:"italic",lineHeight:1.5}},"Dots: 1 = Basic  \u00b7  2 = Moderate  \u00b7  3 = Extensive. Tier coverage differs per intervention \u2014 see variables above.")
 ),
+React.createElement('details',{style:{marginBottom:14,paddingTop:14,borderTop:"1px solid rgba(79,129,189,0.25)"}},
+React.createElement('summary',{style:{cursor:"pointer",color:"#4F81BD",fontWeight:700,fontSize:13,letterSpacing:"1px",textTransform:"uppercase",padding:"4px 0",userSelect:"none",listStyle:"revert"}},"\u03A3 Equation \u0026 Variables",React.createElement('span',{style:{color:"#7AA0CC",fontWeight:400,fontStyle:"italic",letterSpacing:"0",textTransform:"none",marginLeft:8,fontSize:13}}," (click to expand)")),
+React.createElement('div',{style:{paddingTop:10}},
+React.createElement('div',{style:{display:"grid",gridTemplateColumns:"minmax(140px, auto) 1fr",gap:24,alignItems:"center",marginBottom:8}},
+React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,fontFamily:"'Georgia', serif",fontSize:22,justifyContent:"center"}},
+React.createElement('span',{style:{fontStyle:"italic",fontSize:26}},"E"),
+React.createElement('span',null,"="),
+React.createElement('div',{style:{display:"inline-flex",flexDirection:"column",alignItems:"center",lineHeight:1.3}},
+React.createElement('span',{style:{padding:"0 14px 4px",borderBottom:"1.5px solid #2D1520",whiteSpace:"nowrap"}},
+React.createElement('span',{style:{fontStyle:"italic"}},"E"),
+React.createElement('sub',{style:{fontSize:13}},"max"),
+" \u00b7 ",
+React.createElement('span',{style:{fontStyle:"italic"}},"c"),
+React.createElement('sup',{style:{fontSize:14,fontStyle:"italic"}},"n")
+),
+React.createElement('span',{style:{padding:"4px 14px 0",whiteSpace:"nowrap"}},
+React.createElement('span',{style:{fontStyle:"italic"}},"K"),
+React.createElement('sup',{style:{fontSize:14,fontStyle:"italic"}},"n"),
+" + ",
+React.createElement('span',{style:{fontStyle:"italic"}},"c"),
+React.createElement('sup',{style:{fontSize:14,fontStyle:"italic"}},"n")
+)
+)
+),
+React.createElement('div',{style:{fontSize:14,color:"#2D1520",lineHeight:1.75}},
+React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#4F81BD",marginRight:6}},"E"),"mortality reduction fraction (0 to ",React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic"}},"E"),React.createElement('sub',null,"max"),")"),
+React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#4F81BD",marginRight:6}},"E",React.createElement('sub',null,"max")),"max possible reduction: cooling 35%, hydration 18%, outreach 28%"),
+React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#4F81BD",marginRight:6}},"c"),"coverage fraction, set by the policy-level buttons (0 at ",React.createElement('em',null,"None")," up to 0.60\u20130.80 at ",React.createElement('em',null,"Extensive"),")"),
+React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#4F81BD",marginRight:6}},"K"),"coverage at \u00bd-max effect (~0.40\u20130.45)"),
+React.createElement('div',null,React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#4F81BD",marginRight:6}},"n"),"Hill coefficient \u2014 sets curve steepness (1.5)")
+)
+),
+)
+),
 React.createElement('div',{style:{fontSize:14,color:"#2D1520",lineHeight:1.6,paddingTop:10,borderTop:"1px solid rgba(79,129,189,0.25)",fontStyle:"italic",marginTop:14}},
 "Saturation via ",React.createElement('span',{style:{fontFamily:"'Georgia', serif",fontStyle:"italic",fontWeight:700,color:"#4F81BD"}},"E",React.createElement('sub',null,"max"))," captures diminishing returns \u2014 doubling coverage doesn't double lives saved. This is why the ~$15M budget preset gains less than the jump from ~$5M to ~$10M."
+)
+)
+)
 )
 ),
 React.createElement('div',{style:{padding:"14px 18px",background:"rgba(140,29,64,0.03)",border:"1px solid #8C1D4022",borderRadius:10,marginBottom:16}},
