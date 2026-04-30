@@ -2950,14 +2950,106 @@ React.createElement('span',{style:{color:"#5C1130",flex:1}},"Cooling centers \u0
 )
 ),
 React.createElement('details',{style:{marginTop:14}},
-React.createElement('summary',{style:{cursor:"pointer",color:"#8C1D40",fontWeight:700,fontSize:14,padding:"4px 0",userSelect:"none"}},"How the simulation runs day by day",React.createElement('span',{style:{color:"#A05070",fontWeight:400,fontStyle:"italic",marginLeft:8,fontSize:13}}," (click to expand)")),
+React.createElement('summary',{style:{cursor:"pointer",color:"#8C1D40",fontWeight:700,fontSize:14,padding:"4px 0",userSelect:"none"}},"\ud83c\udfc3 How the simulation runs day by day",React.createElement('span',{style:{color:"#A05070",fontWeight:400,fontStyle:"italic",marginLeft:8,fontSize:13}}," (click to expand)")),
 React.createElement('div',{style:{fontSize:14,color:"#5C1130",lineHeight:1.7,marginTop:10}},
 React.createElement('strong',{style:{color:"#8C1D40"}},"The daily cycle: "),"During the day, heat stress builds. At night, people with AC recover \u2014 people without it keep deteriorating. After several days of sustained heat, vulnerable people enter a danger zone where death or rescue becomes likely. Adjust controls below to see how outcomes shift."
 ),
 React.createElement('div',{style:{fontSize:13,color:"#7A3045",lineHeight:1.6,marginTop:8,fontStyle:"italic"}},
 "Calibrated to ~559 deaths/year (Maricopa County 2022\u20132024 average), then projected to 2100 across three climate futures and four policy levels."
 )
+),
+React.createElement('details',{style:{marginTop:16}},
+React.createElement('summary',{style:{cursor:"pointer",color:"#8C1D40",fontWeight:700,fontSize:14,padding:"4px 0",userSelect:"none"}},"\ud83e\uddec Agent archetypes & cooling-center seek diagram",React.createElement('span',{style:{color:"#A05070",fontWeight:400,fontStyle:"italic",marginLeft:8,fontSize:13}}," (click to expand)")),
+React.createElement('div',{style:{marginTop:12,padding:"14px 16px",background:"rgba(140,29,64,0.04)",border:"1px solid #8C1D4033",borderRadius:8}},
+React.createElement('div',{style:{fontSize:13,color:"#5C1130",lineHeight:1.55,marginBottom:12}},"Each agent follows one daily path. The dashed arrows show that ANY location along ANY path can become a cooling-center detour when the agent's heat-stress level (Q) crosses its risk-aware seek threshold. Routing uses Dijkstra shortest-path on the street network from the agent's current node \u2014 not from home."),
+React.createElement('div',{dangerouslySetInnerHTML:{__html:`<svg width="100%" viewBox="0 0 740 470" role="img" style="background:#fff;border-radius:6px;border:1px solid #D4B5BD;padding:8px;box-sizing:border-box">
+<title>Three agent movement archetypes with cooling-center seek overlay</title>
+<desc>Indoor worker, outdoor worker, and unsheltered mobile agents follow different daily paths through Phoenix. Dashed arrows from each path box converge on the cooling center container, indicating that seeking can be triggered from any location.</desc>
+<defs>
+<marker id="arr-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<marker id="arr-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#854F0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<marker id="arr-coral" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#993C1D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<marker id="arr-seek" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#993C1D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+<text x="40" y="28" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#1A0A10">Three agent archetypes in the ABM</text>
+<text x="40" y="46" font-family="Arial,sans-serif" font-size="12" fill="#5C1130">Daily routine in solid arrows. Cooling-center seek detour shown in dashed coral.</text>
+
+<rect x="40" y="68" width="130" height="22" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="105" y="83" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#0C447C" text-anchor="middle">Indoor worker</text>
+<rect x="40" y="106" width="130" height="44" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="105" y="125" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#0C447C" text-anchor="middle">Home</text>
+<text x="105" y="142" font-family="Arial,sans-serif" font-size="11" fill="#185FA5" text-anchor="middle">housed, AC-dependent</text>
+<rect x="200" y="106" width="150" height="44" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="275" y="125" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#0C447C" text-anchor="middle">Indoor workplace</text>
+<text x="275" y="142" font-family="Arial,sans-serif" font-size="11" fill="#185FA5" text-anchor="middle">5% workplace shielding</text>
+<rect x="380" y="106" width="130" height="44" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="445" y="125" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#0C447C" text-anchor="middle">Home</text>
+<text x="445" y="142" font-family="Arial,sans-serif" font-size="11" fill="#185FA5" text-anchor="middle">evening, sleep</text>
+<line x1="170" y1="128" x2="198" y2="128" stroke="#185FA5" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+<line x1="350" y1="128" x2="378" y2="128" stroke="#185FA5" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+<rect x="40" y="186" width="130" height="22" rx="4" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text x="105" y="201" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#633806" text-anchor="middle">Outdoor worker</text>
+<rect x="40" y="224" width="130" height="44" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text x="105" y="243" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#633806" text-anchor="middle">Home</text>
+<text x="105" y="260" font-family="Arial,sans-serif" font-size="11" fill="#854F0B" text-anchor="middle">housed or precarious</text>
+<rect x="200" y="224" width="150" height="44" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text x="275" y="243" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#633806" text-anchor="middle">Outdoor work site</text>
+<text x="275" y="260" font-family="Arial,sans-serif" font-size="11" fill="#854F0B" text-anchor="middle">full sun exposure</text>
+<rect x="380" y="224" width="130" height="44" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text x="445" y="243" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#633806" text-anchor="middle">Home</text>
+<text x="445" y="260" font-family="Arial,sans-serif" font-size="11" fill="#854F0B" text-anchor="middle">evening, sleep</text>
+<line x1="170" y1="246" x2="198" y2="246" stroke="#854F0B" stroke-width="1.5" marker-end="url(#arr-amber)"/>
+<line x1="350" y1="246" x2="378" y2="246" stroke="#854F0B" stroke-width="1.5" marker-end="url(#arr-amber)"/>
+
+<rect x="40" y="304" width="160" height="22" rx="4" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text x="120" y="319" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#4A1B0C" text-anchor="middle">Unsheltered mobile</text>
+<rect x="40" y="342" width="470" height="44" rx="6" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text x="275" y="361" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#4A1B0C" text-anchor="middle">Random street wandering — no home base, no sheltered work</text>
+<text x="275" y="378" font-family="Arial,sans-serif" font-size="11" fill="#993C1D" text-anchor="middle">continuous outdoor exposure day and night</text>
+
+<rect x="560" y="106" width="150" height="280" rx="10" fill="#FAECE7" stroke="#993C1D" stroke-width="1.5" stroke-dasharray="5 3"/>
+<text x="635" y="138" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#4A1B0C" text-anchor="middle">Cooling</text>
+<text x="635" y="156" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#4A1B0C" text-anchor="middle">center</text>
+<text x="635" y="178" font-family="Arial,sans-serif" font-size="11" fill="#993C1D" text-anchor="middle">(detour overlay)</text>
+<text x="635" y="218" font-family="Arial,sans-serif" font-size="11" fill="#4A1B0C" text-anchor="middle" font-style="italic">Triggered from</text>
+<text x="635" y="234" font-family="Arial,sans-serif" font-size="11" fill="#4A1B0C" text-anchor="middle" font-style="italic">any node when</text>
+<text x="635" y="250" font-family="Arial,sans-serif" font-size="11" fill="#4A1B0C" text-anchor="middle" font-style="italic">heat-stress Q</text>
+<text x="635" y="266" font-family="Arial,sans-serif" font-size="11" fill="#4A1B0C" text-anchor="middle" font-style="italic">exceeds threshold</text>
+<text x="635" y="300" font-family="Arial,sans-serif" font-size="11" fill="#993C1D" text-anchor="middle">High-aware: Q\u22650.65</text>
+<text x="635" y="316" font-family="Arial,sans-serif" font-size="11" fill="#993C1D" text-anchor="middle">Default: Q\u22650.90</text>
+<text x="635" y="332" font-family="Arial,sans-serif" font-size="11" fill="#993C1D" text-anchor="middle">Low-aware: Q\u22650.95</text>
+<text x="635" y="364" font-family="Arial,sans-serif" font-size="11" fill="#4A1B0C" text-anchor="middle" font-style="italic">Dijkstra route from</text>
+<text x="635" y="380" font-family="Arial,sans-serif" font-size="11" fill="#4A1B0C" text-anchor="middle" font-style="italic">current node</text>
+
+<path d="M 105 106 Q 130 84 560 130" fill="none" stroke="#993C1D" stroke-width="1" stroke-dasharray="3 2" opacity="0.7" marker-end="url(#arr-seek)"/>
+<path d="M 275 106 Q 410 78 560 152" fill="none" stroke="#993C1D" stroke-width="1" stroke-dasharray="3 2" opacity="0.7" marker-end="url(#arr-seek)"/>
+<path d="M 445 106 Q 490 88 560 174" fill="none" stroke="#993C1D" stroke-width="1" stroke-dasharray="3 2" opacity="0.7" marker-end="url(#arr-seek)"/>
+
+<path d="M 105 268 Q 250 296 560 240" fill="none" stroke="#993C1D" stroke-width="1" stroke-dasharray="3 2" opacity="0.7" marker-end="url(#arr-seek)"/>
+<path d="M 275 268 Q 400 296 560 250" fill="none" stroke="#993C1D" stroke-width="1" stroke-dasharray="3 2" opacity="0.7" marker-end="url(#arr-seek)"/>
+<path d="M 445 268 Q 490 290 560 268" fill="none" stroke="#993C1D" stroke-width="1" stroke-dasharray="3 2" opacity="0.7" marker-end="url(#arr-seek)"/>
+
+<path d="M 510 364 Q 540 360 560 340" fill="none" stroke="#993C1D" stroke-width="1" stroke-dasharray="3 2" opacity="0.7" marker-end="url(#arr-seek)"/>
+
+<text x="40" y="420" font-family="Arial,sans-serif" font-size="11" fill="#5C1130" font-style="italic">Movement is probabilistic, not optimal. Cooling-center seeking activates above heat thresholds and is gated by risk-awareness, mobility, and policy tier.</text>
+<text x="40" y="438" font-family="Arial,sans-serif" font-size="11" fill="#5C1130" font-style="italic">Each dashed coral arrow represents a possible Dijkstra route from that path location to the nearest open cooling center on the street network.</text>
+<text x="40" y="456" font-family="Arial,sans-serif" font-size="11" fill="#5C1130" font-style="italic">Walk-only agents (no vehicle) are limited to a 60px street-network range; many cannot reach the nearest center.</text>
+</svg>`}}),
+React.createElement('div',{style:{marginTop:14,padding:"12px 14px",background:"rgba(140,29,64,0.06)",border:"1px solid #8C1D4044",borderLeft:"3px solid #8C1D40",borderRadius:"0 6px 6px 0"}},
+React.createElement('div',{style:{fontSize:12,color:"#8C1D40",letterSpacing:"1px",textTransform:"uppercase",fontWeight:700,marginBottom:8}},"What this diagram simplifies"),
+React.createElement('div',{style:{fontSize:12,color:"#5C1130",lineHeight:1.7}},
+React.createElement('div',{style:{marginBottom:5}},"\u2022 ",React.createElement('strong',null,"Two archetypes are not shown"),": retirees (~70% home, 30% short errands to nearby nodes) and night-shift workers (sleep daytime, outdoor work at night)."),
+React.createElement('div',{style:{marginBottom:5}},"\u2022 ",React.createElement('strong',null,"Weekend recreational outings")," — a documented mortality pathway (Vanos et al. 2020). 40\u201360% of off-duty workers may take voluntary outdoor trips during peak heat; some workers (20\u201360%) are flagged as weekend-active and follow weekday patterns."),
+React.createElement('div',{style:{marginBottom:5}},"\u2022 ",React.createElement('strong',null,"Hydration stations and community outreach")," are separate infrastructure layers with their own mechanics. Outreach is tiered: one-time check (3-day decay) vs. enrolled monitoring (persistent)."),
+React.createElement('div',{style:{marginBottom:5}},"\u2022 ",React.createElement('strong',null,"Cooling-center availability varies"),": tier-dependent weekend access (0% / 25% / 50% / 100% of locations open), and ALL centers go offline during blackouts \u2014 the housing convergence trigger."),
+React.createElement('div',{style:{marginBottom:5}},"\u2022 ",React.createElement('strong',null,"Risk-awareness, isolation, and walk-only mobility")," further gate whether and when agents reach infrastructure: isolated agents have a 50% per-tick chance of seeking; awareness sets the seek threshold."),
+React.createElement('div',null,"\u2022 ",React.createElement('strong',null,"Environmental modifiers")," not shown: per-node heat bias (UHI), monsoon humidity bump on heat index, multi-day cumulative strain (heatStreak), and 5% indoor-workplace shielding.")
 )
+)
+)
+)
+
 ),
 React.createElement('div',{style:{marginBottom:16,padding:"16px 18px",background:"rgba(140,29,64,0.06)",border:"1px solid #8C1D4033",borderRadius:12}},
 React.createElement('div',{style:{fontSize:13,color:"#7A3045",letterSpacing:"3px",textTransform:"uppercase",fontWeight:700,marginBottom:10}},"Climate Scenario"),
