@@ -451,27 +451,84 @@ React.createElement(TakeawayBox,null,"Maricopa County\u2019s combination of extr
 }
 function DriversPanel(){
 const drivers=[
-{name:"Solar Radiation",pct:40,color:"#FFC627",desc:[React.createElement('strong',{key:'b',style:{color:"#1A0A10"}},"Low latitude, minimal cloud cover")," — the Sonoran Desert receives intense year-round solar insolation."]},
-{name:"Greenhouse Gases",pct:30,color:"#ef4444",desc:[React.createElement('strong',{key:'b',style:{color:"#1A0A10"}},"CO₂, methane, and nitrous oxide")," trap outgoing longwave radiation, amplifying the natural greenhouse effect."]},
-{name:"Urban Development",pct:20,color:"#8C1D40",desc:[React.createElement('strong',{key:'b',style:{color:"#1A0A10"}},"Impervious surfaces, waste heat, lost vegetation")," — all add to localized warming."]},
-{name:"Monsoon Variability",pct:10,color:"#FFC627",desc:[React.createElement('strong',{key:'b',style:{color:"#1A0A10"}},"~50% of annual rainfall")," falls in Jul–Sep (North American Monsoon), but is becoming less reliable."]},
+{name:"Solar Radiation",color:"#FFC627",desc:[React.createElement('strong',{key:'b',style:{color:"#1A0A10"}},"Low latitude, minimal cloud cover")," — the Sonoran Desert receives intense year-round solar insolation."]},
+{name:"Greenhouse Gases",color:"#ef4444",desc:[React.createElement('strong',{key:'b',style:{color:"#1A0A10"}},"CO₂, methane, and nitrous oxide")," trap outgoing longwave radiation, amplifying the natural greenhouse effect."]},
+{name:"Urban Development",color:"#8C1D40",desc:[React.createElement('strong',{key:'b',style:{color:"#1A0A10"}},"Impervious surfaces, waste heat, lost vegetation")," — all add to localized warming."]},
+{name:"Monsoon Variability",color:"#2E86C1",desc:[React.createElement('strong',{key:'b',style:{color:"#1A0A10"}},"~50% of annual rainfall")," falls in Jul–Sep (North American Monsoon), but is becoming less reliable."]},
 ];
 return React.createElement('div',null,
 React.createElement(SectionHead,null,"What Drives Maricopa County Heat?"),
 React.createElement('p',{style:prose},"Maricopa County's extreme heat results from several interacting forces. Understanding each driver helps us predict how the climate will respond to both natural variation and human intervention.",React.createElement(Ref,{n:[1,2]})),
-...drivers.map((d,i)=>React.createElement('div',{key:i,style:{marginBottom:16}},
-React.createElement('div',{style:{display:"flex",justifyContent:"space-between",marginBottom:6}},
-React.createElement('span',{style:{color:"#1A0A10",fontSize:17,fontWeight:600}},d.name),
-React.createElement('span',{style:{color:d.color,fontSize:17}},d.pct,"%")
-),
-React.createElement('div',{style:{background:"#F0E8EB",borderRadius:6,height:8,marginBottom:8}},
-React.createElement('div',{style:{background:`linear-gradient(90deg,${d.color},${d.color}88)`,width:`${d.pct}%`,height:"100%",borderRadius:6}})
-),
+...drivers.map((d,i)=>React.createElement('div',{key:i,style:{marginBottom:14,padding:"12px 16px",background:"rgba(255,217,102,0.04)",borderLeft:`4px solid ${d.color}`,borderRadius:"0 8px 8px 0"}},
+React.createElement('div',{style:{color:"#1A0A10",fontSize:17,fontWeight:600,marginBottom:6}},d.name),
 React.createElement('p',{style:{...prose,fontSize:16,margin:0,color:"#7A3045"}},...d.desc)
 )),
 React.createElement(KeyConcept,{term:"Feedback Loops",color:"#ef4444"},"As Maricopa County warms, more A/C is used → more electricity is burned → more heat & CO₂ is released → further warming. This is a positive feedback loop.",React.createElement(Ref,{n:[2,35]}))
 ,
 React.createElement(TakeawayBox,null,"Every degree of warming produces a compounding\u2014not linear\u2014increase in dangerous heat days, because warming shifts the entire temperature distribution.")
+,
+React.createElement('details',{style:{marginTop:18,marginBottom:18}},
+React.createElement('summary',{style:{cursor:"pointer",color:"#7A3045",fontWeight:700,fontSize:16,padding:"6px 0",userSelect:"none"}},"How does warming shift the temperature distribution?",React.createElement('span',{style:{color:"#A05070",fontWeight:400,fontStyle:"italic",marginLeft:8,fontSize:14}}," (click to expand)")),
+React.createElement('div',{style:{padding:"14px 18px",background:"rgba(46,134,193,0.05)",border:"1px solid rgba(46,134,193,0.25)",borderRadius:10,marginTop:8}},
+React.createElement('p',{style:{...prose,fontSize:16,marginTop:0,marginBottom:10,color:"#5C1130"}},"Picture every daily summer high temperature in Phoenix plotted as a bell curve — most days near the average, fewer days at the extremes. As the climate warms, the entire curve slides to the right; the shape stays the same. ",React.createElement('strong',null,"But the threshold for dangerous heat (110°F) doesn't move.")," Because that threshold sits in the tail of the curve, a small horizontal shift produces a disproportionately large change in how much area lies past it — and tail area is what determines dangerous-day frequency. The figure compares the NOAA 1991–2020 summer baseline (Jun–Aug daily highs, Phoenix Sky Harbor) against the dashboard's +4°C severe scenario (a +7.2°F local mean shift, per Maricopa County's ~1.4× amplification of global warming)."),
+React.createElement('div',{dangerouslySetInnerHTML:{__html:`<svg width="100%" viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Distribution shift: NOAA 1991–2020 summer baseline versus +4°C severe scenario at the 110°F threshold" style="font-family:inherit;display:block;margin:8px 0;">
+<title>Distribution shift: NOAA 1991–2020 summer baseline versus +4°C severe scenario at the 110°F threshold</title>
+<desc>Two overlaid bell curves of stylized Phoenix Sky Harbor summer (Jun–Aug) daily highs. The blue baseline curve uses the NOAA 1991–2020 summer mean of 105°F. The red severe-scenario curve, shifted +7.2°F to the right per the dashboard's local Maricopa warming for the +4°C global pathway, is centered on 112°F. A vertical line marks the 110°F dangerous-heat threshold and now sits between the two peaks. The shaded tail past 110°F is more than four times larger under the severe-scenario curve than the baseline; under the severe scenario, the majority of summer days exceed the threshold.</desc>
+<defs>
+<marker id="distArrow3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1A0A10"/></marker>
+</defs>
+<line x1="80" y1="280" x2="660" y2="280" stroke="#A05070" stroke-width="0.5"/>
+
+<path d="M 80.0 280.0 L 84.8 280.0 L 89.7 280.0 L 94.5 280.0 L 99.3 280.0 L 104.2 280.0 L 109.0 280.0 L 113.8 280.0 L 118.7 280.0 L 123.5 280.0 L 128.3 280.0 L 133.2 280.0 L 138.0 280.0 L 142.8 280.0 L 147.7 280.0 L 152.5 280.0 L 157.3 280.0 L 162.2 280.0 L 167.0 280.0 L 171.8 280.0 L 176.7 280.0 L 181.5 280.0 L 186.3 280.0 L 191.2 280.0 L 196.0 280.0 L 200.8 280.0 L 205.7 280.0 L 210.5 280.0 L 215.3 280.0 L 220.2 280.0 L 225.0 279.9 L 229.8 279.9 L 234.7 279.9 L 239.5 279.8 L 244.3 279.7 L 249.2 279.6 L 254.0 279.4 L 258.8 279.2 L 263.7 278.8 L 268.5 278.4 L 273.3 277.8 L 278.2 277.1 L 283.0 276.1 L 287.8 274.9 L 292.7 273.4 L 297.5 271.4 L 302.3 269.1 L 307.2 266.2 L 312.0 262.7 L 316.8 258.5 L 321.7 253.6 L 326.5 247.9 L 331.3 241.4 L 336.2 234.0 L 341.0 225.8 L 345.8 216.7 L 350.7 206.8 L 355.5 196.2 L 360.3 185.1 L 365.2 173.5 L 370.0 161.7 L 374.8 149.9 L 379.7 138.4 L 384.5 127.3 L 389.3 117.1 L 394.2 107.9 L 399.0 100.0 L 403.8 93.5 L 408.7 88.8 L 413.5 85.9 L 418.3 85.0 L 423.2 85.9 L 428.0 88.8 L 432.8 93.5 L 437.7 100.0 L 442.5 107.9 L 447.3 117.1 L 452.2 127.3 L 457.0 138.4 L 461.8 149.9 L 466.7 161.7 L 471.5 173.5 L 476.3 185.1 L 481.2 196.2 L 486.0 206.8 L 490.8 216.7 L 495.7 225.8 L 500.5 234.0 L 505.3 241.4 L 510.2 247.9 L 515.0 253.6 L 519.8 258.5 L 524.7 262.7 L 529.5 266.2 L 534.3 269.1 L 539.2 271.4 L 544.0 273.4 L 548.8 274.9 L 553.7 276.1 L 558.5 277.1 L 563.3 277.8 L 568.2 278.4 L 573.0 278.8 L 577.8 279.2 L 582.7 279.4 L 587.5 279.6 L 592.3 279.7 L 597.2 279.8 L 602.0 279.9 L 606.8 279.9 L 611.7 279.9 L 616.5 280.0 L 621.3 280.0 L 626.2 280.0 L 631.0 280.0 L 635.8 280.0 L 640.7 280.0 L 645.5 280.0 L 650.3 280.0 L 655.2 280.0 L 660.0 280.0 L 660.0 280 L 80.0 280 Z" fill="rgba(46,134,193,0.12)"/>
+<path d="M 466.7 280 L 466.7 161.7 L 471.5 173.5 L 476.3 185.1 L 481.2 196.2 L 486.0 206.8 L 490.8 216.7 L 495.7 225.8 L 500.5 234.0 L 505.3 241.4 L 510.2 247.9 L 515.0 253.6 L 519.8 258.5 L 524.7 262.7 L 529.5 266.2 L 534.3 269.1 L 539.2 271.4 L 544.0 273.4 L 548.8 274.9 L 553.7 276.1 L 558.5 277.1 L 563.3 277.8 L 568.2 278.4 L 573.0 278.8 L 577.8 279.2 L 582.7 279.4 L 587.5 279.6 L 592.3 279.7 L 597.2 279.8 L 602.0 279.9 L 606.8 279.9 L 611.7 279.9 L 616.5 280.0 L 621.3 280.0 L 626.2 280.0 L 631.0 280.0 L 635.8 280.0 L 640.7 280.0 L 645.5 280.0 L 650.3 280.0 L 655.2 280.0 L 660.0 280.0 L 660.0 280 Z" fill="rgba(46,134,193,0.55)"/>
+<path d="M 80.0 280.0 L 84.8 280.0 L 89.7 280.0 L 94.5 280.0 L 99.3 280.0 L 104.2 280.0 L 109.0 280.0 L 113.8 280.0 L 118.7 280.0 L 123.5 280.0 L 128.3 280.0 L 133.2 280.0 L 138.0 280.0 L 142.8 280.0 L 147.7 280.0 L 152.5 280.0 L 157.3 280.0 L 162.2 280.0 L 167.0 280.0 L 171.8 280.0 L 176.7 280.0 L 181.5 280.0 L 186.3 280.0 L 191.2 280.0 L 196.0 280.0 L 200.8 280.0 L 205.7 280.0 L 210.5 280.0 L 215.3 280.0 L 220.2 280.0 L 225.0 279.9 L 229.8 279.9 L 234.7 279.9 L 239.5 279.8 L 244.3 279.7 L 249.2 279.6 L 254.0 279.4 L 258.8 279.2 L 263.7 278.8 L 268.5 278.4 L 273.3 277.8 L 278.2 277.1 L 283.0 276.1 L 287.8 274.9 L 292.7 273.4 L 297.5 271.4 L 302.3 269.1 L 307.2 266.2 L 312.0 262.7 L 316.8 258.5 L 321.7 253.6 L 326.5 247.9 L 331.3 241.4 L 336.2 234.0 L 341.0 225.8 L 345.8 216.7 L 350.7 206.8 L 355.5 196.2 L 360.3 185.1 L 365.2 173.5 L 370.0 161.7 L 374.8 149.9 L 379.7 138.4 L 384.5 127.3 L 389.3 117.1 L 394.2 107.9 L 399.0 100.0 L 403.8 93.5 L 408.7 88.8 L 413.5 85.9 L 418.3 85.0 L 423.2 85.9 L 428.0 88.8 L 432.8 93.5 L 437.7 100.0 L 442.5 107.9 L 447.3 117.1 L 452.2 127.3 L 457.0 138.4 L 461.8 149.9 L 466.7 161.7 L 471.5 173.5 L 476.3 185.1 L 481.2 196.2 L 486.0 206.8 L 490.8 216.7 L 495.7 225.8 L 500.5 234.0 L 505.3 241.4 L 510.2 247.9 L 515.0 253.6 L 519.8 258.5 L 524.7 262.7 L 529.5 266.2 L 534.3 269.1 L 539.2 271.4 L 544.0 273.4 L 548.8 274.9 L 553.7 276.1 L 558.5 277.1 L 563.3 277.8 L 568.2 278.4 L 573.0 278.8 L 577.8 279.2 L 582.7 279.4 L 587.5 279.6 L 592.3 279.7 L 597.2 279.8 L 602.0 279.9 L 606.8 279.9 L 611.7 279.9 L 616.5 280.0 L 621.3 280.0 L 626.2 280.0 L 631.0 280.0 L 635.8 280.0 L 640.7 280.0 L 645.5 280.0 L 650.3 280.0 L 655.2 280.0 L 660.0 280.0" fill="none" stroke="#2E86C1" stroke-width="2" stroke-opacity="0.9"/>
+
+<path d="M 80.0 280.0 L 84.8 280.0 L 89.7 280.0 L 94.5 280.0 L 99.3 280.0 L 104.2 280.0 L 109.0 280.0 L 113.8 280.0 L 118.7 280.0 L 123.5 280.0 L 128.3 280.0 L 133.2 280.0 L 138.0 280.0 L 142.8 280.0 L 147.7 280.0 L 152.5 280.0 L 157.3 280.0 L 162.2 280.0 L 167.0 280.0 L 171.8 280.0 L 176.7 280.0 L 181.5 280.0 L 186.3 280.0 L 191.2 280.0 L 196.0 280.0 L 200.8 280.0 L 205.7 280.0 L 210.5 280.0 L 215.3 280.0 L 220.2 280.0 L 225.0 280.0 L 229.8 280.0 L 234.7 280.0 L 239.5 280.0 L 244.3 280.0 L 249.2 280.0 L 254.0 280.0 L 258.8 280.0 L 263.7 280.0 L 268.5 280.0 L 273.3 280.0 L 278.2 280.0 L 283.0 280.0 L 287.8 280.0 L 292.7 279.9 L 297.5 279.9 L 302.3 279.9 L 307.2 279.8 L 312.0 279.7 L 316.8 279.6 L 321.7 279.5 L 326.5 279.3 L 331.3 279.0 L 336.2 278.6 L 341.0 278.1 L 345.8 277.4 L 350.7 276.5 L 355.5 275.4 L 360.3 274.0 L 365.2 272.3 L 370.0 270.1 L 374.8 267.4 L 379.7 264.1 L 384.5 260.2 L 389.3 255.7 L 394.2 250.3 L 399.0 244.1 L 403.8 237.1 L 408.7 229.2 L 413.5 220.4 L 418.3 210.8 L 423.2 200.5 L 428.0 189.6 L 432.8 178.2 L 437.7 166.4 L 442.5 154.6 L 447.3 142.9 L 452.2 131.7 L 457.0 121.1 L 461.8 111.4 L 466.7 103.0 L 471.5 95.9 L 476.3 90.5 L 481.2 86.9 L 486.0 85.1 L 490.8 85.3 L 495.7 87.4 L 500.5 91.4 L 505.3 97.2 L 510.2 104.5 L 515.0 113.3 L 519.8 123.1 L 524.7 133.9 L 529.5 145.3 L 534.3 157.0 L 539.2 168.8 L 544.0 180.5 L 548.8 191.8 L 553.7 202.6 L 558.5 212.8 L 563.3 222.2 L 568.2 230.8 L 573.0 238.6 L 577.8 245.4 L 582.7 251.4 L 587.5 256.6 L 592.3 261.1 L 597.2 264.8 L 602.0 268.0 L 606.8 270.5 L 611.7 272.6 L 616.5 274.3 L 621.3 275.7 L 626.2 276.7 L 631.0 277.6 L 635.8 278.2 L 640.7 278.7 L 645.5 279.0 L 650.3 279.3 L 655.2 279.5 L 660.0 279.7 L 660.0 280 L 80.0 280 Z" fill="rgba(239,68,68,0.12)"/>
+<path d="M 466.7 280 L 466.7 103.0 L 471.5 95.9 L 476.3 90.5 L 481.2 86.9 L 486.0 85.1 L 490.8 85.3 L 495.7 87.4 L 500.5 91.4 L 505.3 97.2 L 510.2 104.5 L 515.0 113.3 L 519.8 123.1 L 524.7 133.9 L 529.5 145.3 L 534.3 157.0 L 539.2 168.8 L 544.0 180.5 L 548.8 191.8 L 553.7 202.6 L 558.5 212.8 L 563.3 222.2 L 568.2 230.8 L 573.0 238.6 L 577.8 245.4 L 582.7 251.4 L 587.5 256.6 L 592.3 261.1 L 597.2 264.8 L 602.0 268.0 L 606.8 270.5 L 611.7 272.6 L 616.5 274.3 L 621.3 275.7 L 626.2 276.7 L 631.0 277.6 L 635.8 278.2 L 640.7 278.7 L 645.5 279.0 L 650.3 279.3 L 655.2 279.5 L 660.0 279.7 L 660.0 280 Z" fill="rgba(239,68,68,0.55)"/>
+<path d="M 80.0 280.0 L 84.8 280.0 L 89.7 280.0 L 94.5 280.0 L 99.3 280.0 L 104.2 280.0 L 109.0 280.0 L 113.8 280.0 L 118.7 280.0 L 123.5 280.0 L 128.3 280.0 L 133.2 280.0 L 138.0 280.0 L 142.8 280.0 L 147.7 280.0 L 152.5 280.0 L 157.3 280.0 L 162.2 280.0 L 167.0 280.0 L 171.8 280.0 L 176.7 280.0 L 181.5 280.0 L 186.3 280.0 L 191.2 280.0 L 196.0 280.0 L 200.8 280.0 L 205.7 280.0 L 210.5 280.0 L 215.3 280.0 L 220.2 280.0 L 225.0 280.0 L 229.8 280.0 L 234.7 280.0 L 239.5 280.0 L 244.3 280.0 L 249.2 280.0 L 254.0 280.0 L 258.8 280.0 L 263.7 280.0 L 268.5 280.0 L 273.3 280.0 L 278.2 280.0 L 283.0 280.0 L 287.8 280.0 L 292.7 279.9 L 297.5 279.9 L 302.3 279.9 L 307.2 279.8 L 312.0 279.7 L 316.8 279.6 L 321.7 279.5 L 326.5 279.3 L 331.3 279.0 L 336.2 278.6 L 341.0 278.1 L 345.8 277.4 L 350.7 276.5 L 355.5 275.4 L 360.3 274.0 L 365.2 272.3 L 370.0 270.1 L 374.8 267.4 L 379.7 264.1 L 384.5 260.2 L 389.3 255.7 L 394.2 250.3 L 399.0 244.1 L 403.8 237.1 L 408.7 229.2 L 413.5 220.4 L 418.3 210.8 L 423.2 200.5 L 428.0 189.6 L 432.8 178.2 L 437.7 166.4 L 442.5 154.6 L 447.3 142.9 L 452.2 131.7 L 457.0 121.1 L 461.8 111.4 L 466.7 103.0 L 471.5 95.9 L 476.3 90.5 L 481.2 86.9 L 486.0 85.1 L 490.8 85.3 L 495.7 87.4 L 500.5 91.4 L 505.3 97.2 L 510.2 104.5 L 515.0 113.3 L 519.8 123.1 L 524.7 133.9 L 529.5 145.3 L 534.3 157.0 L 539.2 168.8 L 544.0 180.5 L 548.8 191.8 L 553.7 202.6 L 558.5 212.8 L 563.3 222.2 L 568.2 230.8 L 573.0 238.6 L 577.8 245.4 L 582.7 251.4 L 587.5 256.6 L 592.3 261.1 L 597.2 264.8 L 602.0 268.0 L 606.8 270.5 L 611.7 272.6 L 616.5 274.3 L 621.3 275.7 L 626.2 276.7 L 631.0 277.6 L 635.8 278.2 L 640.7 278.7 L 645.5 279.0 L 650.3 279.3 L 655.2 279.5 L 660.0 279.7" fill="none" stroke="#ef4444" stroke-width="2" stroke-opacity="0.9"/>
+
+<line x1="418.3" y1="85.0" x2="418.3" y2="280" stroke="#7A3045" stroke-width="0.5" stroke-dasharray="3 3"/>
+<line x1="487.9" y1="85.0" x2="487.9" y2="280" stroke="#7A3045" stroke-width="0.5" stroke-dasharray="3 3"/>
+<line x1="466.7" y1="30" x2="466.7" y2="280" stroke="#1A0A10" stroke-width="1"/>
+
+<g font-size="12" fill="#7A3045" text-anchor="middle">
+<text x="80" y="295">70°F</text>
+<text x="176.7" y="295">80°F</text>
+<text x="273.3" y="295">90°F</text>
+<text x="370" y="295">100°F</text>
+<text x="466.7" y="295">110°F</text>
+<text x="563.3" y="295">120°F</text>
+<text x="660" y="295">130°F</text>
+</g>
+<text x="370" y="320" text-anchor="middle" font-size="13" fill="#7A3045">Daily summer high temperature</text>
+
+<line x1="100" y1="68" x2="120" y2="68" stroke="#2E86C1" stroke-width="2"/>
+<text x="125" y="72" font-size="13" fill="#1A0A10">Baseline summer · mean 105°F</text>
+<line x1="100" y1="88" x2="120" y2="88" stroke="#ef4444" stroke-width="2"/>
+<text x="125" y="92" font-size="13" fill="#1A0A10">Severe climate scenario · mean 112°F</text>
+
+<g transform="translate(418.3,50)">
+<line x1="0" y1="0" x2="69.6" y2="0" stroke="#1A0A10" stroke-width="1" marker-end="url(#distArrow3)"/>
+</g>
+<text x="492.9" y="54" text-anchor="start" font-size="13" font-weight="600" fill="#1A0A10">+7.2°F mean shift</text>
+
+<text x="466.7" y="22" text-anchor="middle" font-size="13" font-weight="600" fill="#1A0A10">110°F threshold</text>
+
+<g transform="translate(440,355)">
+<rect x="0" y="0" width="240" height="44" rx="6" fill="#F0E8EB" stroke="#D4B5BD" stroke-width="0.5"/>
+<text x="12" y="18" font-size="13" fill="#7A3045">Tail probability above 110°F</text>
+<text x="12" y="36" font-size="13" fill="#1A0A10">
+<tspan fill="#185FA5" font-weight="700">~16% baseline</tspan>
+<tspan> → </tspan>
+<tspan fill="#A32D2D" font-weight="700">~67% severe</tspan>
+<tspan font-weight="700"> · 4.2×</tspan>
+</text>
+</g>
+</svg>`}}),
+React.createElement('p',{style:{...prose,fontSize:14,fontStyle:"italic",margin:"10px 0 0",color:"#7A3045"}},"NOAA 1991–2020 summer mean daily high for Phoenix Sky Harbor (Jun–Aug): μ≈105°F. σ=5°F approximates within-summer day-to-day variability. Severe-scenario mean shifted by +7.2°F per the dashboard's local Maricopa warming for the +4°C global pathway. Real Phoenix summer highs aren't a single Gaussian (the season clusters around a high plateau), so this normal-distribution model is a stylized analogue, not a precise calibration. The geometric mechanism it illustrates — small mean shift → disproportionately large change in tail probability — is robust.")
+)
+)
+
 );
 }
 function ScenariosPanel({scenario,setScenario,year,setYear}){
@@ -1724,7 +1781,7 @@ const isolated=vulnerable&&_rng.random()<0.35;
 // Trait prevalence is correlated with housing/district/vulnerability to produce realistic
 // intersectional risk profiles rather than independent random assignment.
 // (1) Vehicle access: agents without a car cannot reach distant cooling centers (walk-only range).
-// Unsheltered: 5% have vehicle. Precarious: 45–65% (district-dependent). Sheltered: 90%.
+// Unsheltered: 5% have vehicle. Precarious: 27.5–39% (district-dependent — varies inversely with precarious-housing rate; Downtown lowest, Scottsdale highest). Sheltered: 90%.
 // Source: ACS 2020 vehicle access data for Maricopa County; MAG transportation survey estimates.
 const _vehBase=housing===H_U?0.05:(housing===H_P?0.45+dh.precRate*(-0.5):0.90);
 const hasVehicle=_rng.random()<_vehBase;
