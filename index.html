@@ -239,7 +239,7 @@ return curve[i][1]+(curve[i+1][1]-curve[i][1])*t;
 return curve[curve.length-1][1];
 }
 const LESSONS=[
-{id:"followalong",icon:"📱",title:"Follow Along",subtitle:"Now or Later",parent:null},
+{id:"followalong",icon:"📱",title:"Follow Along",subtitle:"Participate in the Lesson",parent:null},
 {id:"title",icon:"🌵",title:"Lesson Overview",subtitle:"Maricopa County Climate and Heat Risk Dashboard",parent:null},
 {id:"intro",icon:"📖",title:"Introduction",subtitle:"Maricopa County Climate Basics",parent:null},
 {id:"drivers",icon:"⚗",title:"Climate Drivers",subtitle:"What shapes desert heat?",parent:null},
@@ -617,9 +617,8 @@ React.createElement(Bar,{dataKey:"projected",name:`${s.label} ${year}`,fill:"#2E
 React.createElement('div',{style:{marginTop:20,padding:"14px 18px",background:"rgba(255,217,102,0.05)",border:"1px solid #6B1530",borderRadius:10}},
 React.createElement('div',{style:{color:"#8C1D40",fontSize:16,fontWeight:700,marginBottom:6}},"💬 CLASS DISCUSSION PROMPTS"),
 React.createElement('div',{style:{color:"#7A3045",fontSize:16,lineHeight:1.8}},
-"1. What's the difference between weather and climate? How does this model show that distinction?",React.createElement('br'),
-"2. Which scenario do you think is most realistic? What evidence supports your choice?",React.createElement('br'),
-`3. If you were advising Maricopa County planners in ${year}, what policies would you recommend?`
+"1. What's the difference between weather and climate?",React.createElement('br'),
+"2. Which scenario do you think is most realistic? What evidence supports your choice?"
 )
 ),
 React.createElement(TakeawayBox,null,"The difference between optimistic and severe pathways is not just temperature\u2014it\u2019s whether outdoor life in Maricopa County remains viable."),
@@ -901,6 +900,7 @@ const costPerLifeSaved=preventedDeaths>0?(((coolingCost+hydrationCost+outreachCo
 const riskLevel=finalDeaths<300?"Low":finalDeaths<500?"Moderate":finalDeaths<700?"High":"Critical";
 const riskColor=finalDeaths<300?"#10b981":finalDeaths<500?"#FFC627":finalDeaths<700?"#FFC627":"#ef4444";
 const presetReset=coolingCenters===0&&hydrationStations===0&&outreach===0;
+const presetCurrent=coolingCenters===1&&hydrationStations===1&&outreach===1;
 const preset5M=coolingCenters===1&&hydrationStations===1&&outreach===2;
 const preset10M=coolingCenters===2&&hydrationStations===2&&outreach===3;
 const preset15M=coolingCenters===3&&hydrationStations===3&&outreach===3;
@@ -1050,38 +1050,12 @@ React.createElement('div',{style:{color:"#8C1D40",fontSize:13,letterSpacing:"2.5
 ),
 React.createElement('div',{style:{display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}},
 React.createElement('button',{onClick:()=>{setCoolingCenters(0);setHydrationStations(0);setOutreach(0);},style:{padding:"8px 14px",borderRadius:20,border:presetReset?"1px solid #8C1D40":"1px solid #A05070",background:presetReset?"#8C1D40":"transparent",color:presetReset?"#fff":"#7A3045",cursor:"pointer",fontSize:13,fontFamily:"inherit",fontWeight:presetReset?600:400,boxShadow:presetReset?"0 2px 4px rgba(140,29,64,0.25)":"none",transition:"all 0.15s"}},"Reset"),
+React.createElement('button',{onClick:()=>{setCoolingCenters(1);setHydrationStations(1);setOutreach(1);},style:{padding:"8px 14px",borderRadius:20,border:presetCurrent?"1px solid #8C1D40":"1px solid #8C1D4066",background:presetCurrent?"#8C1D40":"rgba(140,29,64,0.08)",color:presetCurrent?"#fff":"#8C1D40",cursor:"pointer",fontSize:13,fontFamily:"inherit",fontWeight:600,boxShadow:presetCurrent?"0 2px 4px rgba(140,29,64,0.25)":"none",transition:"all 0.15s"}},"Current mix"),
 React.createElement('button',{onClick:()=>{setCoolingCenters(1);setHydrationStations(1);setOutreach(2);},style:{padding:"8px 14px",borderRadius:20,border:preset5M?"1px solid #8C1D40":"1px solid #8C1D4066",background:preset5M?"#8C1D40":"rgba(140,29,64,0.08)",color:preset5M?"#fff":"#8C1D40",cursor:"pointer",fontSize:13,fontFamily:"inherit",fontWeight:600,boxShadow:preset5M?"0 2px 4px rgba(140,29,64,0.25)":"none",transition:"all 0.15s"}},"~$5M mix"),
 React.createElement('button',{onClick:()=>{setCoolingCenters(2);setHydrationStations(2);setOutreach(3);},style:{padding:"8px 14px",borderRadius:20,border:preset10M?"1px solid #8C1D40":"1px solid #8C1D4066",background:preset10M?"#8C1D40":"rgba(140,29,64,0.08)",color:preset10M?"#fff":"#8C1D40",cursor:"pointer",fontSize:13,fontFamily:"inherit",fontWeight:600,boxShadow:preset10M?"0 2px 4px rgba(140,29,64,0.25)":"none",transition:"all 0.15s"}},"~$10M mix"),
 React.createElement('button',{onClick:()=>{setCoolingCenters(3);setHydrationStations(3);setOutreach(3);},style:{padding:"8px 14px",borderRadius:20,border:preset15M?"1px solid #8C1D40":"1px solid #8C1D4066",background:preset15M?"#8C1D40":"rgba(140,29,64,0.08)",color:preset15M?"#fff":"#8C1D40",cursor:"pointer",fontSize:13,fontFamily:"inherit",fontWeight:600,boxShadow:preset15M?"0 2px 4px rgba(140,29,64,0.25)":"none",transition:"all 0.15s"}},"~$15M mix"),
 React.createElement('span',{style:{fontSize:12,color:"#7A3045",marginLeft:"auto",fontStyle:"italic"}},"\u2190 Click to preset intervention levels, then fine-tune above")
 )
-),
-React.createElement('div',{style:{marginBottom:20}},
-React.createElement('div',{style:{fontSize:15,color:"#7A3045",letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"Monthly Death Distribution"),
-React.createElement('div',{style:{fontSize:13,color:"#5C1130",lineHeight:1.6,marginBottom:10}},React.createElement('strong',{style:{color:"#dc2626"}},"Red bars")," = projected deaths without intervention \u00b7 ",React.createElement('strong',{style:{color:"#2E86C1"}},"Blue bars")," = deaths with your selected portfolio \u00b7 the gap between them = ",React.createElement('strong',null,"lives saved")," by policy."),
-React.createElement('div',{style:{position:"relative"}},
-React.createElement(ResponsiveContainer,{width:"100%",height:180},
-React.createElement(BarChart,{data:monthlyDeaths,barGap:2,margin:{top:22,right:5,bottom:5,left:5}},
-React.createElement(CartesianGrid,{strokeDasharray:"3 3",stroke:"#C4849A"}),
-React.createElement(XAxis,{dataKey:"month",stroke:"#9B6070",tick:{fill:"#5C1130",fontSize:15}}),
-React.createElement(YAxis,{stroke:"#9B6070",tick:{fill:"#5C1130",fontSize:15},unit:" deaths"}),
-React.createElement(RechartTooltip,{content:ChartTip}),
-React.createElement(Bar,{dataKey:"baseline",name:"No Policy",fill:"#ef444455",radius:[3,3,0,0]}),
-preventedDeaths>0&&React.createElement(Bar,{dataKey:"withPolicy",name:"With Policy",fill:"#2E86C1",radius:[3,3,0,0]})
-)
-),
-React.createElement('div',{style:{position:"absolute",top:2,left:80,color:"#dc2626",fontWeight:700,fontSize:15,fontFamily:"'Playfair Display',serif",pointerEvents:"none",textShadow:"0 0 6px rgba(255,255,255,0.95), 0 0 3px rgba(255,255,255,1)"}},"Annual deaths: ",rawDeaths.toLocaleString()),
-preventedDeaths>0&&React.createElement('div',{style:{position:"absolute",top:2,right:12,color:"#2E86C1",fontWeight:700,fontSize:15,fontFamily:"'Playfair Display',serif",pointerEvents:"none",textShadow:"0 0 6px rgba(255,255,255,0.95), 0 0 3px rgba(255,255,255,1)"}},"Annual deaths: ",finalDeaths.toLocaleString())
-),
-React.createElement('div',{style:{display:"flex",gap:16,justifyContent:"center",marginTop:8,fontSize:15,color:"#7A3045"}},
-React.createElement('span',null,React.createElement('span',{style:{display:"inline-block",width:10,height:10,background:"#ef444455",borderRadius:2,marginRight:5}}),
-"Projected (no policy)"),
-preventedDeaths>0&&React.createElement('span',null,React.createElement('span',{style:{display:"inline-block",width:10,height:10,background:"#2E86C1",borderRadius:2,marginRight:5}}),"With interventions")
-)
-),
-React.createElement('div',{style:{margin:"20px 0",padding:"14px 18px",background:"rgba(255,198,39,0.08)",border:"1px solid #FFC62766",borderLeft:"4px solid #8C1D40",borderRadius:"0 10px 10px 0"}},
-React.createElement('div',{style:{color:"#8C1D40",fontSize:12,letterSpacing:"2px",textTransform:"uppercase",fontWeight:700,marginBottom:6}},"Key takeaway"),
-React.createElement('div',{style:{fontSize:15,color:"#2D1520",lineHeight:1.7}},React.createElement('strong',null,"Heat deaths are not inevitable.")," The gap between the red bars and the blue bars is lives saved by your policy choices.")
 ),
 React.createElement('div',{style:{marginTop:12,marginBottom:10,padding:"4px 18px 8px",background:"rgba(140,29,64,0.05)",border:"1px solid #8C1D4055",borderRadius:8}},
 React.createElement('details',{style:{marginBottom:4},open:true},
@@ -1093,14 +1067,14 @@ React.createElement('div',{style:{marginBottom:14}},
 React.createElement('div',{style:{fontSize:12,color:"#8C1D40",letterSpacing:"2px",textTransform:"uppercase",fontWeight:700,marginBottom:10,textAlign:"center"}},"Annual mortality trajectory (2020\u20132100)"),
 React.createElement('div',{style:{height:260,background:"#FFFFFF",border:"1px solid #8C1D4055",borderRadius:6,padding:8}},
 React.createElement(ResponsiveContainer,{width:"100%",height:"100%"},
-React.createElement(LineChart,{data:(function(){var arr=[];for(var y=2020;y<=2100;y+=2){var dd=project(scenario,y);var thd=dd.reduce(function(a,d){return a+d.heat;},0);var ahd=Math.max(0,thd-107);var w=s.tempD*interpF(s.warmingCurve,y);var wm=Math.pow(1.04,w);var rd=Math.round((690+ahd*3.2)*wm);var fd=Math.round(rd*(1-totalReductionPct));arr.push({year:y,raw:rd,withPolicy:fd});}return arr;})(),margin:{top:8,right:16,left:0,bottom:4}},
+React.createElement(LineChart,{data:(function(){var arr=[];for(var y=2020;y<=2100;y+=2){var dd=project(scenario,y);var thd=dd.reduce(function(a,d){return a+d.heat;},0);var ahd=Math.max(0,thd-107);var w=s.tempD*interpF(s.warmingCurve,y);var wm=Math.pow(1.04,w);var rd=Math.round((690+ahd*3.2)*wm);var fd=Math.round(rd*(1-totalReductionPct));arr.push({year:y,raw:rd,withPolicy:fd});}return arr;})(),margin:{top:24,right:16,left:0,bottom:4}},
 React.createElement(CartesianGrid,{strokeDasharray:"3 3",stroke:"#E5D5DA"}),
 React.createElement(XAxis,{dataKey:"year",tick:{fontSize:11,fill:"#5C1130"},tickCount:9}),
 React.createElement(YAxis,{tick:{fontSize:11,fill:"#5C1130"},label:{value:"deaths/yr",angle:-90,position:"insideLeft",style:{fontSize:11,fill:"#5C1130"}}}),
 React.createElement(RechartTooltip,{contentStyle:{fontSize:12}}),
 React.createElement(Line,{type:"monotone",dataKey:"raw",name:"Without policy",stroke:"#ef4444",strokeWidth:2,dot:false}),
 React.createElement(Line,{type:"monotone",dataKey:"withPolicy",name:"With current policy",stroke:"#2E86C1",strokeWidth:2,dot:false}),
-React.createElement(ReferenceLine,{x:year,stroke:"#8C1D40",strokeWidth:2,strokeDasharray:"4 3",label:{value:"now",position:"top",fill:"#8C1D40",fontSize:11,fontWeight:700}}),
+React.createElement(ReferenceLine,{x:year,stroke:"#8C1D40",strokeWidth:2,strokeDasharray:"4 3",label:{value:year,position:"top",fill:"#8C1D40",fontSize:11,fontWeight:700}}),
 React.createElement(ReferenceLine,{y:559,stroke:"#10b981",strokeDasharray:"3 3",label:{value:"559 calibration",position:"insideTopRight",fill:"#10b981",fontSize:10}})
 ))),
 React.createElement('div',{style:{fontSize:12,color:"#7A3045",textAlign:"center",marginTop:8,fontStyle:"italic",lineHeight:1.5}},"Red = raw deaths from climate alone \u00b7 Blue = deaths after multiplicative Hill policy reduction \u00b7 Vertical dashed = year selected on slider \u00b7 Green horizontal = 559 calibration target (Maricopa 2022\u20132024 mean)")
@@ -1135,6 +1109,33 @@ React.createElement('div',{style:{fontSize:14,color:"#2D1520",lineHeight:1.6,pad
 )
 )
 )
+),
+React.createElement('div',{style:{marginBottom:20}},
+React.createElement('div',{style:{fontSize:15,color:"#7A3045",letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"Monthly Death Distribution"),
+React.createElement('div',{style:{fontSize:13,color:"#5C1130",lineHeight:1.6,marginBottom:10}},React.createElement('strong',{style:{color:"#dc2626"}},"Red bars")," = projected deaths without intervention \u00b7 ",React.createElement('strong',{style:{color:"#2E86C1"}},"Blue bars")," = deaths with your selected portfolio \u00b7 the gap between them = ",React.createElement('strong',null,"lives saved")," by policy."),
+React.createElement('div',{style:{position:"relative"}},
+React.createElement(ResponsiveContainer,{width:"100%",height:180},
+React.createElement(BarChart,{data:monthlyDeaths,barGap:2,margin:{top:22,right:5,bottom:5,left:5}},
+React.createElement(CartesianGrid,{strokeDasharray:"3 3",stroke:"#C4849A"}),
+React.createElement(XAxis,{dataKey:"month",stroke:"#9B6070",tick:{fill:"#5C1130",fontSize:15}}),
+React.createElement(YAxis,{stroke:"#9B6070",tick:{fill:"#5C1130",fontSize:15},unit:" deaths"}),
+React.createElement(RechartTooltip,{content:ChartTip}),
+React.createElement(Bar,{dataKey:"baseline",name:"No Policy",fill:"#ef444455",radius:[3,3,0,0]}),
+preventedDeaths>0&&React.createElement(Bar,{dataKey:"withPolicy",name:"With Policy",fill:"#2E86C1",radius:[3,3,0,0]})
+)
+),
+React.createElement('div',{style:{position:"absolute",top:2,left:80,color:"#dc2626",fontWeight:700,fontSize:15,fontFamily:"'Playfair Display',serif",pointerEvents:"none",textShadow:"0 0 6px rgba(255,255,255,0.95), 0 0 3px rgba(255,255,255,1)"}},"Annual deaths: ",rawDeaths.toLocaleString()),
+preventedDeaths>0&&React.createElement('div',{style:{position:"absolute",top:2,right:12,color:"#2E86C1",fontWeight:700,fontSize:15,fontFamily:"'Playfair Display',serif",pointerEvents:"none",textShadow:"0 0 6px rgba(255,255,255,0.95), 0 0 3px rgba(255,255,255,1)"}},"Annual deaths: ",finalDeaths.toLocaleString())
+),
+React.createElement('div',{style:{display:"flex",gap:16,justifyContent:"center",marginTop:8,fontSize:15,color:"#7A3045"}},
+React.createElement('span',null,React.createElement('span',{style:{display:"inline-block",width:10,height:10,background:"#ef444455",borderRadius:2,marginRight:5}}),
+"Projected (no policy)"),
+preventedDeaths>0&&React.createElement('span',null,React.createElement('span',{style:{display:"inline-block",width:10,height:10,background:"#2E86C1",borderRadius:2,marginRight:5}}),"With interventions")
+)
+),
+React.createElement('div',{style:{margin:"20px 0",padding:"14px 18px",background:"rgba(255,198,39,0.08)",border:"1px solid #FFC62766",borderLeft:"4px solid #8C1D40",borderRadius:"0 10px 10px 0"}},
+React.createElement('div',{style:{color:"#8C1D40",fontSize:12,letterSpacing:"2px",textTransform:"uppercase",fontWeight:700,marginBottom:6}},"Key takeaway"),
+React.createElement('div',{style:{fontSize:15,color:"#2D1520",lineHeight:1.7}},React.createElement('strong',null,"Heat deaths are not inevitable.")," The gap between the red bars and the blue bars is lives saved by your policy choices.")
 ),
 React.createElement('div',{style:{marginTop:12,marginBottom:10,padding:"4px 18px 8px",background:"rgba(79,129,189,0.05)",border:"1px solid #4F81BD55",borderRadius:8}},
 React.createElement('details',{style:{marginBottom:4},open:true},
@@ -5157,12 +5158,13 @@ setLesson(id);try{history.pushState({lesson:id},"","#"+id);}catch(e){}
 window._setLesson=navigateLesson;
 React.useEffect(function(){try{history.replaceState({lesson:lesson},"","#"+lesson);}catch(e){}},[]);
 React.useEffect(function(){var handler=function(e){if(e.state&&e.state.lesson){setLesson(e.state.lesson);}};window.addEventListener("popstate",handler);return function(){window.removeEventListener("popstate",handler);};},[]);
+React.useEffect(function(){var handler=function(e){var t=e.target||document.activeElement;if(t){var tag=t.tagName;if(tag==="INPUT"||tag==="TEXTAREA"||tag==="SELECT"||t.isContentEditable)return;}if(e.ctrlKey||e.metaKey||e.altKey)return;var k=e.key,idx=LESSONS.findIndex(function(l){return l.id===lesson;});if(k==="ArrowLeft"||k==="PageUp"){if(idx>0){e.preventDefault();navigateLesson(LESSONS[idx-1].id);}}else if(k==="ArrowRight"||k==="PageDown"){if(idx<LESSONS.length-1){e.preventDefault();navigateLesson(LESSONS[idx+1].id);}}};window.addEventListener("keydown",handler);return function(){window.removeEventListener("keydown",handler);};},[lesson,navigateLesson]);
 React.useEffect(function(){var el=mainRef.current;if(!el||!pendingScroll.current)return;var cmd=pendingScroll.current;pendingScroll.current=null;if(cmd==="top"){el.scrollTop=0;}else if(cmd.slice(0,8)==="restore:"){el.scrollTop=scrollPos.current[cmd.slice(8)]||0;}},[lesson]);
 const[scenario,setScenario]=useState("moderate");
 const[year,setYear]=useState(2026);
-const[coolingCenters,setCoolingCenters]=useState(0);
-const[hydrationStations,setHydrationStations]=useState(0);
-const[outreach,setOutreach]=useState(0);
+const[coolingCenters,setCoolingCenters]=useState(1);
+const[hydrationStations,setHydrationStations]=useState(1);
+const[outreach,setOutreach]=useState(1);
 const[mounted,setMounted]=useState(false);
 const[sidebarOpen,setSidebarOpen]=useState(false);
 const checkMobile=()=>window.innerWidth<=768||(window.innerHeight<=500&&'ontouchstart' in window);
