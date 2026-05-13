@@ -3319,11 +3319,11 @@ React.createElement('div',{style:{display:"flex",gap:14,flexWrap:"wrap",fontSize
 React.createElement('div',{style:{fontSize:14,color:"#A05070",marginTop:4}},"⊚ = unsheltered (double ring)  ·  ⬤ = vulnerable/at-risk (single ring)  ·  ○ = general pop  ·  ",React.createElement('span',{style:{color:"#60A5FA"}},"+ = recovering (post-rescue)"),"  ·  🏢 = cooling center  ·  💧 = hydration station  ·  🤝 = outreach zone")
 ),
 React.createElement('div',null,
-React.createElement('div',{style:{marginBottom:16,padding:"14px",background:"rgba(140,29,64,0.04)",border:"1px solid #4A1428",borderRadius:10}},
+React.createElement('div',{style:{marginBottom:16,padding:"14px",background:"rgba(140,29,64,0.04)",border:"1px solid #4A1428",borderRadius:10,minHeight:310}},
 React.createElement('div',{style:{fontSize:14,color:"#7A3045",letterSpacing:"2px",textTransform:"uppercase",marginBottom:10}},"Population-Scaled Outcomes"),
 React.createElement('div',{style:{fontSize:13,color:"#5C1130",marginBottom:4}},
 React.createElement('strong',{style:{color:s.color}},year)," · ",currentDayLabel,
-" · Day ",Math.min(tick,totalDays)," / ",totalDays,leapLabel
+" · Day ",Math.min(tick,totalDays)," / ",totalDays
 ),
 React.createElement('div',{style:{fontSize:13,color:"#7A3045",marginBottom:4}},"Maricopa Co. pop: ",React.createElement('strong',null,countyPop.toLocaleString())," · N=",numAgents," agents · 1 agent ≈ ",Math.round(popScale).toLocaleString()," people"),
 React.createElement('div',{style:{fontSize:12,color:"#A05070",marginBottom:8,fontStyle:"italic"}},"Deaths & rescued use fractional probability accumulation for finer resolution"),
@@ -3335,14 +3335,10 @@ React.createElement('div',null,
 {l:"Rescued",v:stats.recovering||0,scaled:Math.round(simRef.current?simRef.current.fractionalSaved:0),c:"#3B82F6",isFrac:true},
 {l:"Deaths",v:stats.dead,scaled:Math.round(simRef.current?simRef.current.fractionalDeaths:0),c:"#7A3045",isFrac:true},
 ].map(x=>{
-const fracVal=x.isFrac?(simRef.current?(x.l==="Deaths"?simRef.current.fractionalDeaths:simRef.current.fractionalSaved):0):x.v;
 return React.createElement('div',{key:x.l,style:{marginBottom:6}},
 React.createElement('div',{style:{display:"flex",justifyContent:"space-between",marginBottom:2}},
 React.createElement('span',{style:{color:"#5C1130",fontSize:15}},x.l),
-React.createElement('span',{style:{display:"flex",gap:8,alignItems:"baseline"}},
-React.createElement('span',{style:{color:x.c,fontWeight:700,fontSize:16}},x.scaled.toLocaleString()),
-React.createElement('span',{style:{color:"#A05070",fontSize:12}},x.isFrac?"("+fracVal.toFixed(2)+" frac · "+x.v+" agents)":"("+x.v+" agents)")
-)
+React.createElement('span',{style:{color:x.c,fontWeight:700,fontSize:16,whiteSpace:"nowrap",fontVariantNumeric:"tabular-nums"}},x.scaled.toLocaleString())
 ),
 React.createElement('div',{style:{background:"#F0E8EB",borderRadius:3,height:4}},
 React.createElement('div',{style:{background:x.c,width:((x.v/total)*100)+"%",height:"100%",borderRadius:3,transition:"width 0.3s"}})
