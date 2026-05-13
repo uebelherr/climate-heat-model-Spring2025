@@ -396,7 +396,7 @@ React.createElement('div',{style:{fontFamily:"'Playfair Display',serif",fontSize
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:14}},
 React.createElement('div',{style:{padding:"12px 14px",background:"rgba(239,68,68,0.08)",borderLeft:"4px solid #ef4444",borderRadius:"0 8px 8px 0"}},
 React.createElement('div',{style:{fontFamily:"'Playfair Display',serif",fontSize:28,fontWeight:700,color:"#ef4444",lineHeight:1}},"645"),
-React.createElement('div',{style:{fontSize:13,color:"#5C1130",marginTop:4,lineHeight:1.4}},"confirmed heat deaths in Maricopa County (2023) \u2014 the highest on record",React.createElement(Ref,{n:7}))
+React.createElement('div',{style:{fontSize:13,color:"#5C1130",marginTop:4,lineHeight:1.4}},"confirmed heat deaths in Maricopa County (2023) \u2014 the highest on record",React.createElement(Ref,{n:6}))
 ),
 React.createElement('div',{style:{padding:"12px 14px",background:"rgba(220,38,38,0.08)",borderLeft:"4px solid #dc2626",borderRadius:"0 8px 8px 0"}},
 React.createElement('div',{style:{fontFamily:"'Playfair Display',serif",fontSize:28,fontWeight:700,color:"#dc2626",lineHeight:1}},"1,140+"),
@@ -443,8 +443,8 @@ React.createElement(FactBox,{icon:"🌡",stat:"107",unit:"days >100°F",note:"Av
 React.createElement(FactBox,{icon:"💧",stat:'8"',unit:"rain/yr",note:"Annual precipitation — drier than the Sahara",color:"#2E86C1",refs:[1]})
 ),
 React.createElement(SectionHead,null,"The Urban Heat Island"),
-React.createElement('p',{style:prose},"Maricopa County's asphalt, concrete, and sprawling development trap heat long after sunset. Nighttime temperatures rarely drop below 90°F in summer — a phenomenon called the urban heat island effect — which prevents the body's natural overnight recovery from heat stress.",React.createElement(Ref,{n:[1,13]})),
-React.createElement(KeyConcept,{term:"Urban Heat Island",color:"#8C1D40"},"When cities replace natural land cover with heat-absorbing surfaces, they create localized warming zones 2–8°F hotter than surrounding rural areas.",React.createElement(Ref,{n:13}))
+React.createElement('p',{style:prose},"Maricopa County's asphalt, concrete, and sprawling development trap heat long after sunset. Nighttime temperatures rarely drop below 90°F in summer — a phenomenon called the urban heat island effect — which prevents the body's natural overnight recovery from heat stress.",React.createElement(Ref,{n:[1,14]})),
+React.createElement(KeyConcept,{term:"Urban Heat Island",color:"#8C1D40"},"When cities replace natural land cover with heat-absorbing surfaces, they create localized warming zones 2–8°F hotter than surrounding rural areas.",React.createElement(Ref,{n:[13,14]}))
 ,
 React.createElement(TakeawayBox,null,"Maricopa County\u2019s combination of extreme heat, rapid population growth, and aging infrastructure makes it the most important U.S. test case for climate adaptation policy.")
 );
@@ -463,7 +463,7 @@ React.createElement('p',{style:prose},"Maricopa County's extreme heat results fr
 React.createElement('div',{style:{color:"#1A0A10",fontSize:17,fontWeight:600,marginBottom:6}},d.name),
 React.createElement('p',{style:{...prose,fontSize:16,margin:0,color:"#7A3045"}},...d.desc)
 )),
-React.createElement(KeyConcept,{term:"Feedback Loops",color:"#ef4444"},"As Maricopa County warms, more A/C is used → more electricity is burned → more heat & CO₂ is released → further warming. This is a positive feedback loop.",React.createElement(Ref,{n:[2,35]}))
+React.createElement(KeyConcept,{term:"Feedback Loops",color:"#ef4444"},"As Maricopa County warms, more A/C is used → more electricity is burned → more heat & CO₂ is released → further warming. This is a positive feedback loop.",React.createElement(Ref,{n:[2,33]}))
 ,
 React.createElement(TakeawayBox,null,"Every degree of warming produces a compounding\u2014not linear\u2014increase in dangerous heat days, because warming shifts the entire temperature distribution.")
 ,
@@ -541,7 +541,7 @@ const precipComparison=data.map((d,i)=>({month:d.month,projected:d.precip,baseli
 const days110=data.reduce((a,d)=>a+Math.round(d.heat*Math.max(0,Math.min(1,(d.high-104)/8))),0);
 return React.createElement('div',null,
 React.createElement(SectionHead,null,"IPCC Climate Pathways & Interactive Exploration"),
-React.createElement('p',{style:prose},React.createElement('strong',{style:{color:"#2D1520"}},"Global temperature crossed 1.5°C in 2024 — "),React.createElement('strong',{style:{color:"#ef4444"}},"Arizona warms ~1.4× faster.")," ",React.createElement('strong',{style:{color:"#B8860B"}},"Scenarios below show local Maricopa County warming above today's climate."),React.createElement(Ref,{n:[2,3,5,6,65]})),
+React.createElement('p',{style:prose},React.createElement('strong',{style:{color:"#2D1520"}},"Global temperature crossed 1.5°C in 2024 — "),React.createElement('strong',{style:{color:"#ef4444"}},"Arizona warms ~1.4× faster.")," ",React.createElement('strong',{style:{color:"#B8860B"}},"Scenarios below show local Maricopa County warming above today's climate."),React.createElement(Ref,{n:[2,3,4,5,62]})),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}},
 ...Object.entries(SCENARIOS).map(([key,val])=>
 React.createElement('button',{key,onClick:()=>setScenario(key),style:{background:scenario===key?`${val.color}22`:"rgba(140,29,64,0.04)",border:`2px solid ${scenario===key?val.color:val.color+"44"}`,borderRadius:10,padding:"14px 16px",cursor:"pointer",color:scenario===key?val.color:"#7A3045",textAlign:"left",fontFamily:"inherit",transition:"all 0.2s"}},
@@ -552,7 +552,7 @@ React.createElement('div',{style:{fontSize:15,lineHeight:1.5,color:scenario===ke
 ),
 React.createElement('div',{style:{display:"flex",alignItems:"flex-start",gap:8,padding:"10px 14px",marginBottom:16,background:"rgba(46,134,193,0.06)",border:"1px solid #2E86C133",borderRadius:8,fontSize:13,color:"#2D1520",lineHeight:1.55}},
 React.createElement('span',{style:{fontSize:15,lineHeight:1.2}},"📍"),
-React.createElement('span',null,React.createElement('strong',null,"These scenarios show local Maricopa County warming")," above today's climate (Sky Harbor International Airport NOAA 1991\u20132020 normals). Paris targets (1.5\u00b0C, 2\u00b0C) refer to ",React.createElement('em',null,"global mean")," warming vs. pre-industrial \u2014 Arizona warms roughly 1.4\u00d7 the global rate, so local temperature deltas here will exceed the corresponding Paris Accord milestones.",React.createElement(Ref,{n:65}))
+React.createElement('span',null,React.createElement('strong',null,"These scenarios show local Maricopa County warming")," above today's climate (Sky Harbor International Airport NOAA 1991\u20132020 normals). Paris targets (1.5\u00b0C, 2\u00b0C) refer to ",React.createElement('em',null,"global mean")," warming vs. pre-industrial \u2014 Arizona warms roughly 1.4\u00d7 the global rate, so local temperature deltas here will exceed the corresponding Paris Accord milestones.",React.createElement(Ref,{n:62}))
 ),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:20}},
 React.createElement('div',null,
@@ -636,9 +636,9 @@ const warming=(s.tempD*interpF(s.warmingCurve,year)).toFixed(1);
 const totalSun=data.reduce((a,d)=>a+d.sun,0);
 const summerHighAvg=(data[5].high+data[6].high+data[7].high+data[8].high)/4;
 const impacts=[
-{cat:"🏥 Public Health",color:"#ef4444",refs:[4,5,9],items:[`${totalHeat} days/year above 100°F`,"Heat deaths have increased more than fivefold in Maricopa County since 2010","Elderly, outdoor workers, and unhoused face greatest risk"]},
-{cat:"💧 Water Security",color:"#8C1D40",refs:[34,35],items:[`Annual rainfall projects to ${annualPrecip}"`,"Colorado River = 36% of water — Lake Mead at historic lows","70% of water use is agricultural irrigation"]},
-{cat:"⚡ Energy Demand",color:"#8C1D40",refs:[36,37],items:["A/C drives 70% of summer electricity use in homes","Each +1°F raises peak grid demand ~2%","Power outages during heat waves become life-threatening"]},
+{cat:"🏥 Public Health",color:"#ef4444",refs:[1,6,10,35],items:[`${totalHeat} days/year above 100°F`,"Heat deaths have increased more than fivefold in Maricopa County since 2010","Elderly, outdoor workers, and unhoused face greatest risk"]},
+{cat:"💧 Water Security",color:"#8C1D40",refs:[31,32,34],items:[`Annual rainfall projects to ${annualPrecip}"`,"Colorado River = 36% of Maricopa County water supply — Lake Mead at historic lows","~62% of Maricopa County water use is agricultural irrigation"]},
+{cat:"⚡ Energy Demand",color:"#8C1D40",refs:[33,60],items:["A/C drives 70% of summer electricity use in homes","Each +1°F raises peak grid demand ~2%","Power outages during heat waves become life-threatening"]},
 ];
 return React.createElement('div',null,
 React.createElement('div',{style:{marginBottom:22,padding:"16px 18px",background:"rgba(140,29,64,0.06)",border:"1px solid #8C1D4033",borderRadius:12}},
@@ -740,9 +740,9 @@ React.createElement('span',{style:{fontSize:20}},"🏛"),
 React.createElement('span',{style:{color:"#8C1D40",fontSize:16,letterSpacing:"2px",textTransform:"uppercase",fontWeight:600}},"Policy Summary · Temperature × Mortality × Intervention")
 ),
 React.createElement(SectionHead,null,"CLIMATE CHANGE POLICY IMPACTS ON HEAT MORTALITY"),
-React.createElement('p',{style:prose},"Heat-related mortality follows a non-linear dose-response curve",React.createElement(Ref,{n:[6,7]}),": each degree of warming adds progressively more deaths, compounding with urban heat island effects. Policy interventions don't eliminate risk — they bend the curve. Under the ",React.createElement('strong',{style:{color:s.color}},s.label)," scenario at ",year,", Maricopa County faces +",warming,"°F and ~",totalHeat," extreme heat days per year."),
+React.createElement('p',{style:prose},"Heat-related mortality follows a non-linear dose-response curve",React.createElement(Ref,{n:[7,8]}),": each degree of warming adds progressively more deaths, compounding with urban heat island effects. Policy interventions don't eliminate risk — they bend the curve. Under the ",React.createElement('strong',{style:{color:s.color}},s.label)," scenario at ",year,", Maricopa County faces +",warming,"°F and ~",totalHeat," extreme heat days per year."),
 React.createElement('div',{style:{marginBottom:20,padding:"16px 20px",background:"rgba(239,68,68,0.05)",border:"1px solid #ef444422",borderRadius:12}},
-React.createElement('div',{style:{color:"#ef4444",fontWeight:700,fontSize:16,marginBottom:14}},"📈 Dose-Response: Warming → Heat Deaths (Maricopa County model)",React.createElement(Ref,{n:[5,6]})),
+React.createElement('div',{style:{color:"#ef4444",fontWeight:700,fontSize:16,marginBottom:14}},"📈 Dose-Response: Warming → Heat Deaths (Maricopa County model)",React.createElement(Ref,{n:[7,8,9]})),
 React.createElement('div',{style:{display:"flex",gap:6,marginBottom:8,position:"relative"}},
 ...curvePoints.map((p,i)=>{
 const maxD=1140;
@@ -778,7 +778,7 @@ React.createElement('span',null,"← Cooler / Lower emissions"),
 React.createElement('span',{style:{color:"#ef4444"}},"Hotter / Higher emissions →")
 ),
 React.createElement('div',{style:{marginTop:10,fontSize:15,color:"#5C1130",lineHeight:1.6}},
-"Key insight: The relationship is ",React.createElement('strong',{style:{color:"#8C1D40"}},"superlinear")," — at the high end, each additional degree of warming causes more deaths than the last. The curve bends upward, not flat.",React.createElement(Ref,{n:[4,6,7]})
+"Key insight: The relationship is ",React.createElement('strong',{style:{color:"#8C1D40"}},"superlinear")," — at the high end, each additional degree of warming causes more deaths than the last. The curve bends upward, not flat.",React.createElement(Ref,{n:[7,8,9]})
 )
 ),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"0 14px",marginBottom:20}},
@@ -808,7 +808,7 @@ React.createElement('div',{style:{fontSize:13,color:i===1?"#10b981":iv.color,fon
 ))
 ),
 React.createElement('div',{style:{padding:"14px 18px",background:"rgba(239,68,68,0.05)",border:"1px solid #ef444433",borderRadius:10,marginBottom:16}},
-React.createElement('div',{style:{color:"#ef4444",fontWeight:700,fontSize:16,marginBottom:12}},"⚡ Electric Grid Failure — ABM Findings",React.createElement(Ref,{n:[16,17,46,47,48,63,64]})),
+React.createElement('div',{style:{color:"#ef4444",fontWeight:700,fontSize:16,marginBottom:12}},"⚡ Electric Grid Failure — ABM Findings",React.createElement(Ref,{n:[15,16,43,44,45,60,61]})),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:12}},
 React.createElement('div',{style:{background:"rgba(239,68,68,0.07)",border:"1px solid #ef444433",borderRadius:8,padding:"10px 14px"}},
 React.createElement('div',{style:{color:"#ef4444",fontWeight:700,fontSize:13,letterSpacing:"1px",textTransform:"uppercase",marginBottom:8}},"⚡ During a Blackout"),
@@ -834,7 +834,7 @@ React.createElement('div',{style:{color:"#5C1130",fontSize:14,lineHeight:1.5}},i
 )
 ),
 React.createElement('div',{style:{paddingTop:10,borderTop:"1px solid #ef444422",fontSize:14,color:"#5C1130",lineHeight:1.6}},
-"\u26a0 ",React.createElement('strong',{style:{color:"#ef4444"}},"Critical finding: "),"Grid resilience is a public health imperative. As data center demand strains the Maricopa County grid (19 GW of pending interconnection requests to APS), the risk of summer blackouts during heat waves is rising.",React.createElement(Ref,{n:[46,47,48]})
+"\u26a0 ",React.createElement('strong',{style:{color:"#ef4444"}},"Critical finding: "),"Grid resilience is a public health imperative. As data center demand strains the Maricopa County grid (19 GW of pending interconnection requests to APS), the risk of summer blackouts during heat waves is rising.",React.createElement(Ref,{n:[43,44,45]})
 )
 ),
 React.createElement('div',{style:{padding:"14px 18px",background:"rgba(255,217,102,0.05)",border:"1px solid #FFD96633",borderRadius:10}},
@@ -924,7 +924,7 @@ React.createElement('div',{style:{padding:"16px 20px",background:"rgba(239,68,68
 React.createElement('div',{style:{fontSize:56,fontWeight:700,color:"#ef4444",fontFamily:"'Playfair Display',serif",lineHeight:1,letterSpacing:"-1px"}},"559"),
 React.createElement('div',{style:{flex:1,minWidth:220}},
 React.createElement('div',{style:{fontSize:17,color:"#2D1520",fontWeight:600,lineHeight:1.3,marginBottom:4}},"heat deaths/year in Maricopa County (2022\u201324 avg)"),
-React.createElement('div',{style:{fontSize:14,color:"#ef4444",fontWeight:700,letterSpacing:"1px",textTransform:"uppercase"}},"Highest of any U.S. county",React.createElement(Ref,{n:7}))
+React.createElement('div',{style:{fontSize:14,color:"#ef4444",fontWeight:700,letterSpacing:"1px",textTransform:"uppercase"}},"Highest of any U.S. county",React.createElement(Ref,{n:6}))
 )
 ),
 React.createElement('div',{style:{marginBottom:22,padding:"16px 18px",background:"rgba(140,29,64,0.06)",border:"1px solid #8C1D4033",borderRadius:12}},
@@ -957,7 +957,7 @@ s.emoji," ",React.createElement('strong',null,s.label),": ",s.desc
 )
 ),
 React.createElement(SectionHead,null,"Projected Annual Heat-Related Deaths"),
-React.createElement('p',{style:prose},"Based on Maricopa County mortality data",React.createElement(Ref,{n:7})," and peer-reviewed heat-health models",React.createElement(Ref,{n:[6,7,8]}),", this estimator projects annual heat deaths under the ",React.createElement('strong',{style:{color:s.color}},s.label)," scenario in ",year,". The climate model projects a mean summer high of ",React.createElement('strong',null,summerHighAvg.toFixed(1),"°F")," with ",React.createElement('strong',null,totalHeatDays)," days above 100°F. Adjust policy interventions below to model lives saved."),
+React.createElement('p',{style:prose},"Based on Maricopa County mortality data",React.createElement(Ref,{n:6})," and peer-reviewed heat-health models",React.createElement(Ref,{n:[5,6,7]}),", this estimator projects annual heat deaths under the ",React.createElement('strong',{style:{color:s.color}},s.label)," scenario in ",year,". The climate model projects a mean summer high of ",React.createElement('strong',null,summerHighAvg.toFixed(1),"°F")," with ",React.createElement('strong',null,totalHeatDays)," days above 100°F. Adjust policy interventions below to model lives saved."),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:12,marginBottom:24}},
 React.createElement('div',{style:{background:`linear-gradient(135deg,${riskColor}18,${riskColor}06)`,border:`1px solid ${riskColor}44`,borderRadius:12,padding:"16px",textAlign:"center"}},
 React.createElement('div',{style:{fontSize:14,color:"#7A3045",letterSpacing:"2px",textTransform:"uppercase",marginBottom:6}},"Projected Deaths"),
@@ -998,7 +998,7 @@ React.createElement('div',{style:{padding:"16px 18px",background:"rgba(239,68,68
 React.createElement('div',{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}},
 React.createElement('div',null,
 React.createElement('span',{style:{fontSize:16,marginRight:8}},"🏢"),
-React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Cooling Centers"),React.createElement(Ref,{n:[26,29,31]}),
+React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Cooling Centers"),React.createElement(Ref,{n:[25,28,29]}),
 React.createElement('div',{style:{fontSize:15,color:"#7A3045",marginTop:2}},"24-hr air-conditioned public facilities for vulnerable residents")
 ),
 React.createElement('span',{style:{color:"#ef4444",fontSize:16,fontWeight:700}},POLICY_LABELS.coolingCenters[coolingCenters])
@@ -1014,7 +1014,7 @@ React.createElement('div',{style:{padding:"16px 18px",background:"rgba(255,198,3
 React.createElement('div',{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}},
 React.createElement('div',null,
 React.createElement('span',{style:{fontSize:16,marginRight:8}},"💧"),
-React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Hydration Stations"),React.createElement(Ref,{n:[27,29,32]}),
+React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Hydration Stations"),React.createElement(Ref,{n:[26,28,30]}),
 React.createElement('div',{style:{fontSize:15,color:"#7A3045",marginTop:2}},"Free water & electrolyte access at bus stops, parks, and public spaces")
 ),
 React.createElement('span',{style:{color:"#8C1D40",fontSize:16,fontWeight:700}},POLICY_LABELS.hydrationStations[hydrationStations])
@@ -1030,7 +1030,7 @@ React.createElement('div',{style:{padding:"16px 18px",background:"rgba(140,29,64
 React.createElement('div',{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}},
 React.createElement('div',null,
 React.createElement('span',{style:{fontSize:16,marginRight:8}},"🤝"),
-React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Community Outreach Programs"),React.createElement(Ref,{n:[20,22]}),
+React.createElement('span',{style:{color:"#1A0A10",fontSize:16,fontWeight:600}},"Community Outreach Programs"),React.createElement(Ref,{n:[19,21]}),
 React.createElement('div',{style:{fontSize:15,color:"#7A3045",marginTop:2}},"Targeted wellness checks, early warnings, and support for elderly & unhoused residents")
 ),
 React.createElement('span',{style:{color:"#8C1D40",fontSize:16,fontWeight:700}},POLICY_LABELS.outreach[outreach])
@@ -1242,10 +1242,10 @@ React.createElement('summary',{style:{cursor:"pointer",color:"#7A3045",fontWeigh
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"Purpose"),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"Two-pathway analytical heat mortality estimator with multiplicative Hill dose-response policy interventions. Computes annual heat deaths under different climate scenarios and policy configurations."),
 
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"Calibration ",React.createElement(Ref,{n:7})),
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"Calibration ",React.createElement(Ref,{n:6})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 \u2248559 deaths/year target \u2014 Maricopa County 2022\u20132024 three-year average (425 in 2022, 645 in 2023, 608 in 2024) at moderate scenario, Year 2020, current policy levels."),
 
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"Mortality Equations ",React.createElement(Ref,{n:[8,9]})),
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"Mortality Equations ",React.createElement(Ref,{n:[7,8]})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Counterfactual baseline: 690 deaths/year (BASE_DEATHS_2020) \u2014 pre-policy estimate."),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Heat-day dose-response: 3.2 additional deaths per extreme heat day beyond the 107-day baseline."),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Warming multiplier: 4% compounding mortality per \u00b0F of mean warming."),
@@ -1257,14 +1257,14 @@ React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}}
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Humidity: this analytical model uses dry-bulb temperature only (the ABM approximates humidity via a +3\u20135\u00b0F monsoon bump Jul\u2013Sep)."),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Population growth: linear interpolation 4.42M (2020) \u2192 8.3M (2100) via Census / AZ OEO waypoints."),
 
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"Cost Estimates ",React.createElement(Ref,{n:26})),
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"Cost Estimates ",React.createElement(Ref,{n:25})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Cost ranges ($2.1\u20139.2M cooling, $0.4\u20131.8M hydration, $1.2\u20134.5M outreach) are illustrative order-of-magnitude figures for classroom discussion."),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Real-world reference: City of Phoenix spent $3M on heat relief in 2024; Maricopa County budgeted $11M for FY2025 (primarily ARPA funds)."),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 VSL comparison uses current US DOT guidance ($12.5M, 2022 dollars).")
 )
 )
 ),
-React.createElement(ModelDisclaimer,{suffix:"See Appendix B for heat mortality model methods.",refs:[6,7,27,28,29]})
+React.createElement(ModelDisclaimer,{suffix:"See Appendix B for heat mortality model methods.",refs:[6,7,8,9,10]})
 
 );
 }
@@ -3441,10 +3441,10 @@ React.createElement('summary',{style:{cursor:"pointer",color:"#7A3045",fontWeigh
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"Purpose"),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"Spatial policy-intervention ABM with behavioral heterogeneity, physiological susceptibility, schedule archetypes, indoor temperature dynamics, logistic grid strain, tiered outreach, and day/night cycling. Shows how infrastructure choices, housing vulnerability, and grid failure affect heat mortality under different climate scenarios."),
 
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"Calibration ",React.createElement(Ref,{n:7})),
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"Calibration ",React.createElement(Ref,{n:6})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Calibrated to ~559 population-scaled deaths/yr at moderate scenario / Year 2020 / Current policies (Maricopa County 2022\u20132024 observed average). The analytical model produces ~559 exactly via dose-response; the ABM produces a stochastic mean of \u2248559 (\u00B1~10%)."),
 
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"Population Scaling ",React.createElement(Ref,{n:[10,11,12,13]})),
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"Population Scaling ",React.createElement(Ref,{n:[9,10,11,12]})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Each agent represents a variable share of county population via a district-weighted popWeight. Annual deaths are computed by accumulating fractional probabilities per agent-tick in the death zone and summing popWeight-weighted across the simulation."),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"District Simplifications"),
@@ -3465,49 +3465,49 @@ React.createElement('summary',{style:{cursor:"pointer",color:"#7A3045",fontWeigh
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"1. Agents & Street Network"),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Each dot = 1 agent on a street network (~190 intersections, ~169 road segments) mapped to Maricopa County\u2019s major arterial grid."),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Agents spawn at density-weighted locations (Downtown 3.0\u00D7, Tempe 2.5\u00D7, Mesa 2.0\u00D7). Each is assigned a home node, work node, district, and neighborhood micro-grid cell.",React.createElement(Ref,{n:[18,25]})),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Housing assigned per grid cell: sheltered (AC), precarious (no/broken AC), or unsheltered. Vulnerability is housing-dependent: unsheltered=100%, precarious=60%, sheltered=12%.",React.createElement(Ref,{n:[37,39]})),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 ~35% of vulnerable agents are socially isolated \u2014 halving help-seeking, outreach contact, and rescue probabilities.",React.createElement(Ref,{n:43})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Agents spawn at density-weighted locations (Downtown 3.0\u00D7, Tempe 2.5\u00D7, Mesa 2.0\u00D7). Each is assigned a home node, work node, district, and neighborhood micro-grid cell.",React.createElement(Ref,{n:[17,24]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Housing assigned per grid cell: sheltered (AC), precarious (no/broken AC), or unsheltered. Vulnerability is housing-dependent: unsheltered=100%, precarious=60%, sheltered=12%.",React.createElement(Ref,{n:[35,36]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 ~35% of vulnerable agents are socially isolated \u2014 halving help-seeking, outreach contact, and rescue probabilities.",React.createElement(Ref,{n:40})),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"2. Behavioral Heterogeneity & Susceptibility"),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Five behavioral traits create intersectional risk profiles: (1) Vehicle access (walk-only agents limited to 60px range), (2) Utility stress (persistent Markov AC disconnection, May\u2013Sep: onset rate = utilityStress\u00d70.33/day, reconnection housing-dependent), (3) Risk awareness (0\u20131; high>0.7 seeks at Q\u22650.65, low<0.4 delays to Q\u22650.95), (4) Mobility limitations (reduced speed + 40% reduced rescue), (5) Outdoor worker (full outdoor exposure).",React.createElement(Ref,{n:[13,9,57,43]})),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Physiological susceptibility (0\u20131): composite of three additive components: (1) static base = age band (0/0.15/0.40) + CVD (+0.25) + medications (+0.15) + substance use (+0.20); (2) prior-day heat load (Q\u00D70.3, dynamic each tick); (3) rescueSuscBonus (post-rescue thermoregulatory impairment, +0.15 to +0.20, exponential decay over ~60 days; see Rescue Recovery formula). Formula: susceptibility = min(1.0, staticSusc + priorHeatLoad + rescueSuscBonus). Modifies: heat accumulation \u00D7(1+susc\u00D70.6), recovery \u00D7(1/(1+susc\u00D70.8)), mortality \u00D7(1+susc\u00D71.5).",React.createElement(Ref,{n:[7,9,49,51]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Five behavioral traits create intersectional risk profiles: (1) Vehicle access (walk-only agents limited to 60px range), (2) Utility stress (persistent Markov AC disconnection, May\u2013Sep: onset rate = utilityStress\u00d70.33/day, reconnection housing-dependent), (3) Risk awareness (0\u20131; high>0.7 seeks at Q\u22650.65, low<0.4 delays to Q\u22650.95), (4) Mobility limitations (reduced speed + 40% reduced rescue), (5) Outdoor worker (full outdoor exposure).",React.createElement(Ref,{n:[12,8,54,40]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Physiological susceptibility (0\u20131): composite of three additive components: (1) static base = age band (0/0.15/0.40) + CVD (+0.25) + medications (+0.15) + substance use (+0.20); (2) prior-day heat load (Q\u00D70.3, dynamic each tick); (3) rescueSuscBonus (post-rescue thermoregulatory impairment, +0.15 to +0.20, exponential decay over ~60 days; see Rescue Recovery formula). Formula: susceptibility = min(1.0, staticSusc + priorHeatLoad + rescueSuscBonus). Modifies: heat accumulation \u00D7(1+susc\u00D70.6), recovery \u00D7(1/(1+susc\u00D70.8)), mortality \u00D7(1+susc\u00D71.5).",React.createElement(Ref,{n:[6,8,46,48]})),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"3. Daily Schedule Archetypes"),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Five types: indoor_worker (standard commute, 5% workplace reduction), outdoor_worker (full outdoor exposure), retiree (home 70%, errands 30%), unsheltered_mobile (random wandering), night_shift (home by day, outdoor work at night with 4% building reduction and coworker rescue=0.25). Weekend variation: workers assigned weekendWorker flag at creation (indoor 20%, outdoor 50%, night-shift 60%); off-duty workers stay home or take recreational outings (40\u201360% probability \u2014 a documented weekend heat mortality pathway). Cooling center weekend access is policy-tier dependent: none at tier 0, 25% of sites at tier 1, 50% at tier 2, full at tier 3.",React.createElement(Ref,{n:[23,62]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Five types: indoor_worker (standard commute, 5% workplace reduction), outdoor_worker (full outdoor exposure), retiree (home 70%, errands 30%), unsheltered_mobile (random wandering), night_shift (home by day, outdoor work at night with 4% building reduction and coworker rescue=0.25). Weekend variation: workers assigned weekendWorker flag at creation (indoor 20%, outdoor 50%, night-shift 60%); off-duty workers stay home or take recreational outings (40\u201360% probability \u2014 a documented weekend heat mortality pathway). Cooling center weekend access is policy-tier dependent: none at tier 0, 25% of sites at tier 1, 50% at tier 2, full at tier 3.",React.createElement(Ref,{n:[22,59]})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Assignment correlated with housing, age, and occupation. ~80% of elders are retirees; all unsheltered are mobile; ~8\u201312% of housed workers do night shift."),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"4. Temperature & Heat Dynamics"),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 DAYTIME: climate model monthly highs \u00D7 micro-grid heatBias (96 cells, IDW-interpolated \u00B18% noise) + monsoon bump. \u0394Q = ((localHeat\u221285)/50) \u00D7 0.008 \u00D7 protection \u00D7 vulnerability \u00D7 blackoutMult \u00D7 housingHeatMult \u00D7 buildingQualityMult \u00D7 heatWaveMult \u00D7 acclimMult \u00D7 suscHeatMult."),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 NIGHTTIME: monthly lows + monsoon bump. Indoor temperature via first-order thermal model: T_in += coupling\u00D7(T_out\u2212T_in) \u2212 AC_cool. Sheltered coupling=0.08, precarious=0.18\u00D7qualityMod, unsheltered=1.0. AC cools toward 72\u00B0F; degrades above 115\u00B0F. Night-shift workers at workplace use precarious-equivalent dynamics.",React.createElement(Ref,{n:[39,40,41]})),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 State thresholds: Q<0.30=Healthy, 0.30\u20130.65=Stressed, 0.65\u20130.90=Critical, Q\u22650.90=Death/Rescue zone. Rescued agents enter Recovering state (2\u20137 days) before re-entering as Healthy with elevated susceptibility.",React.createElement(Ref,{n:[49,50,51]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 NIGHTTIME: monthly lows + monsoon bump. Indoor temperature via first-order thermal model: T_in += coupling\u00D7(T_out\u2212T_in) \u2212 AC_cool. Sheltered coupling=0.08, precarious=0.18\u00D7qualityMod, unsheltered=1.0. AC cools toward 72\u00B0F; degrades above 115\u00B0F. Night-shift workers at workplace use precarious-equivalent dynamics.",React.createElement(Ref,{n:[36,37,38]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 State thresholds: Q<0.30=Healthy, 0.30\u20130.65=Stressed, 0.65\u20130.90=Critical, Q\u22650.90=Death/Rescue zone. Rescued agents enter Recovering state (2\u20137 days) before re-entering as Healthy with elevated susceptibility.",React.createElement(Ref,{n:[46,47,48]})),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"5. Environmental Modifiers"),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Multi-day cumulative stress: heatStreak tracks consecutive days at Q\u22650.65. After 4 days: +5%/day, capped +30%.",React.createElement(Ref,{n:42})),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Early-season acclimatization: acclimMult 1.4\u00D7\u21921.0\u00D7 over 21 cumulative days \u2265100\u00B0F.",React.createElement(Ref,{n:44})),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Monsoon humidity (Jul\u2013Sep): +3/+5/+4\u00B0F effective temp. Daytime: all agents. Nighttime: precarious/unsheltered only (AC dehumidifies).",React.createElement(Ref,{n:45})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Multi-day cumulative stress: heatStreak tracks consecutive days at Q\u22650.65. After 4 days: +5%/day, capped +30%.",React.createElement(Ref,{n:39})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Early-season acclimatization: acclimMult 1.4\u00D7\u21921.0\u00D7 over 21 cumulative days \u2265100\u00B0F.",React.createElement(Ref,{n:41})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Monsoon humidity (Jul\u2013Sep): +3/+5/+4\u00B0F effective temp. Daytime: all agents. Nighttime: precarious/unsheltered only (AC dehumidifies).",React.createElement(Ref,{n:42})),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"6. Policy Infrastructure"),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Protection (strongest wins, no stacking): cooling=0.05 (r=35px), hydration=0.40 (r=25px), outreach enrolled=0.30\u20130.35, outreach one-time=0.40\u20130.50, none=1.0. Cooling disabled during blackout."),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Tiered outreach: Tier 1 (one-time) = 3-day decay window, reduced protection/rescue. Tier 2 (enrolled, 3+ contacts) = persistent daily monitoring, full protection/rescue. Contacts vulnerable agents only; probability = 0.003 \u00D7 tier \u00D7 awareness modifier.",React.createElement(Ref,{n:[20,22]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Tiered outreach: Tier 1 (one-time) = 3-day decay window, reduced protection/rescue. Tier 2 (enrolled, 3+ contacts) = persistent daily monitoring, full protection/rescue. Contacts vulnerable agents only; probability = 0.003 \u00D7 tier \u00D7 awareness modifier.",React.createElement(Ref,{n:[19,21]})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Infrastructure seeking: risk-aware threshold (high awareness Q\u22650.65, default Q\u22650.9, low Q\u22650.95). Vehicle access determines full-map vs walk-only (60px) via O(1) NODE_NEAREST_INFRA lookup."),
 
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"7. Death Zone & Mortality ",React.createElement(Ref,{n:[7,49,60]})),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 baseFracDeathRate: daytime 0.00000106 (blackout: 0.00000266); nighttime 0.00000076 (blackout: 0.00000190); night-shift 0.00000066 (blackout: 0.00000165). All \u00D7pmaxMult(4.28) \u00D7\u03C3(thermalDose) \u00D7housingDeathMult \u00D7suscDeathMult.",React.createElement(Ref,{n:[49,60,61]})),
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"7. Death Zone & Mortality ",React.createElement(Ref,{n:[6,46,57]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 baseFracDeathRate: daytime 0.00000106 (blackout: 0.00000266); nighttime 0.00000076 (blackout: 0.00000190); night-shift 0.00000066 (blackout: 0.00000165). All \u00D7pmaxMult(4.28) \u00D7\u03C3(thermalDose) \u00D7housingDeathMult \u00D7suscDeathMult.",React.createElement(Ref,{n:[46,57,58]})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Anti-double-counting: policyMortMult (Hill dose-response, multiplicative combination) applied ONLY when protection=1.0. Spatially protected agents get raw baseFracDeathRate."),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Rescue: tiered by outreach \u2014 enrolled (day 0.30/night 0.15, isolated halved), one-time (0.20/0.10), none (0). Mobility limits reduce by 40%. Night-shift coworker rescue = 0.25. Rescued agents enter a recovering state (not permanently removed): recovery duration = min(7, baseDays + severityBonus + Geometric(p=0.6)). After recovery, agents re-enter with elevated susceptibility (+0.15 to +0.20, exponential decay over ~60 days).",React.createElement(Ref,{n:[24,43,49,50,51,52,53]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Rescue: tiered by outreach \u2014 enrolled (day 0.30/night 0.15, isolated halved), one-time (0.20/0.10), none (0). Mobility limits reduce by 40%. Night-shift coworker rescue = 0.25. Rescued agents enter a recovering state (not permanently removed): recovery duration = min(7, baseDays + severityBonus + Geometric(p=0.6)). After recovery, agents re-enter with elevated susceptibility (+0.15 to +0.20, exponential decay over ~60 days).",React.createElement(Ref,{n:[23,40,46,47,48,49,50]})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Unified visual mortality: visualDeathProb = fracDeathRate \u00D7 VISUAL_DEATH_SCALE (20\u00D7). Every modifier reflected in which dots die."),
 
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"8. Grid Failure Model ",React.createElement(Ref,{n:[16,17,46,47,48,63,64]})),
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"8. Grid Failure Model ",React.createElement(Ref,{n:[15,16,43,44,45,60,61]})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Logistic blackout onset: P = base \u00D7 (1+9/(1+exp(\u22128\u00B7(S\u22120.45)))). S = 0.35\u00D7tempExcess + 0.20\u00D7nightExcess + 0.25\u00D7duration + 0.20\u00D7strain. Multiplier ranges ~1\u00D7 to ~10\u00D7."),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Multi-day persistence (hybrid model): Once triggered, duration = max(1, \u2308gridStrain/4\u2309) + Geometric(p=0.5), capped at 7 days. The strain-dependent floor ensures severe heat domes produce longer outages (Panteli & Mancarella, 2015); the geometric tail adds stochastic restoration variation (Mukherjee et al., 2018). On ongoing blackout days, no new onset roll occurs.",React.createElement(Ref,{n:[47,48]})),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Default 0.001% base (1\u00D7, calibrated so logistic amplification yields ~0.1 blackout days/year, matching NERC LOLE 1 day/10yr standard). Grid failure slider spans five labeled levels on a logarithmic scale: 1\u00D7 (0.001%, NERC baseline), 10\u00D7 (0.01%, current degraded infrastructure), 100\u00D7 (0.1%, mid-century climate stress), 500\u00D7 (0.5%, severe compound event), and 1000\u00D7 (1.0%, cascading infrastructure failure). Intermediate 0.25% increments are available. Major blackout events in the U.S. increased 60\u2013151% between 2015 and 2021; under RCP8.5, outage frequency could increase up to 41% by 2090. Grid strain accumulates during hot days, recovers 30%/cool day. Blackout persists across day+night of each affected day.",React.createElement(Ref,{n:[16,17,35,46,63,64]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Multi-day persistence (hybrid model): Once triggered, duration = max(1, \u2308gridStrain/4\u2309) + Geometric(p=0.5), capped at 7 days. The strain-dependent floor ensures severe heat domes produce longer outages (Panteli & Mancarella, 2015); the geometric tail adds stochastic restoration variation (Mukherjee et al., 2018). On ongoing blackout days, no new onset roll occurs.",React.createElement(Ref,{n:[44,45]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Default 0.001% base (1\u00D7, calibrated so logistic amplification yields ~0.1 blackout days/year, matching NERC LOLE 1 day/10yr standard). Grid failure slider spans five labeled levels on a logarithmic scale: 1\u00D7 (0.001%, NERC baseline), 10\u00D7 (0.01%, current degraded infrastructure), 100\u00D7 (0.1%, mid-century climate stress), 500\u00D7 (0.5%, severe compound event), and 1000\u00D7 (1.0%, cascading infrastructure failure). Intermediate 0.25% increments are available. Major blackout events in the U.S. increased 60\u2013151% between 2015 and 2021; under RCP8.5, outage frequency could increase up to 41% by 2090. Grid strain accumulates during hot days, recovers 30%/cool day. Blackout persists across day+night of each affected day.",React.createElement(Ref,{n:[15,16,33,43,60,61]})),
 
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"9. Utility Disconnection Model ",React.createElement(Ref,{n:[57,58,59]})),
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"9. Utility Disconnection Model ",React.createElement(Ref,{n:[54,55,56]})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 AC loss due to inability to pay utility bills is modeled as a two-state Markov chain (connected \u2194 disconnected). The Markov formulation captures the structural dynamics of energy insecurity: disconnection results from cumulative arrears, not a single missed payment, and reconnection requires navigating payment plans or energy assistance programs \u2014 a process that takes days to weeks, not hours (Hern\u00e1ndez, 2016)."),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Connected \u2192 Disconnected: onset probability = utilityStress \u00d7 0.33 per tick during May\u2013Sep only (hot season). utilityStress is housing-dependent: precarious 1.5\u20134.5% (district-dependent, reflecting spatial variation in energy burden); sheltered-vulnerable 0.5%; sheltered non-vulnerable 0.1%; unsheltered 0% (no AC to lose). The May\u2013Sep window corresponds to the Arizona Corporation Commission\u2019s regulated period when disconnection protections are active but arrears still accumulate (ACC R14-2-211)."),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Disconnected \u2192 Connected: housing-dependent geometric reconnection. Precarious: p=0.07/tick (mean ~14 days) \u2014 low-income households face longer reconnection due to difficulty arranging payment plans or securing LIHEAP assistance. Sheltered-vulnerable: p=0.14 (mean ~7 days). Sheltered non-vulnerable: p=0.20 (mean ~5 days). These durations align with the NEADA (2023) finding that median disconnection duration for low-income households is 2\u20133 weeks.",React.createElement(Ref,{n:[57,59]})),
-React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Off-season auto-reconnect: outside May\u2013Sep, all agents are set to connected (acDisconnected=false). This approximates the real-world pattern where utility arrears are resolved during the billing off-season, payment plans complete, and LIHEAP winter assistance covers outstanding balances. The ACC summer moratorium (June 1\u2013Oct 15) prohibits involuntary disconnection during declared heat emergencies, but arrears accumulated during the prior season can trigger disconnection in early May before the moratorium takes effect.",React.createElement(Ref,{n:58})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Disconnected \u2192 Connected: housing-dependent geometric reconnection. Precarious: p=0.07/tick (mean ~14 days) \u2014 low-income households face longer reconnection due to difficulty arranging payment plans or securing LIHEAP assistance. Sheltered-vulnerable: p=0.14 (mean ~7 days). Sheltered non-vulnerable: p=0.20 (mean ~5 days). These durations align with the NEADA (2023) finding that median disconnection duration for low-income households is 2\u20133 weeks.",React.createElement(Ref,{n:[54,56]})),
+React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Off-season auto-reconnect: outside May\u2013Sep, all agents are set to connected (acDisconnected=false). This approximates the real-world pattern where utility arrears are resolved during the billing off-season, payment plans complete, and LIHEAP winter assistance covers outstanding balances. The ACC summer moratorium (June 1\u2013Oct 15) prohibits involuntary disconnection during declared heat emergencies, but arrears accumulated during the prior season can trigger disconnection in early May before the moratorium takes effect.",React.createElement(Ref,{n:55})),
 React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}},"\u2022 Effect: when acDisconnected=true, the agent loses AC cooling (acLost = isBlackout || acDisconnected) and their effective housing downgrades to precarious for thermal dynamics. Indoor temperature rises toward outdoor temperature via increased thermal coupling, producing the same heat accumulation and mortality amplification as a grid blackout but affecting individual households rather than the entire county simultaneously. At N=2500, the Markov model typically produces 1\u20132 concentrated multi-week disconnection episodes per summer for precarious agents, consistent with empirical patterns."),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:14,letterSpacing:"1px",textTransform:"uppercase",marginTop:12,marginBottom:6}},"10. Computational Architecture"),
@@ -3517,7 +3517,7 @@ React.createElement('div',{style:{paddingLeft:16,marginBottom:4,lineHeight:1.6}}
 )
 )
 ),
-React.createElement(ModelDisclaimer,{suffix:"See Appendix C for ABM rules and methods.",refs:[10,11,12,13,14]})
+React.createElement(ModelDisclaimer,{suffix:"See Appendix C for ABM rules and methods.",refs:[9,10,11,12,13]})
 
 );
 }
@@ -3598,7 +3598,7 @@ year:"2020",
 title:"U.S. Climate Normals 1991–2020: Phoenix Sky Harbor International Airport (KPHX)",
 source:"NOAA Climate Normals",
 url:"https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals",
-note:"Primary source for baseline monthly temperature, precipitation, and sunshine hour data. Monthly high temperatures updated to match NOAA 199120132020 Climate Normals for Phoenix Sky Harbor (KPHX)."
+note:"Primary source for baseline monthly temperature, precipitation, and sunshine hour data. Monthly high temperatures updated to match NOAA 1991–2020 Climate Normals for Phoenix Sky Harbor (KPHX)."
 },
 {
 authors:"IPCC",
@@ -3615,14 +3615,6 @@ title:"Summary for Policymakers. In: Climate Change 2021: The Physical Science B
 source:"IPCC",
 url:"https://www.ipcc.ch/report/ar6/wg1/chapter/summary-for-policymakers/",
 note:"Temperature delta values (+1.8°F, +3.6°F, +7.2°F) for optimistic, moderate, and severe scenarios derived from SPM figures."
-},
-{
-authors:"Meehl, G.A., et al.",
-year:"2009",
-title:"Relative increase of record high maximum temperatures compared to record low minimum temperatures in the US",
-source:"Geophysical Research Letters, 36(23)",
-url:"https://doi.org/10.1029/2009GL040736",
-note:"Supports the dose-response framing for extreme heat day projections."
 },
 {
 authors:"Copernicus Climate Change Service (C3S)",
@@ -3649,7 +3641,7 @@ refs:[
 authors:"Maricopa County Department of Public Health",
 year:"2023",
 title:"Heat-Associated Deaths in Maricopa County — 2023 Final Report",
-source:"",
+source:"MCDPH Heat Surveillance Program",
 url:"https://www.maricopa.gov/ArchiveCenter/ViewFile/Item/5820",
 note:"Calibration target: ~559 deaths/yr (2022–2024 observed three-year average: 425 in 2022, 645 in 2023, 608 in 2024). Analytical model at moderate/Year 2020/Current produces ~559 deaths/yr. Raw counterfactual baseline (BASE_DEATHS_2020) = 690 deaths/yr."
 },
@@ -3840,14 +3832,6 @@ url:"https://doi.org/10.3390/ijerph7030991",
 note:"Structured review finding suggestive evidence that layered public health interventions (hydration access, cooling, outreach) reduce heat morbidity/mortality. Hydration station reduction (~4%/tier) is an educational approximation informed by this review and WHO guidance."
 },
 {
-authors:"Weisskopf, M.G., et al.",
-year:"2002",
-title:"Heat wave morbidity and mortality, Milwaukee, Wis, 1999 vs 1995",
-source:"American Journal of Public Health, 92(5), 830–833",
-url:"https://doi.org/10.2105/AJPH.92.5.830",
-note:"Baseline for combined intervention cap (65% max mortality reduction); layered approach 3–4× effectiveness over reactive response."
-},
-{
 authors:"Arizona Department of Health Services",
 year:"2024",
 title:"Arizona Heat Safety Resource Guide",
@@ -3893,12 +3877,12 @@ url:"https://www.srpnet.com/grid-water-management/future-planning/integrated-sys
 note:"A/C share of summer electricity (~70%); utility-scale solar grid share (~20%); peak demand elasticity (~2% per °F)."
 },
 {
-authors:"National Renewable Energy Laboratory (NREL)",
-year:"2022",
-title:"National Solar Radiation Database (NSRDB) — Phoenix, AZ",
-source:"NREL",
-url:"https://nsrdb.nrel.gov/",
-note:"Annual sunshine hours data used in Energy Demand calculations (Real-World Impacts panel)."
+authors:"Dieter, C.A. & Linsey, K.S.",
+year:"2018",
+title:"Estimated Use of Water in the United States County-Level Data for 2015 (Version 2.0)",
+source:"U.S. Geological Survey data release",
+url:"https://doi.org/10.5066/F7TB15V5",
+note:"Maricopa County (FIPS 04013) 2015 water-use estimates. Irrigation accounted for ~62% of county water use; public supply ~37%. Source of the agricultural irrigation share cited in the Water Security card. 2015 remains the most recent USGS county-level water-use dataset; methodology and category definitions in companion Circular 1441 (Dieter et al., 2018, https://doi.org/10.3133/cir1441)."
 },
 ]
 },
@@ -3912,14 +3896,6 @@ title:"Arizona's Heat-Related Death White Paper: Full Report",
 source:"MAP AZ Dashboard, University of Arizona",
 url:"https://mapazdashboard.arizona.edu/article/arizonas-heat-related-death-white-paper-full-report",
 note:"Documents that unsheltered homeless persons in Maricopa County face 200–300× relative risk of heat-related death vs. general population. Unsheltered homelessness identified as likely the largest single factor in the rise of heat-related deaths in Maricopa County. Basis for ABM housing tier vulnerability multipliers."
-},
-{
-authors:"City of Phoenix",
-year:"2025",
-title:"Drop in Heat-Related Deaths Show Importance of Heat Relief Sites Efforts",
-source:"City of Phoenix Newsroom",
-url:"https://www.phoenix.gov/newsroom/mayors-office-news/3377.html",
-note:"608 heat deaths in 2024 (down from 645 in 2023) despite record heat. Nearly half of victims were homeless. Maricopa County's 24-hour heat respite site and extended cooling center hours contributed to first year-over-year decrease in a decade. 30,304 of 33,247 respite center visitors indicated they were experiencing homelessness."
 },
 {
 authors:"Samuelson, H., et al.",
@@ -4228,7 +4204,7 @@ React.createElement('span',{style:{color:"#5C1130",fontWeight:600}},"Used for: "
 );}),
 React.createElement('div',{style:{marginTop:16,padding:"12px 16px",background:"rgba(255,217,102,0.04)",border:"1px solid #6B1530",borderRadius:8,fontSize:15,color:"#5C1130",lineHeight:1.7}},
 "📌 ",React.createElement('strong',{style:{color:"#8C1D40"}},"Model disclaimer: "),
-"This is an educational simulation built for classroom use. Climate and mortality projections",React.createElement(Ref,{n:[5,6,7]}),", policy effectiveness estimates",React.createElement(Ref,{n:[26,27,28]}),", and scenario outcomes",React.createElement(Ref,{n:[2,3]})," are simplified models intended to illustrate relationships between climate variables and public health outcomes — not clinical forecasts. For official public health planning, consult Maricopa County Department of Public Health and the Arizona Department of Health Services."
+"This is an educational simulation built for classroom use. Climate and mortality projections",React.createElement(Ref,{n:6}),", policy effectiveness estimates",React.createElement(Ref,{n:[25,26,27]}),", and scenario outcomes",React.createElement(Ref,{n:[2,3]})," are simplified models intended to illustrate relationships between climate variables and public health outcomes — not clinical forecasts. For official public health planning, consult Maricopa County Department of Public Health and the Arizona Department of Health Services."
 )
 );
 }
@@ -4480,7 +4456,7 @@ React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marg
 React.createElement('span',{style:{fontSize:18}},"📐"),
 React.createElement('span',{style:{color:"#ef4444",fontSize:16,letterSpacing:"2px",textTransform:"uppercase",fontWeight:600}},"Appendix B · Heat Mortality Model Variables & Assumptions")
 ),
-React.createElement(SectionHead,null,"Heat Mortality Model: Variables, Parameters & Equations ",React.createElement(Ref,{n:[5,6,7,8,9]})),
+React.createElement(SectionHead,null,"Heat Mortality Model: Variables, Parameters & Equations ",React.createElement(Ref,{n:[6,7,8,9,10]})),
 React.createElement('div',{style:{color:"#ef4444",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:4}},"1. Calibration Constants"),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16}},
 ...[
@@ -4715,7 +4691,7 @@ React.createElement('div',{style:{display:"flex",alignItems:"center",gap:10,marg
 React.createElement('span',{style:{fontSize:18}},"📐"),
 React.createElement('span',{style:{color:"#8C1D40",fontSize:16,letterSpacing:"2px",textTransform:"uppercase",fontWeight:600}},"Appendix C · ABM Model Variables & Assumptions")
 ),
-React.createElement(SectionHead,null,"Agent-Based Model: Variables, Parameters & Rules ",React.createElement(Ref,{n:[10,11,12,13,14,15,16,17,18,19,20,21,22,23,54,55,56]})),
+React.createElement(SectionHead,null,"Agent-Based Model: Variables, Parameters & Rules ",React.createElement(Ref,{n:[9,10,11,12,13,14,15,16,17,18,19,20,21,22,51,52,53]})),
 
 React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:4}},"1. Global Parameters"),
 React.createElement('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16}},
@@ -4970,7 +4946,7 @@ React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",backgroun
 "All × mobilityMod (0.6 if mobility-limited, else 1.0)"
 ),
 
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:12}},"Rescue Recovery (Housing + Severity + Geometric) ",React.createElement(Ref,{n:[24,43,49,50,51,52,53]})),
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:12}},"Rescue Recovery (Housing + Severity + Geometric) ",React.createElement(Ref,{n:[23,40,46,47,48,49,50]})),
 React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"left",marginBottom:8,lineHeight:2.2}},
 "baseDays = sheltered:1, precarious:2, unsheltered:1",React.createElement('br'),
 "severityBonus = ⌈max(0, heat − 0.85) × 10⌉   [1–2 at rescue, since heat ≥ 0.9]",React.createElement('br'),
@@ -4991,7 +4967,7 @@ React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",backgroun
 "nextNode = NEXT_HOP[currentNode][targetNode]  (pre-computed at module load via Dijkstra on weighted STREET_EDGE_LEN)"
 ),
 
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:12}},"Electric Grid Failure (Hybrid Multi-Day Model) ",React.createElement(Ref,{n:[16,17,46,47,48,63,64]})),
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:600,fontSize:15,marginBottom:6,marginTop:12}},"Electric Grid Failure (Hybrid Multi-Day Model) ",React.createElement(Ref,{n:[15,16,43,44,45,60,61]})),
 React.createElement('div',{style:{fontFamily:"'Times New Roman',serif",background:"rgba(140,29,64,0.08)",border:"1px solid #8C1D4033",borderRadius:5,padding:"14px 18px",fontSize:18,color:"#8C1D40",display:"block",textAlign:"left",marginBottom:8,lineHeight:2.2}},
 "ONSET (logistic stress-response):",React.createElement('br'),
 "S = 0.35×max(0,(Tmax−100)/15) + 0.20×max(0,(Tmin−78)/15)",React.createElement('br'),
@@ -5093,7 +5069,7 @@ React.createElement('span',{style:{color:"#7A3045",fontSize:14,lineHeight:1.5}},
 ))
 ),
 
-React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:14}},"9. Reproducibility & Random Number Generation ",React.createElement(Ref,{n:[54,55,56]})),
+React.createElement('div',{style:{color:"#8C1D40",fontWeight:700,fontSize:16,letterSpacing:"2px",textTransform:"uppercase",marginBottom:10,marginTop:14}},"9. Reproducibility & Random Number Generation ",React.createElement(Ref,{n:[51,52,53]})),
 React.createElement('div',{style:{color:"#7A3045",fontSize:14,lineHeight:1.7,marginBottom:12,padding:"10px 14px",background:"rgba(140,29,64,0.04)",border:"1px solid #8C1D4033",borderRadius:8}},
 "All stochastic processes in the ABM — including agent initialization, utility disconnection, blackout onset, heat-zone rescue, and visual mortality — are driven by a seeded Mersenne Twister (MT19937) pseudo-random number generator implemented in both this interactive JavaScript dashboard and the companion C++ simulation engine. The MT19937 algorithm (Matsumoto & Nishimura, 1998 [54]) produces a period of 2",
 React.createElement('sup',null,"19937"),
